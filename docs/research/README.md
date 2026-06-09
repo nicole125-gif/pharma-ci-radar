@@ -21,13 +21,16 @@
 5. `fujikin-product-series-handbook.md`
    用于区分 Fujikin 生命科学卫生、跨行业精密流控和半导体高纯三条能力线。
 
-6. `2026-06-competitive-battlecards.md`
+6. `esg-jingrui-product-handbook.md`
+   用于查询 ESG 精锐可核验系列、证据等级、企业声明和内部验证缺口。
+
+7. `2026-06-competitive-battlecards.md`
    用于客户拜访、方案评审和竞争报价前的快速准备。
 
-7. `2026-06-product-knowledge-assessment.md`
+8. `2026-06-product-knowledge-assessment.md`
    用于个人自测、团队培训和季度场景演练。
 
-8. `2026-06-knowledge-maintenance.md`
+9. `2026-06-knowledge-maintenance.md`
    用于把新产品、报价、交期、输赢和售后事实持续回灌。
 
 ## 数据文件
@@ -54,6 +57,11 @@
 | `fujikin-burkert-series-map.csv` | Fujikin重点系列与Bürkert产品方向映射 |
 | `fujikin-series-coverage.json` | Fujikin类别、资料语言和制药相关性覆盖统计 |
 | `fujikin-catalog-link-validation.csv` | Fujikin英文及中文目录链接的HTTP/PDF校验结果 |
+| `esg-series-catalog.csv` | ESG精锐可核验系列/系列组及证据状态 |
+| `esg-series-specifications.csv` | ESG公开参数和单独标记的企业CLAIM |
+| `esg-series-evidence.csv` | ESG系列级证据表 |
+| `esg-burkert-series-map.csv` | ESG重点系列与Bürkert产品方向映射 |
+| `esg-series-coverage.json` | ESG目录覆盖、证据等级与官网访问限制 |
 
 ## 按场景使用
 
@@ -68,6 +76,8 @@
 | 比较GEMÜ与Bürkert系列 | `gemu-burkert-series-map.csv` 及双方产品手册 |
 | 判断Fujikin产品属于哪条能力线 | Fujikin产品手册及 `fujikin-series-catalog.csv` |
 | 比较Fujikin与Bürkert系列 | `fujikin-burkert-series-map.csv` 及双方产品手册 |
+| 查询ESG系列及证据成熟度 | ESG产品手册及 `esg-series-catalog.csv` |
+| 比较ESG与Bürkert系列 | `esg-burkert-series-map.csv` 及双方产品手册 |
 | 判断中国官网/中文资料可见性 | `burkert-type-catalog.csv` 的 `china_visibility` 与资料链接 |
 | 复盘输赢 | 项目台账模板和知识更新机制 |
 | 培训新同事 | 知识手册、战卡、自测题库 |
@@ -83,6 +93,7 @@
 - Bürkert全球官网当前Type全量目录、参数表和完整产品树。
 - GEMÜ官网159个当前产品系列和5个精选解决方案目录、1547条规格记录及164条系列证据。
 - Fujikin官方目录127条系列/型号族记录、467条目录规格、127条系列证据和10组Bürkert映射。
+- ESG精锐16个可核验系列/系列组、58条参数或声明记录及9组Bürkert映射。
 - 三家竞品战卡。
 - 100分产品知识自测。
 - 竞争项目结构化记录与更新规则。

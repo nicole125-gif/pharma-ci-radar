@@ -26,6 +26,7 @@ def main() -> None:
     evidence = read_rows(RESEARCH / "gemu-series-evidence.csv")
     general_evidence = read_rows(RESEARCH / "2026-06-four-company-evidence.csv")
     fujikin_evidence = read_rows(RESEARCH / "fujikin-series-evidence.csv")
+    esg_evidence = read_rows(RESEARCH / "esg-series-evidence.csv")
     mapping = read_rows(RESEARCH / "gemu-burkert-series-map.csv")
     shared_mapping = read_rows(RESEARCH / "burkert-competitor-series-map.csv")
     coverage = json.loads((RESEARCH / "gemu-series-coverage.json").read_text(encoding="utf-8"))
@@ -68,6 +69,7 @@ def main() -> None:
         evidence_id_set
         | {row["evidence_id"] for row in general_evidence}
         | {row["evidence_id"] for row in fujikin_evidence}
+        | {row["evidence_id"] for row in esg_evidence}
     )
     for row in shared_mapping:
         refs = [item for item in row["evidence_ids"].split("|") if item]

@@ -77,6 +77,7 @@ def main() -> None:
     evidence_path = RESEARCH / "2026-06-four-company-evidence.csv"
     gemu_evidence_path = RESEARCH / "gemu-series-evidence.csv"
     fujikin_evidence_path = RESEARCH / "fujikin-series-evidence.csv"
+    esg_evidence_path = RESEARCH / "esg-series-evidence.csv"
     product_matrix_path = RESEARCH / "2026-06-four-company-product-matrix.csv"
     competitor_map_path = RESEARCH / "burkert-competitor-series-map.csv"
     review_path = RESEARCH / "burkert-catalog-review.csv"
@@ -87,6 +88,7 @@ def main() -> None:
     require(evidence_path.exists(), f"Missing {evidence_path}", errors)
     require(gemu_evidence_path.exists(), f"Missing {gemu_evidence_path}", errors)
     require(fujikin_evidence_path.exists(), f"Missing {fujikin_evidence_path}", errors)
+    require(esg_evidence_path.exists(), f"Missing {esg_evidence_path}", errors)
     require(product_matrix_path.exists(), f"Missing {product_matrix_path}", errors)
     require(competitor_map_path.exists(), f"Missing {competitor_map_path}", errors)
     require(review_path.exists(), f"Missing {review_path}", errors)
@@ -219,7 +221,7 @@ def main() -> None:
                 )
 
     evidence_ids = read_evidence_ids(
-        [evidence_path, gemu_evidence_path, fujikin_evidence_path]
+        [evidence_path, gemu_evidence_path, fujikin_evidence_path, esg_evidence_path]
     )
     evidence_pattern = re.compile(r"\b[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+-\d{3}\b")
     referenced_evidence_ids: set[str] = set()

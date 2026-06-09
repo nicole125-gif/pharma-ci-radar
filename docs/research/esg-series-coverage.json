@@ -1,0 +1,24 @@
+{
+  "generated_date": "2026-06-09",
+  "catalog_count": 16,
+  "specification_row_count": 58,
+  "category_counts": {
+    "Sanitary valves": 4,
+    "Industrial valves": 11,
+    "Control accessories": 1
+  },
+  "pharma_relevance_counts": {
+    "HIGH": 4,
+    "MEDIUM": 10,
+    "LOW": 2
+  },
+  "evidence_grade_counts": {
+    "B": 11,
+    "C": 5
+  },
+  "fact_status_counts": {
+    "FACT": 15,
+    "CLAIM": 1
+  },
+  "source_access_limitation": "The official English and Chinese sites returned HTTP 403 to direct automation. Catalogue records use indexed official pages and PDFs; certification and performance statements remain claims where originals were unavailable."
+}

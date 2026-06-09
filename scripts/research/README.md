@@ -1,7 +1,8 @@
 # Product Catalog Research Scripts
 
 These scripts create and validate the official-site Bürkert Type catalog,
-the GEMÜ current-series catalog, and the Fujikin catalogue-level series map.
+the GEMÜ current-series catalog, the Fujikin catalogue-level series map, and
+the conservative ESG/Jingrui indexed-series catalogue.
 
 ## Source Boundary
 
@@ -20,6 +21,10 @@ facts come from official leaf product pages, with cached pages stored in
 For Fujikin, the official English download index is the series-level source.
 It is intentionally used instead of expanding hundreds of Product Numbers.
 The cached source is stored in `.config/fujikin-series-cache/`.
+
+The ESG English and Chinese sites returned HTTP 403 to direct automation in
+this research run. ESG outputs therefore use indexed official product pages,
+PDFs, and news, with B/C evidence grades and explicit CLAIM markers.
 
 ## Commands
 
@@ -107,6 +112,14 @@ python3 scripts/research/validate_fujikin_catalog_links.py
 python3 scripts/research/validate_fujikin_series.py
 ```
 
+Generate and validate the ESG/Jingrui catalogue and handbook:
+
+```bash
+python3 scripts/research/generate_esg_catalog.py
+python3 scripts/research/generate_esg_handbook.py
+python3 scripts/research/validate_esg_catalog.py
+```
+
 ## Outputs
 
 - `docs/research/burkert-type-catalog.csv`
@@ -128,6 +141,12 @@ python3 scripts/research/validate_fujikin_series.py
 - `docs/research/fujikin-catalog-link-validation.csv`
 - `docs/research/fujikin-burkert-series-map.csv`
 - `docs/research/fujikin-product-series-handbook.md`
+- `docs/research/esg-series-catalog.csv`
+- `docs/research/esg-series-specifications.csv`
+- `docs/research/esg-series-evidence.csv`
+- `docs/research/esg-series-coverage.json`
+- `docs/research/esg-burkert-series-map.csv`
+- `docs/research/esg-jingrui-product-handbook.md`
 
 The competitor-series map is curated separately in
 `docs/research/burkert-competitor-series-map.csv`.
