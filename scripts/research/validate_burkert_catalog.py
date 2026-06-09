@@ -44,6 +44,14 @@ def read_dicts(path: Path) -> list[dict[str, str]]:
         return list(csv.DictReader(handle))
 
 
+def read_evidence_ids(paths: list[Path]) -> set[str]:
+    return {
+        row["evidence_id"]
+        for path in paths
+        for row in read_dicts(path)
+    }
+
+
 def require(condition: bool, message: str, errors: list[str]) -> None:
     if not condition:
         errors.append(message)
@@ -67,6 +75,7 @@ def main() -> None:
     coverage_path = RESEARCH / "burkert-catalog-coverage.json"
     datasheet_validation_path = RESEARCH / "burkert-datasheet-link-validation.csv"
     evidence_path = RESEARCH / "2026-06-four-company-evidence.csv"
+    gemu_evidence_path = RESEARCH / "gemu-series-evidence.csv"
     product_matrix_path = RESEARCH / "2026-06-four-company-product-matrix.csv"
     competitor_map_path = RESEARCH / "burkert-competitor-series-map.csv"
     review_path = RESEARCH / "burkert-catalog-review.csv"
@@ -75,6 +84,7 @@ def main() -> None:
     require(coverage_path.exists(), f"Missing {coverage_path}", errors)
     require(datasheet_validation_path.exists(), f"Missing {datasheet_validation_path}", errors)
     require(evidence_path.exists(), f"Missing {evidence_path}", errors)
+    require(gemu_evidence_path.exists(), f"Missing {gemu_evidence_path}", errors)
     require(product_matrix_path.exists(), f"Missing {product_matrix_path}", errors)
     require(competitor_map_path.exists(), f"Missing {competitor_map_path}", errors)
     require(review_path.exists(), f"Missing {review_path}", errors)
@@ -85,7 +95,6 @@ def main() -> None:
     catalog = read_dicts(catalog_path)
     specs = read_dicts(specs_path)
     datasheet_validations = read_dicts(datasheet_validation_path)
-    evidence = read_dicts(evidence_path)
     product_matrix = read_dicts(product_matrix_path)
     competitor_map = read_dicts(competitor_map_path)
     reviews = read_dicts(review_path)
@@ -207,7 +216,7 @@ def main() -> None:
                     errors,
                 )
 
-    evidence_ids = {row["evidence_id"] for row in evidence}
+    evidence_ids = read_evidence_ids([evidence_path, gemu_evidence_path])
     evidence_pattern = re.compile(r"\b[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+-\d{3}\b")
     referenced_evidence_ids: set[str] = set()
     for row in product_matrix + competitor_map:

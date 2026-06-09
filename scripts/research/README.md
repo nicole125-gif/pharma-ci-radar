@@ -1,6 +1,7 @@
-# Bürkert Product Catalog Research Scripts
+# Product Catalog Research Scripts
 
-These scripts create and validate the official-site Bürkert Type catalog.
+These scripts create and validate the official-site Bürkert Type catalog and
+the GEMÜ current-series catalog.
 
 ## Source Boundary
 
@@ -11,6 +12,10 @@ These scripts create and validate the official-site Bürkert Type catalog.
 - Cache: `.config/burkert-catalog-cache/` (ignored by Git)
 
 The scripts do not enumerate Article Numbers and do not infer stock, origin, price, or lead time.
+
+For GEMÜ, the English sitemap is the current-series discovery source. Product
+facts come from official leaf product pages, with cached pages stored in
+`.config/gemu-series-cache/` (ignored by Git).
 
 ## Commands
 
@@ -62,6 +67,26 @@ Validate:
 python3 scripts/research/validate_burkert_catalog.py
 ```
 
+Collect or resume the GEMÜ catalog:
+
+```bash
+python3 scripts/research/collect_gemu_series.py
+```
+
+Rebuild GEMÜ outputs from cache, or force a refresh:
+
+```bash
+python3 scripts/research/collect_gemu_series.py --build-only
+python3 scripts/research/collect_gemu_series.py --refresh
+```
+
+Generate and validate the GEMÜ handbook and mapping:
+
+```bash
+python3 scripts/research/generate_gemu_handbook.py
+python3 scripts/research/validate_gemu_series.py
+```
+
 ## Outputs
 
 - `docs/research/burkert-type-catalog.csv`
@@ -70,6 +95,12 @@ python3 scripts/research/validate_burkert_catalog.py
 - `docs/research/burkert-datasheet-link-validation.csv`
 - `docs/research/burkert-catalog-review.csv`
 - `docs/research/burkert-full-product-handbook.md`
+- `docs/research/gemu-series-catalog.csv`
+- `docs/research/gemu-series-specifications.csv`
+- `docs/research/gemu-series-evidence.csv`
+- `docs/research/gemu-series-coverage.json`
+- `docs/research/gemu-burkert-series-map.csv`
+- `docs/research/gemu-pharma-series-handbook.md`
 
 The competitor-series map is curated separately in
 `docs/research/burkert-competitor-series-map.csv`.

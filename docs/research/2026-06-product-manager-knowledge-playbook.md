@@ -1,6 +1,6 @@
 # Bürkert、GEMÜ、Fujikin、ESG 精锐产品经理知识手册
 
-更新日期：2026-06-08
+更新日期：2026-06-09
 适用范围：中国制药与生物技术项目
 配套资料：`2026-06-four-company-competitive-research.md`、`2026-06-four-company-evidence.csv`、`2026-06-four-company-product-matrix.csv`
 
@@ -14,6 +14,9 @@
 - `burkert-type-catalog.csv`
 - `burkert-type-specifications.csv`
 - `burkert-competitor-series-map.csv`
+- `gemu-pharma-series-handbook.md`
+- `gemu-series-catalog.csv`
+- `gemu-burkert-series-map.csv`
 
 ## 1. 使用原则
 
@@ -58,6 +61,10 @@
 | P600M/P600S | 多通阀块 | 配液、纯化、过滤、PUPSIT、低死区分配 | GEMÜ最强专业壁垒之一，不能只用单阀价格应对 | 流路图、阀位、死区、排空、加工方式、焊缝、传感器集成和文件 [GEMU-MULTIPORT-001] |
 | SUMONDO | 一次性隔膜阀 | 单次使用生物工艺、快速换批 | 在降低交叉污染和清洗验证负担方面形成差异 | 接液体积、材料、灭菌方式、连接、完整性、供应保障和废弃处理 [GEMU-SINGLEUSE-001] |
 | GEMÜ 1441 cPos-X | 智能定位器 | 调节阀、过程控制 | 证明GEMÜ具备阀门调节和数字化能力 | 执行器兼容性、信号、通信、故障位、远程操作和防爆版本 [GEMU-1441-001] |
+
+截至 2026-06-09，GEMÜ 英文官网 sitemap 可定位 159 个当前产品系列；另纳入 P600/P500、多通一次性、PUPSIT、GEMÜ Systems 和 CONEXO 共 5 个解决方案记录，合计 164 条。完整清单见 `gemu-series-catalog.csv`，逐系列官方证据见 `gemu-series-evidence.csv`。当前反馈与控制产品应优先检查 1232、1234、1236、1240、1241、1242 以及 1434、1435、1436、1441；历史资料中的 1235 不应未经官网复核直接视作当前系列。旧资料中的 3030、3021 同样未出现在本轮当前英文 sitemap 中。[GEMU-SERIES-650][GEMU-SERIES-649][GEMU-SERIES-1441][GEMU-SERIES-1236]
+
+`pharma_relevance=HIGH` 表示官网明确把该系列关联到制药、生物技术、无菌、一次性或 PUPSIT 场景，不等于所有配置都适合无菌主工艺。具体项目仍须核对材料、表面、排空、温压、连接、认证和验证文件。
 
 ### 3.3 Fujikin
 

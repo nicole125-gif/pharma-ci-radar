@@ -1446,13 +1446,13 @@
 
 | Bürkert方向 | Bürkert Type | GEMÜ | Fujikin | ESG精锐 | 重叠 | 可信度 |
 |---|---|---|---|---|---|---|
-| 过程与控制阀 / 卫生隔膜阀 | 2030|2031|2032|2033|2034|2035|2103|2104|2105|2106 | GEMÜ 601/602/605/625/650 BioStar/649 eSyDrive | BNW manual and automatic diaphragm valves | A00 pneumatic diaphragm valve | DIRECT | HIGH |
+| 过程与控制阀 / 卫生隔膜阀 | 2030|2031|2032|2033|2034|2035|2103|2104|2105|2106 | GEMÜ 605/616/629/639/649/650/651/653/654/D40/D41 | BNW manual and automatic diaphragm valves | A00 pneumatic diaphragm valve | DIRECT | HIGH |
 | 过程与控制阀 / 多通阀块与特殊卫生阀体 | 2034|2035|2036|2104|2105|2106 | P600M/P600S/P500M and custom multiport blocks | 未发现同等清晰的制药多通阀块系列 | T阀、三通及取样阀；复杂阀块能力待证 | DIRECT_FOR_GEMU | HIGH |
 | 过程与控制阀 / 角座阀/截止阀/调节阀 | 2000|2002|2012|2100|2101|2300|2301 | GEMÜ 550/554/555 and control-valve portfolio | MINUCON and general control/globe/needle valve portfolio | 100 angle-seat valve|105 proportional control valve | DIRECT | MEDIUM |
-| 过程与控制阀 / 球阀/蝶阀/其他隔离阀 | 8804|8805 | GEMÜ 480/490 butterfly and 711/728 ball-valve families | Ball/check/general industrial valve portfolio | 300 butterfly|400 ball|500 check series | DIRECT_OR_ADJACENT | MEDIUM |
-| 执行与控制 / 控制头/定位器/过程控制器 | 8681|8685|8690|8691|8692|8693|8694|8695|8696 | GEMÜ 1235/1434/1435/1441 cPos-X | Valve actuation and control accessories; public series mapping incomplete | 0P0/0P1 positioners | DIRECT | HIGH |
+| 过程与控制阀 / 球阀/蝶阀/其他隔离阀 | 8804|8805 | GEMÜ D480/D488/490/491 butterfly and B20/B22/B42/B52 ball-valve families | Ball/check/general industrial valve portfolio | 300 butterfly|400 ball|500 check series | DIRECT_OR_ADJACENT | MEDIUM |
+| 执行与控制 / 控制头/定位器/过程控制器 | 8681|8685|8690|8691|8692|8693|8694|8695|8696 | GEMÜ 1232/1234/1236/1240/1241/1242 feedback and 1434/1435/1436/1441 controllers | Valve actuation and control accessories; public series mapping incomplete | 0P0/0P1 positioners | DIRECT | HIGH |
 | 气动与过程接口 / 阀岛与气动系统 | 8640|8644|8650|8652 | 阀门执行与控制附件；未发现同等广度阀岛系列 | 未发现完整阀岛产品族证据 | 未发现阀岛产品族证据 | BURKERT_DIFFERENTIATOR | HIGH |
-| 传感器、变送器与控制器 / 卫生及工业流量测量 | 8020|8025|8030|8031|8035|8041|8045|8051|8055|8070|8071|8072|8075|8081|8098 | GEMÜ 3030/3021 and flowmeter portfolio | Measurement offering exists but pharma process-flow mapping is limited | 未发现自有流量传感器产品族 | DIRECT_OR_ADJACENT | HIGH |
+| 传感器、变送器与控制器 / 卫生及工业流量测量 | 8020|8025|8030|8031|8035|8041|8045|8051|8055|8070|8071|8072|8075|8081|8098 | GEMÜ 3020 and 801/805/806/807/811/815/816/817/820/822/825/830/831/832/835/840/841/845/851/855/857/865/875 flowmeter portfolio | Measurement offering exists but pharma process-flow mapping is limited | 未发现自有流量传感器产品族 | DIRECT_OR_ADJACENT | HIGH |
 | 传感器、变送器与控制器 / 压力/温度/液位 | 8110|8111|8112|8188|8314|8316|8325 | GEMÜ pressure/temperature/level measurement portfolio | 公开主产品更偏阀件和高纯系统；具体系列待映射 | 未发现自有过程传感器产品族 | ADJACENT | MEDIUM |
 | 传感器、变送器与控制器 / 液体分析与多通道系统 | 8200|8201|8202|8220|8221|8222|8228|8232|8905 | GEMÜ measurement products; public liquid-analysis breadth limited | 生命科学和分析业务不能直接等同于在线过程分析产品族 | 未发现自有分析测量产品族 | BURKERT_DIFFERENTIATOR | MEDIUM |
 | 质量流量控制器与流量计 / 气体/液体MFC与MFM | 8700|8701|8702|8703|8710|8711|8712|8713|8718|8719|8741|8742|8743|8744|8745|8756 | MFC不是GEMÜ公开核心产品线 | FCS Thermal mass-flow controller family | 未发现自有MFC/MFM产品族 | DIRECT_FOR_FUJIKIN | HIGH |

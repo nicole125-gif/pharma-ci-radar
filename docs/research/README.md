@@ -15,13 +15,16 @@
 3. `burkert-full-product-handbook.md`
    用于系统学习 Bürkert 十大产品族、全部当前 Type、选型变量和不可互换边界。
 
-4. `2026-06-competitive-battlecards.md`
+4. `gemu-pharma-series-handbook.md`
+   用于查询 GEMÜ 当前官网系列、制药相关性、技术边界及与 Bürkert 的系列级映射。
+
+5. `2026-06-competitive-battlecards.md`
    用于客户拜访、方案评审和竞争报价前的快速准备。
 
-5. `2026-06-product-knowledge-assessment.md`
+6. `2026-06-product-knowledge-assessment.md`
    用于个人自测、团队培训和季度场景演练。
 
-6. `2026-06-knowledge-maintenance.md`
+7. `2026-06-knowledge-maintenance.md`
    用于把新产品、报价、交期、输赢和售后事实持续回灌。
 
 ## 数据文件
@@ -37,6 +40,11 @@
 | `burkert-catalog-coverage.json` | sitemap、类别、中国可见性和参数覆盖统计 |
 | `burkert-datasheet-link-validation.csv` | 英文及中文数据表链接的HTTP/PDF校验结果 |
 | `burkert-catalog-review.csv` | 制药重点全量复核与其他Type分层抽查记录 |
+| `gemu-series-catalog.csv` | GEMÜ官网当前产品系列及精选解决方案主数据 |
+| `gemu-series-specifications.csv` | GEMÜ系列页面明确披露的纵向技术记录 |
+| `gemu-series-evidence.csv` | GEMÜ当前系列的一对一官方证据表 |
+| `gemu-burkert-series-map.csv` | GEMÜ制药重点系列与Bürkert产品方向映射 |
+| `gemu-series-coverage.json` | GEMÜ sitemap、类别和制药相关性覆盖统计 |
 
 ## 按场景使用
 
@@ -47,6 +55,8 @@
 | 做卫生阀选型 | 知识手册第3、5节及产品矩阵 |
 | 分析WFI/发酵/CIP项目 | 知识手册第4节 |
 | 查询Bürkert具体Type | 全产品手册及 `burkert-type-catalog.csv` |
+| 查询GEMÜ当前系列及在售状态 | GEMÜ产品手册及 `gemu-series-catalog.csv` |
+| 比较GEMÜ与Bürkert系列 | `gemu-burkert-series-map.csv` 及双方产品手册 |
 | 判断中国官网/中文资料可见性 | `burkert-type-catalog.csv` 的 `china_visibility` 与资料链接 |
 | 复盘输赢 | 项目台账模板和知识更新机制 |
 | 培训新同事 | 知识手册、战卡、自测题库 |
@@ -60,6 +70,7 @@
 - 54条可追溯公开证据。
 - 代表系列和六类制药应用地图。
 - Bürkert全球官网当前Type全量目录、参数表和完整产品树。
+- GEMÜ官网159个当前产品系列和5个精选解决方案目录、1547条规格记录及164条系列证据。
 - 三家竞品战卡。
 - 100分产品知识自测。
 - 竞争项目结构化记录与更新规则。

@@ -1,0 +1,42 @@
+{
+  "generated_date": "2026-06-09",
+  "sitemap_product_series_count": 159,
+  "solution_row_count": 5,
+  "catalog_count": 164,
+  "missing_cache": [],
+  "category_counts": {
+    "Customised product solutions": 4,
+    "Digital solutions": 1,
+    "Measurement And Control Technology": 50,
+    "Valve Technology": 109
+  },
+  "subcategory_counts": {
+    "Multi-port block valves": 1,
+    "PUPSIT": 1,
+    "Single-use solutions": 1,
+    "System solutions": 1,
+    "Asset lifecycle management": 1,
+    "Flow Meters": 24,
+    "Pilot Valves": 4,
+    "Position And Process Controllers": 5,
+    "Position Feedback Devices And Valve Connections": 15,
+    "Temperature Measuring Devices And Pressure Measuring Devices": 2,
+    "Ball Valves": 14,
+    "Butterfly Valves": 17,
+    "Diaphragm Seat Valves": 6,
+    "Diaphragm Valves": 30,
+    "Pinch Valves": 3,
+    "Pressure Control Valves Check Valves And Strainers": 8,
+    "Process Solenoid Valves": 7,
+    "Pulsation Dampers": 1,
+    "Seat Valves": 19,
+    "Single Use Valves Components": 2,
+    "Tank Bottom Valves": 2
+  },
+  "pharma_relevance_counts": {
+    "HIGH": 50,
+    "MEDIUM": 91,
+    "LOW": 23
+  },
+  "specification_row_count": 1547
+}

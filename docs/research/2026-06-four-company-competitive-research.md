@@ -126,6 +126,8 @@ GEMÜ 的产品体系包括阀门技术、测量与控制技术、定制产品�
 - 数字化：CONEXO、RFID、IO-Link 和无纸化维护。
 - 服务：安装调试、维护、系统检查、维修和培训。
 
+**2026-06-09 目录化附注：** 本轮进一步遍历 GEMÜ 英文官网 sitemap，识别 159 个当前产品系列，并补充 5 个制药相关或跨产品解决方案记录，共 164 条；形成 `gemu-series-catalog.csv`、`gemu-series-specifications.csv` 和 `gemu-series-evidence.csv`。该目录用于纠正历史型号与当前官网系列的混用，不改变本报告原有威胁评级。[GEMU-SERIES-650][GEMU-SERIES-P600M-P600S-P500M]
+
 ### 4.3 制药能力
 
 GEMÜ 明确把无菌隔膜阀和多通阀块定位在制药主工艺，把截止阀用于辅助工艺。[GEMU-PHARMA-001]
