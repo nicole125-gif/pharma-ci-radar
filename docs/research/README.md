@@ -15,25 +15,28 @@
 3. `2026-06-product-knowledge-coverage-audit.md`
    用于判断当前知识成熟度、主要产品战场和下一阶段内部验证优先级。
 
-4. `burkert-full-product-handbook.md`
+4. `2026-06-pharma-application-field-guide.md`
+   用于把客户任务转化为过程等级、候选产品、排除条件和下一步证据。
+
+5. `burkert-full-product-handbook.md`
    用于系统学习 Bürkert 十大产品族、全部当前 Type、选型变量和不可互换边界。
 
-5. `gemu-pharma-series-handbook.md`
+6. `gemu-pharma-series-handbook.md`
    用于查询 GEMÜ 当前官网系列、制药相关性、技术边界及与 Bürkert 的系列级映射。
 
-6. `fujikin-product-series-handbook.md`
+7. `fujikin-product-series-handbook.md`
    用于区分 Fujikin 生命科学卫生、跨行业精密流控和半导体高纯三条能力线。
 
-7. `esg-jingrui-product-handbook.md`
+8. `esg-jingrui-product-handbook.md`
    用于查询 ESG 精锐可核验系列、证据等级、企业声明和内部验证缺口。
 
-8. `2026-06-competitive-battlecards.md`
+9. `2026-06-competitive-battlecards.md`
    用于客户拜访、方案评审和竞争报价前的快速准备。
 
-9. `2026-06-product-knowledge-assessment.md`
+10. `2026-06-product-knowledge-assessment.md`
    用于个人自测、团队培训和季度场景演练。
 
-10. `2026-06-knowledge-maintenance.md`
+11. `2026-06-knowledge-maintenance.md`
    用于把新产品、报价、交期、输赢和售后事实持续回灌。
 
 ## 数据文件
@@ -44,6 +47,7 @@
 | `2026-06-four-company-product-matrix.csv` | 四家公司统一产品分类与重叠地图 |
 | `2026-06-competitive-project-log-template.csv` | 内部竞争项目、报价、交期和输赢记录 |
 | `2026-06-internal-validation-backlog.csv` | 价格、交期、产地、证书、装机和服务的优先验证问题 |
+| `2026-06-pharma-application-selection-matrix.csv` | 12类制药客户任务的候选产品、必问工况和排除条件 |
 | `burkert-type-catalog.csv` | Bürkert官网当前全部Type主数据 |
 | `burkert-type-specifications.csv` | Type页面明确披露的纵向规格记录 |
 | `burkert-competitor-series-map.csv` | Bürkert产品方向与三家竞品系列映射 |
@@ -73,6 +77,7 @@
 |---|---|
 | 给管理层汇报 | 主报告第1、10、11、12节 |
 | 准备客户拜访 | 战卡“三分钟临场检查”及对应竞品章节 |
+| 从客户任务开始选型 | 应用问诊指南及场景矩阵 |
 | 做卫生阀选型 | 知识手册第3、5节及产品矩阵 |
 | 分析WFI/发酵/CIP项目 | 知识手册第4节 |
 | 查询Bürkert具体Type | 全产品手册及 `burkert-type-catalog.csv` |

@@ -23,6 +23,8 @@
 - `esg-jingrui-product-handbook.md`
 - `esg-series-catalog.csv`
 - `esg-burkert-series-map.csv`
+- `2026-06-pharma-application-field-guide.md`
+- `2026-06-pharma-application-selection-matrix.csv`
 
 ## 1. 使用原则
 

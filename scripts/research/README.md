@@ -120,6 +120,12 @@ python3 scripts/research/generate_esg_handbook.py
 python3 scripts/research/validate_esg_catalog.py
 ```
 
+Validate the cross-company pharma application selection matrix:
+
+```bash
+python3 scripts/research/validate_application_selection_matrix.py
+```
+
 ## Outputs
 
 - `docs/research/burkert-type-catalog.csv`
@@ -147,6 +153,8 @@ python3 scripts/research/validate_esg_catalog.py
 - `docs/research/esg-series-coverage.json`
 - `docs/research/esg-burkert-series-map.csv`
 - `docs/research/esg-jingrui-product-handbook.md`
+- `docs/research/2026-06-pharma-application-selection-matrix.csv`
+- `docs/research/2026-06-pharma-application-field-guide.md`
 
 The competitor-series map is curated separately in
 `docs/research/burkert-competitor-series-map.csv`.
