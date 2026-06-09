@@ -18,13 +18,16 @@
 4. `gemu-pharma-series-handbook.md`
    用于查询 GEMÜ 当前官网系列、制药相关性、技术边界及与 Bürkert 的系列级映射。
 
-5. `2026-06-competitive-battlecards.md`
+5. `fujikin-product-series-handbook.md`
+   用于区分 Fujikin 生命科学卫生、跨行业精密流控和半导体高纯三条能力线。
+
+6. `2026-06-competitive-battlecards.md`
    用于客户拜访、方案评审和竞争报价前的快速准备。
 
-6. `2026-06-product-knowledge-assessment.md`
+7. `2026-06-product-knowledge-assessment.md`
    用于个人自测、团队培训和季度场景演练。
 
-7. `2026-06-knowledge-maintenance.md`
+8. `2026-06-knowledge-maintenance.md`
    用于把新产品、报价、交期、输赢和售后事实持续回灌。
 
 ## 数据文件
@@ -45,6 +48,12 @@
 | `gemu-series-evidence.csv` | GEMÜ当前系列的一对一官方证据表 |
 | `gemu-burkert-series-map.csv` | GEMÜ制药重点系列与Bürkert产品方向映射 |
 | `gemu-series-coverage.json` | GEMÜ sitemap、类别和制药相关性覆盖统计 |
+| `fujikin-series-catalog.csv` | Fujikin官方目录中的当前系列/型号族主数据 |
+| `fujikin-series-specifications.csv` | Fujikin目录行披露的洁净度、尺寸、流量等级和材料 |
+| `fujikin-series-evidence.csv` | Fujikin系列级官方证据表 |
+| `fujikin-burkert-series-map.csv` | Fujikin重点系列与Bürkert产品方向映射 |
+| `fujikin-series-coverage.json` | Fujikin类别、资料语言和制药相关性覆盖统计 |
+| `fujikin-catalog-link-validation.csv` | Fujikin英文及中文目录链接的HTTP/PDF校验结果 |
 
 ## 按场景使用
 
@@ -57,6 +66,8 @@
 | 查询Bürkert具体Type | 全产品手册及 `burkert-type-catalog.csv` |
 | 查询GEMÜ当前系列及在售状态 | GEMÜ产品手册及 `gemu-series-catalog.csv` |
 | 比较GEMÜ与Bürkert系列 | `gemu-burkert-series-map.csv` 及双方产品手册 |
+| 判断Fujikin产品属于哪条能力线 | Fujikin产品手册及 `fujikin-series-catalog.csv` |
+| 比较Fujikin与Bürkert系列 | `fujikin-burkert-series-map.csv` 及双方产品手册 |
 | 判断中国官网/中文资料可见性 | `burkert-type-catalog.csv` 的 `china_visibility` 与资料链接 |
 | 复盘输赢 | 项目台账模板和知识更新机制 |
 | 培训新同事 | 知识手册、战卡、自测题库 |
@@ -71,6 +82,7 @@
 - 代表系列和六类制药应用地图。
 - Bürkert全球官网当前Type全量目录、参数表和完整产品树。
 - GEMÜ官网159个当前产品系列和5个精选解决方案目录、1547条规格记录及164条系列证据。
+- Fujikin官方目录127条系列/型号族记录、467条目录规格、127条系列证据和10组Bürkert映射。
 - 三家竞品战卡。
 - 100分产品知识自测。
 - 竞争项目结构化记录与更新规则。

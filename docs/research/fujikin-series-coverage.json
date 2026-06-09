@@ -1,0 +1,45 @@
+{
+  "generated_date": "2026-06-09",
+  "official_index_url": "https://www.fujikin.co.jp/en/support/download/",
+  "catalog_count": 127,
+  "specification_row_count": 467,
+  "category_counts": {
+    "Manual Valves": 63,
+    "Automatic Valves": 35,
+    "Other Valves": 4,
+    "Fittings": 14,
+    "Systems": 7,
+    "Other": 4
+  },
+  "subcategory_counts": {
+    "1-1. Globe Valves": 32,
+    "1-2. Angle Valves": 16,
+    "1-3. Plug Valves": 1,
+    "1-4. Ball Valves": 10,
+    "1-5. Diaphragm Valves": 3,
+    "1-6.Pinch Valves": 1,
+    "2-1. Globe Valves": 19,
+    "2-2. Y Type Valves": 1,
+    "2-3. Angle Valves": 3,
+    "2-4. Ball Valves": 7,
+    "2-5. Gate Valves": 1,
+    "2-6. Diaphragm Valves": 4,
+    "3-1. Self-Actuating": 4,
+    "4-1. Double Compression Ring Type": 5,
+    "4-2. Ring Type": 1,
+    "4-3. Union Gasket Type": 2,
+    "4-4. Welding Type": 1,
+    "4-5. Cone & Thread Type": 1,
+    "4-6. Variable Type": 4,
+    "5-1. Various Equipment": 7,
+    "6-1. Filters": 2,
+    "6-2. Liquid Leak Detector (FINE BUBBLE)": 2
+  },
+  "pharma_relevance_counts": {
+    "LOW": 85,
+    "MEDIUM": 33,
+    "HIGH": 9
+  },
+  "english_catalogue_link_count": 84,
+  "chinese_catalogue_link_count": 25
+}

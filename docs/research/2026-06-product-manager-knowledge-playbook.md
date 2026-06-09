@@ -17,6 +17,9 @@
 - `gemu-pharma-series-handbook.md`
 - `gemu-series-catalog.csv`
 - `gemu-burkert-series-map.csv`
+- `fujikin-product-series-handbook.md`
+- `fujikin-series-catalog.csv`
+- `fujikin-burkert-series-map.csv`
 
 ## 1. 使用原则
 
@@ -73,6 +76,10 @@
 | BNW | 卫生隔膜阀 | 生物医药、食品、生命科学卫生管路 | 参数层面可与三家公司卫生隔膜阀直接比较 | 必须锁定具体型号；核对口径、Cv、阀体、膜片、Ra、连接、认证和产地 [FUJIKIN-BNW-001] |
 | FCS Thermal | 气体质量流量控制器 | 高纯气体、精密供气；制药用途待项目验证 | 与Bürkert 8741的直接产品重叠点 | 气体、流量、压力、精度、响应、校准、通信、中国服务和制药安装证据 [FUJIKIN-FCS-001] |
 | MINUCON | 微小流量控制阀 | 微流量加注、气液体精密调节 | Fujikin在精密调节单品上的技术深度信号 | Cv、可调比、介质、压差、泄漏、重复性、执行方式和控制器 [FUJIKIN-MINUCON-001] |
+
+截至 2026-06-09，Fujikin 官方英文下载目录可结构化为 127 条系列/型号族记录，其中 9 条明确落入生命科学卫生阀、夹管阀、角座阀或小容量灌装方向，33 条属于潜在制药设备或公用工程邻近产品。完整清单见 `fujikin-series-catalog.csv`，逐行证据见 `fujikin-series-evidence.csv`。[FUJIKIN-SERIES-BNWM-BNWC-66C6E5BE][FUJIKIN-SERIES-FCST1000-FCST2000-BE84B2C5]
+
+必须按三条能力线记忆：BNW/BSW/LPS/BPV/BY/SVLCD 属于生命科学卫生产品；MINUCON 与 FCS Thermal 属于跨行业精密流控；FINE PURE、IGS、FCS Pressure 和高纯接头主要证明半导体/高纯能力。第三类不能未经型号、规范和案例验证直接写成制药竞争能力。
 
 ### 3.4 ESG 精锐
 

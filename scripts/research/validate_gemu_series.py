@@ -25,6 +25,7 @@ def main() -> None:
     specs = read_rows(RESEARCH / "gemu-series-specifications.csv")
     evidence = read_rows(RESEARCH / "gemu-series-evidence.csv")
     general_evidence = read_rows(RESEARCH / "2026-06-four-company-evidence.csv")
+    fujikin_evidence = read_rows(RESEARCH / "fujikin-series-evidence.csv")
     mapping = read_rows(RESEARCH / "gemu-burkert-series-map.csv")
     shared_mapping = read_rows(RESEARCH / "burkert-competitor-series-map.csv")
     coverage = json.loads((RESEARCH / "gemu-series-coverage.json").read_text(encoding="utf-8"))
@@ -63,9 +64,11 @@ def main() -> None:
         missing_refs = set(refs) - evidence_id_set
         if missing_refs:
             errors.append(f"{row['gemu_series']}: unknown evidence IDs {sorted(missing_refs)}.")
-    all_evidence_ids = evidence_id_set | {
-        row["evidence_id"] for row in general_evidence
-    }
+    all_evidence_ids = (
+        evidence_id_set
+        | {row["evidence_id"] for row in general_evidence}
+        | {row["evidence_id"] for row in fujikin_evidence}
+    )
     for row in shared_mapping:
         refs = [item for item in row["evidence_ids"].split("|") if item]
         missing_refs = set(refs) - all_evidence_ids

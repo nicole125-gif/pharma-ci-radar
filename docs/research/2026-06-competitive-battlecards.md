@@ -110,6 +110,13 @@ Bürkert 的主要差异不是每个单品都占优，而是能够把卫生阀�
 - MINUCON 微小流量调节能力。
 - 中国多地办公室、服务中心和制造实体。[FUJIKIN-BNW-001][FUJIKIN-FCS-001][FUJIKIN-MINUCON-001][FUJIKIN-CHINA-001]
 
+**当前目录口径**
+
+- 截至 2026-06-09，官方英文目录形成127条系列/型号族记录：手动阀63、自动阀35、其他阀4、接头14、系统7、其他4。
+- 生命科学直接竞争线：BNWM/BNWC、BSW/BSWCN、LPS、BPV-HIN、BYCFO/BYCFU、SVLCDC。[FUJIKIN-SERIES-BNWM-BNWC-66C6E5BE][FUJIKIN-SERIES-BYCFO-BYCFU-BF751B4A]
+- 精密流控交叉线：MINUCON UN/M2/M3、FCS Thermal FCST1000/FCST2000。[FUJIKIN-SERIES-M2-M3-FEA975F3][FUJIKIN-SERIES-FCST1000-FCST2000-BE84B2C5]
+- FINE PURE阀件、高纯接头、IGS、FCS Pressure和WVG首先属于半导体/高纯能力证据；没有制药型号、规范和项目案例时不得整体外推。
+
 **最危险的项目**
 
 - 高纯气体、精密供气和卫生阀同时出现。
@@ -119,7 +126,7 @@ Bürkert 的主要差异不是每个单品都占优，而是能够把卫生阀�
 
 **最大判断陷阱**
 
-不能把 Fujikin 的全部半导体、高纯气体能力直接写成中国制药项目能力；也不能因此否定其具体卫生阀和 MFC 产品。
+不能把 Fujikin 的全部半导体、高纯气体能力直接写成中国制药项目能力；也不能因此否定其具体卫生阀和 MFC 产品。尤其要先区分 FCS Thermal 质量流量控制与 FCS Pressure 压力式流控。
 
 ### Bürkert 应对路径
 

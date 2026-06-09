@@ -1,7 +1,7 @@
 # Product Catalog Research Scripts
 
-These scripts create and validate the official-site Bürkert Type catalog and
-the GEMÜ current-series catalog.
+These scripts create and validate the official-site Bürkert Type catalog,
+the GEMÜ current-series catalog, and the Fujikin catalogue-level series map.
 
 ## Source Boundary
 
@@ -16,6 +16,10 @@ The scripts do not enumerate Article Numbers and do not infer stock, origin, pri
 For GEMÜ, the English sitemap is the current-series discovery source. Product
 facts come from official leaf product pages, with cached pages stored in
 `.config/gemu-series-cache/` (ignored by Git).
+
+For Fujikin, the official English download index is the series-level source.
+It is intentionally used instead of expanding hundreds of Product Numbers.
+The cached source is stored in `.config/fujikin-series-cache/`.
 
 ## Commands
 
@@ -87,6 +91,22 @@ python3 scripts/research/generate_gemu_handbook.py
 python3 scripts/research/validate_gemu_series.py
 ```
 
+Collect or rebuild the Fujikin catalogue:
+
+```bash
+python3 scripts/research/collect_fujikin_series.py
+python3 scripts/research/collect_fujikin_series.py --build-only
+python3 scripts/research/collect_fujikin_series.py --refresh
+```
+
+Generate and validate the Fujikin handbook and mapping:
+
+```bash
+python3 scripts/research/generate_fujikin_handbook.py
+python3 scripts/research/validate_fujikin_catalog_links.py
+python3 scripts/research/validate_fujikin_series.py
+```
+
 ## Outputs
 
 - `docs/research/burkert-type-catalog.csv`
@@ -101,6 +121,13 @@ python3 scripts/research/validate_gemu_series.py
 - `docs/research/gemu-series-coverage.json`
 - `docs/research/gemu-burkert-series-map.csv`
 - `docs/research/gemu-pharma-series-handbook.md`
+- `docs/research/fujikin-series-catalog.csv`
+- `docs/research/fujikin-series-specifications.csv`
+- `docs/research/fujikin-series-evidence.csv`
+- `docs/research/fujikin-series-coverage.json`
+- `docs/research/fujikin-catalog-link-validation.csv`
+- `docs/research/fujikin-burkert-series-map.csv`
+- `docs/research/fujikin-product-series-handbook.md`
 
 The competitor-series map is curated separately in
 `docs/research/burkert-competitor-series-map.csv`.

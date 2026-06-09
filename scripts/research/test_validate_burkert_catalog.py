@@ -26,12 +26,21 @@ class CacheIdentifiesTypeTest(unittest.TestCase):
         with TemporaryDirectory() as directory:
             first = Path(directory) / "first.csv"
             second = Path(directory) / "second.csv"
+            third = Path(directory) / "third.csv"
             first.write_text("evidence_id\nBURKERT-CATALOG-001\n", encoding="utf-8")
             second.write_text("evidence_id\nGEMU-SERIES-650\n", encoding="utf-8")
+            third.write_text(
+                "evidence_id\nFUJIKIN-SERIES-FCST1000-FCST2000-ABC12345\n",
+                encoding="utf-8",
+            )
 
             self.assertEqual(
-                read_evidence_ids([first, second]),
-                {"BURKERT-CATALOG-001", "GEMU-SERIES-650"},
+                read_evidence_ids([first, second, third]),
+                {
+                    "BURKERT-CATALOG-001",
+                    "GEMU-SERIES-650",
+                    "FUJIKIN-SERIES-FCST1000-FCST2000-ABC12345",
+                },
             )
 
 
