@@ -1,0 +1,122 @@
+review_id,type_id,review_scope,review_status,reviewer,review_date,official_name_checked,category_checked,pharma_relevance_checked,china_visibility_checked,datasheet_links_checked,issues_found,resolution,notes
+BURKERT-REVIEW-001,2030,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-002,2031,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,NOT_APPLICABLE,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-003,2032,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-004,2033,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-005,2034,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-006,2035,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,NOT_APPLICABLE,Product role was initially over-assigned to automation.,Classified by official product name as a multiport diaphragm valve.,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-007,2036,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,Product role was initially over-assigned to automation.,Classified by official product name as a multiport diaphragm valve.,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-008,2053,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,The hygienic rotary actuator initially had no pharma task label.,Mapped it to hygienic process-valve actuation and automation.,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-009,2063,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-010,2064,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-011,2065,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-012,2080,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-013,2103,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-014,2104,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-015,2105,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-016,2380,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,Product role was initially over-assigned to automation.,Classified by official product name as a hygienic bellows control valve.,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-017,2707,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,The official Chinese page title omits the Type identifier.,Retained the verified English name instead of using the malformed Chinese title.,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-018,2730,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-019,2731,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,NOT_APPLICABLE,Product role was initially over-assigned to automation.,Classified by official product name as a diaphragm control valve.,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-020,2732,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-021,2933,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-022,2934,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-023,2935,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-024,2973,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-025,2974,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-026,2975,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-027,3230,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-028,3232,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-029,3233,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,NOT_APPLICABLE,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-030,3234,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-031,3235,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-032,3236,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,NOT_APPLICABLE,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-033,3260,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-034,3324,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-035,3325,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-036,3360,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-037,3363,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-038,3364,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,A valve with an integrated positioner was initially labelled as a positioner.,Kept the diaphragm valve as the primary product role.,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-039,3365,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,A valve with an integrated positioner was initially labelled as a positioner.,Kept the tank-bottom diaphragm valve as the primary product role.,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-040,8056,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,Medium conductivity in the description was initially mistaken for an analysis function.,Limited the application to hygienic process-flow measurement.,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-041,8111,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,The pharma-qualified tuning-fork switch initially had no pharma task label.,Mapped it to hygienic tank-level monitoring.,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-042,8112,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,The pharma-qualified tuning-fork switch initially had no pharma task label.,Mapped it to hygienic tank-level monitoring.,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-043,8189,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,The sanitary level device was initially mapped to water-quality analysis.,Mapped it to hygienic tank-level measurement.,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-044,8200,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-045,8201,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-046,8221,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-047,8285,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-048,8619,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-049,8681,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-050,8685,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-051,8686,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,NOT_APPLICABLE,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-052,8690,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-053,8691,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-054,8692,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-055,8693,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-056,8695,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-057,8697,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-058,8801,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-059,8802,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-060,8803,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,NOT_APPLICABLE,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-061,8806,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,NOT_APPLICABLE,The integrated feedback head initially obscured the valve-system role.,Kept the Robolux multiport diaphragm valve system as the primary role.,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-062,BBS-03,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-063,BBS-05,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-064,BBS-06,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-065,BBS-07,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-066,BBS-10,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-067,BBS-25,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-068,BUPLUS,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,NOT_APPLICABLE,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-069,CUT-01,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,NOT_APPLICABLE,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-070,KK01,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-071,S056,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-072,SV01,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,NOT_APPLICABLE,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-073,SV02,PHARMA_HIGH_100_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,NOT_APPLICABLE,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-074,1500,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,NOT_APPLICABLE,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-075,8026,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-076,8054,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-077,8098,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-078,8186,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,NOT_APPLICABLE,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-079,8232,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-080,8620,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-081,8880,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-082,MS06,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-083,S054,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-084,SE39,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,NOT_APPLICABLE,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-085,TST001,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-086,8922,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-087,6164,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-088,2822,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,NOT_APPLICABLE,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-089,8605,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-090,0044,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-091,6510,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-092,6525,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-093,SV04,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,NOT_APPLICABLE,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-094,TZU002,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-095,3321,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-096,0117,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-097,0243,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,NOT_APPLICABLE,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-098,0300,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-099,0344,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-100,0789,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,NOT_APPLICABLE,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-101,2506,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-102,5282,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-103,6080,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-104,6281,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-105,6724,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-106,AC19,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,NOT_APPLICABLE,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-107,8006,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-108,8741,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-109,ME66,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,A gateway under the mass-flow catalog path initially inherited a fermentation-gas application.,"Removed the application because the product name identifies a junction box, not an MFC/MFM.",Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-110,0248,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,NOT_APPLICABLE,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-111,2050,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-112,2651,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-113,2702,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,NOT_APPLICABLE,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-114,3285,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-115,8804,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-116,TVG006,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-117,1573,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-118,KK03,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,NOT_APPLICABLE,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-119,SET3,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,NOT_APPLICABLE,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-120,SY04CS,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,NOT_APPLICABLE,,,Reviewed against the cached official global and China Type pages.
+BURKERT-REVIEW-121,TVU003,NON_HIGH_STRATIFIED_10_PERCENT,PASS,Codex research QA,2026-06-09,YES,YES,YES,YES,PASS,,,Reviewed against the cached official global and China Type pages.

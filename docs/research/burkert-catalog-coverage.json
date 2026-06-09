@@ -1,0 +1,44 @@
+{
+  "generated_date": "2026-06-09",
+  "global_sitemap_count": 511,
+  "china_sitemap_count": 515,
+  "catalog_count": 511,
+  "missing_global_cache": [],
+  "missing_china_cache": [],
+  "category_counts": {
+    "传感器、变送器与控制器": 125,
+    "工业通信": 4,
+    "微流体产品与泵": 10,
+    "比例阀": 17,
+    "气动与过程接口": 41,
+    "电动阀": 6,
+    "电磁阀": 110,
+    "质量流量控制器与流量计": 27,
+    "过程与控制阀": 120,
+    "附加产品": 51
+  },
+  "category_membership_counts": {
+    "传感器、变送器与控制器": 139,
+    "工业通信": 64,
+    "微流体产品与泵": 22,
+    "比例阀": 22,
+    "气动与过程接口": 50,
+    "电动阀": 13,
+    "电磁阀": 115,
+    "质量流量控制器与流量计": 41,
+    "过程与控制阀": 139,
+    "附加产品": 54
+  },
+  "multi_path_type_count": 247,
+  "multi_category_type_count": 112,
+  "china_visibility_counts": {
+    "CHINA_PAGE_AND_ZH_DATASHEET": 115,
+    "CHINA_PAGE_ONLY": 396
+  },
+  "pharma_relevance_counts": {
+    "HIGH": 73,
+    "LOW": 181,
+    "MEDIUM": 257
+  },
+  "specification_row_count": 1040
+}
