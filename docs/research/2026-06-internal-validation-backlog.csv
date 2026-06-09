@@ -1,0 +1,17 @@
+validation_id,priority,company,topic,question,evidence_required,recommended_owner,decision_supported,status,notes
+VAL-CROSS-001,P0,All,Comparable pricing,同规格卫生隔膜阀在相同数量和贸易条款下的真实净价如何排序？,正式报价或PO；完整配置；数量；币种；折扣；贸易条款,销售运营,定价与折扣策略,OPEN,不得使用目录价或口头折扣
+VAL-CROSS-002,P0,All,Actual lead time,标准阀和定制产品的承诺交期与实际交期分别是多少？,报价承诺；订单日期；出货日期；到货日期；延期原因,供应链,交付承诺与库存策略,OPEN,标准品和定制品分开统计
+VAL-CROSS-003,P1,All,Service response,现场故障响应、备件满足和关闭周期如何比较？,工单；响应时间；备件记录；关闭时间；客户评价,售后,服务网络与备件策略,OPEN,按城市和产品族分层
+VAL-BURKERT-001,P0,Bürkert,China supply,重点制药Type的实际产地、库存和标准交期是什么？,ERP物料主数据；库存；采购来源；最近订单,供应链,中国供应能力说明,OPEN,优先2103/8098/8741/8652
+VAL-BURKERT-002,P1,Bürkert,Installed base,制药关键产品在中国的安装基础和复购情况如何？,CRM项目；订单；客户行业；复购记录,销售运营,市场定位与案例优先级,OPEN,注意客户保密
+VAL-GEMU-001,P0,GEMÜ,Multi-port delivery,P600/P500阀块的中国设计、加工、验证和交付边界是什么？,竞争报价；图纸；产地；项目周期；客户访谈,销售与应用工程,阀块竞争策略,OPEN,区分中国设计与海外加工
+VAL-GEMU-002,P0,GEMÜ,Price and win reason,卫生阀项目中GEMÜ的真实价格和赢单原因是什么？,可比报价；客户反馈；输赢复盘；既有验证状态,销售,卫生阀防守策略,OPEN,至少两个项目
+VAL-GEMU-003,P1,GEMÜ,Single-use adoption,SUMONDO在中国生物制药中的实际采用场景和供应连续性如何？,客户/OEM访谈；项目BOM；耗材交期；验证文件,产品经理,一次性产品路线判断,OPEN,避免把全球案例外推中国
+VAL-FUJIKIN-001,P0,Fujikin,Pharma MFC installations,FCS Thermal是否有中国发酵供气或制药配气安装？,客户/OEM访谈；项目BOM；校准记录；服务记录,销售与应用工程,MFC竞争定位,OPEN,必须锁定FCST型号和气体量程
+VAL-FUJIKIN-002,P0,Fujikin,China manufacturing,常熟工厂实际生产哪些BNW、阀件或制药相关系列？,供应商声明；铭牌；产地证；订单和包装信息,供应链,本地化与交期判断,OPEN,不能由公司实体存在推断
+VAL-FUJIKIN-003,P1,Fujikin,Pharma documentation,BNW各配置可提供哪些FDA、USP、ASME BPE和材料文件？,当前数据表；证书；材料声明；适用型号清单,应用工程,卫生阀资格审查,OPEN,有堰与无堰分开
+VAL-ESG-001,P0,ESG Jingrui,Certificate originals,A00/A01/A31的FDA、USP和EC 1935/2004声明覆盖哪些材料和型号？,证书原件；发行机构；日期；适用范围；材料代码,质量与应用工程,供应商资格与关键阀使用边界,OPEN,网页文字不能替代证书
+VAL-ESG-002,P0,ESG Jingrui,Quality documentation,能否提供阀体材质、Ra、膜片批次、泄漏和压力测试的批次文件？,材质证明；Ra报告；检验报告；批次追溯样本,质量,关键卫生阀准入,OPEN,抽取实际订单文件
+VAL-ESG-003,P0,ESG Jingrui,Actual commercial advantage,同等认证配置下是否存在可重复的价格或交期优势？,至少两个可比报价；订单；实际到货；配置核对,采购与销售,本土替代策略,OPEN,不要预设本土优势
+VAL-ESG-004,P1,ESG Jingrui,Complex valve bodies,T阀、罐底阀和复杂多通阀块的设计加工能力边界是什么？,图纸；加工范围；焊接/机加工说明；案例；验证文件,应用工程,阀块威胁判断,OPEN,103三通角座阀不作为阀块证据
+VAL-ESG-005,P1,ESG Jingrui,Automation depth,0P1当前版本的协议、诊断、防爆和执行器兼容范围是什么？,当前数据表；证书；软件说明；兼容列表,自动化产品经理,自动化竞争边界,OPEN,区分模拟量与现场总线
