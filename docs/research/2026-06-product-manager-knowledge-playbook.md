@@ -25,6 +25,9 @@
 - `esg-burkert-series-map.csv`
 - `2026-06-pharma-application-field-guide.md`
 - `2026-06-pharma-application-selection-matrix.csv`
+- `2026-06-internal-validation-fieldbook.md`
+- `2026-06-internal-validation-execution.csv`
+- `2026-06-internal-evidence-intake.csv`
 
 ## 1. 使用原则
 
@@ -284,6 +287,7 @@
 
 ```text
 项目编号：
+关联validation_id：
 客户/设备商：
 应用场景：
 竞争公司及型号：
@@ -303,6 +307,8 @@
 ```
 
 季度复盘只汇总有型号、配置和项目依据的数据，不把销售印象直接转成产品结论。
+
+内部证据统一通过 `2026-06-internal-evidence-intake.csv` 建立索引。价格、交期、证书、产地和服务结论只有达到 `2026-06-internal-validation-execution.csv` 的样本门槛和验收规则后，才能从待验证状态升级。
 
 ## 9. 30/60/90天熟悉路径
 

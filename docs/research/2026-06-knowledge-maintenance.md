@@ -23,14 +23,18 @@
 ### 每个项目结束后
 
 - 销售填写 `2026-06-competitive-project-log-template.csv` 对应记录。
+- 使用 `validation_ids` 将项目关联到一个或多个内部验证任务。
 - 应用工程核对型号、工况和参数是否真正可比。
 - 产品经理区分事实、客户观点和内部推断。
 - 输赢原因没有客户或项目证据时，标记低可信度。
+- 原始文件进入公司批准的受控文档库，Git只记录证据索引和摘要。
 
 ### 每月
 
 - 汇总新竞争型号、报价、交期和客户问题。
 - 检查是否出现相互矛盾的项目记录。
+- 复核 `2026-06-internal-evidence-intake.csv` 中的 `PENDING` 记录。
+- 对证据错误或不足的记录明确标记 `REJECTED` 或 `INSUFFICIENT`。
 - 更新战卡中的客户发现问题，不因一个案例调整威胁等级。
 
 ### 每季度
@@ -91,3 +95,4 @@
 3. 邀请销售、应用工程和售后共同复核第一批记录。
 4. 用首批数据验证价格、交期、本地产和服务响应判断。
 5. 使用 `2026-06-internal-validation-backlog.csv` 分配责任人，并在获得证据后将 `status` 更新为 `VERIFIED`、`REJECTED` 或 `INSUFFICIENT`。
+6. 每次状态升级前运行 `python3 scripts/research/validate_internal_validation_pack.py`。

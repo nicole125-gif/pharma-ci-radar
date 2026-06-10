@@ -1,0 +1,17 @@
+validation_id,priority,company,workstream,execution_owner,contributors,minimum_verified_records,evidence_types,collection_method,acceptance_rule,rejection_or_insufficient_rule,decision_output,review_cadence,target_window,status
+VAL-CROSS-001,P0,All,Comparable pricing,销售运营,销售；产品经理；财务,10,正式报价；PO；配置表,回溯最近12个月竞争项目并按同规格归一化,至少10个可比项目且GEMÜ、Fujikin、ESG各不少于2个；每条含双方型号配置数量币种贸易条款和净价,目录价口头折扣或配置不完整均标记INSUFFICIENT,同规格净价区间与折扣护栏,每两周,30天,READY
+VAL-CROSS-002,P0,All,Actual lead time,供应链,销售运营；采购,10,报价；订单；出货记录；到货记录,连接报价承诺与订单实际节点,至少10个项目；标准品和定制品分层；同时记录承诺和实际交期及延期原因,只有销售承诺或缺少订单节点标记INSUFFICIENT,标准品与定制品交付基线,每两周,30天,READY
+VAL-CROSS-003,P1,All,Service response,售后,备件管理；销售,5,工单；备件记录；客户反馈,按城市和产品族抽取已关闭工单,至少5个可追溯工单；包含响应时间备件满足关闭时间和客户结果,口头评价或未关闭工单只能作为CONTEXT_ONLY,服务响应与备件改进清单,每月,60天,READY
+VAL-BURKERT-001,P0,Bürkert,China supply,供应链,产品经理；销售运营,4,ERP物料主数据；库存；订单,核对2103、8098、8741、8652四个重点Type,四个Type各至少1条当前ERP或订单证据；明确产地库存状态和标准交期,中国网页可见或组织存在不能作为供应证据,重点Type中国供应说明,每两周,30天,READY
+VAL-BURKERT-002,P1,Bürkert,Installed base,销售运营,产品经理；区域销售,5,CRM项目；订单；复购记录,按产品族提取匿名化中国制药项目,至少5个去重客户或OEM项目；包含具体Type应用年份和复购状态,只有销售名单或无法定位产品的记录标记INSUFFICIENT,案例优先级与装机基础摘要,每月,60天,READY
+VAL-GEMU-001,P0,GEMÜ,Multi-port delivery,销售与应用工程,供应链；产品经理,2,竞争报价；图纸；项目计划；客户访谈,复盘至少2个P600或P500直接竞争项目,每项目锁定流路图或阀位矩阵；设计地点加工地点验证责任报价周期和交付周期可追溯,普通三通阀或无具体阀块图纸不计入样本,多通阀块竞争响应方案,每两周,30天,READY
+VAL-GEMU-002,P0,GEMÜ,Price and win reason,销售,销售运营；应用工程,2,可比报价；输赢复盘；客户反馈,选择至少2个卫生阀直接竞争项目,双方具体型号配置和条款可比；客户选择标准及输赢原因有项目文件或客户反馈,销售主观判断或不同配置报价标记INSUFFICIENT,GEMÜ卫生阀防守策略,每两周,30天,READY
+VAL-GEMU-003,P1,GEMÜ,Single-use adoption,产品经理,销售；应用工程；供应链,2,项目BOM；客户访谈；耗材记录；验证文件,核验至少2个中国生物制药或OEM项目,每项目包含SUMONDO具体组件应用位置灭菌方式耗材交期验证要求和第二来源情况,全球案例或无中国项目主体的线索只能作为CONTEXT_ONLY,一次性产品路线判断,每月,60天,READY
+VAL-FUJIKIN-001,P0,Fujikin,Pharma MFC installations,销售与应用工程,售后；产品经理,2,项目BOM；校准记录；服务记录；访谈,核验至少2个中国制药配气或发酵项目,锁定FCST型号气体标况量程应用客户类型校准与中国服务记录,半导体装机或未锁定气体量程的记录不计入,制药MFC竞争定位,每两周,30天,READY
+VAL-FUJIKIN-002,P0,Fujikin,China manufacturing,供应链,采购；质量,2,铭牌；产地证；订单；包装信息,抽取至少2个制药相关实际供货型号,每条明确型号制造地订单主体和包装或产地文件；结论仅覆盖已核型号,常熟实体存在或集团宣传不能外推具体系列,中国制造与交付边界,每两周,30天,READY
+VAL-FUJIKIN-003,P1,Fujikin,Pharma documentation,应用工程,质量；产品经理,2,当前数据表；证书；材料声明,分别审查有堰和无堰BNW配置,至少2套型号配置文件；逐项记录FDA、USP、ASME BPE、材质和表面文件适用范围,网页图标或不同型号证书标记REJECTED,BNW卫生阀资格审查表,每月,60天,READY
+VAL-ESG-001,P0,ESG Jingrui,Certificate originals,质量与应用工程,采购；产品经理,3,证书原件；符合性声明；材料代码表,分别核验A00、A01、A31,三个系列各至少1套当前文件；记录发行方日期材料代码适用型号和有效状态,网页文字截图或范围无法匹配标记INSUFFICIENT,ESG关键卫生阀合规边界,每两周,30天,READY
+VAL-ESG-002,P0,ESG Jingrui,Quality documentation,质量,采购；应用工程,2,材质证明；Ra报告；检验报告；批次追溯,抽取至少2个实际订单文件包,每套包含具体型号订单批次阀体材质Ra膜片批次泄漏或压力测试记录,样本文件或不同订单拼接不能视作完整批次包,ESG卫生阀供应商准入建议,每两周,30天,READY
+VAL-ESG-003,P0,ESG Jingrui,Actual commercial advantage,采购与销售,销售运营；供应链,2,可比报价；订单；到货记录,核验至少2个同等认证配置项目,每项目包含双方型号配置净价条款承诺和实际交期；优势须在两个项目中方向一致,低规格报价或只有承诺交期标记INSUFFICIENT,本土替代价格与交付判断,每两周,30天,READY
+VAL-ESG-004,P1,ESG Jingrui,Complex valve bodies,应用工程,质量；采购,2,图纸；加工说明；案例；验证文件,审查至少2个T阀罐底阀或复杂阀体项目,每项目有流路图加工方式排空死区焊接或机加工边界及验证文件,103三通角座阀或无流路图产品不作为复杂阀块证据,复杂阀体威胁边界,每月,60天,READY
+VAL-ESG-005,P1,ESG Jingrui,Automation depth,自动化产品经理,应用工程；质量,2,当前数据表；证书；软件说明；兼容列表,核验0P1至少2种实际配置或版本,逐项确认输入输出协议诊断防护防爆执行器兼容和当前在售状态,仅有4至20mA宣传或无版本号资料标记INSUFFICIENT,ESG自动化竞争边界,每月,60天,READY
