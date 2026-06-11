@@ -28,6 +28,10 @@
 - `2026-06-internal-validation-fieldbook.md`
 - `2026-06-internal-validation-execution.csv`
 - `2026-06-internal-evidence-intake.csv`
+- `2026-06-product-knowledge-30-day-training-guide.md`
+- `2026-06-product-knowledge-30-day-curriculum.csv`
+- `2026-06-product-knowledge-training-progress.csv`
+- `2026-06-product-knowledge-training-scorecard.csv`
 
 ## 1. 使用原则
 

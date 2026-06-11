@@ -133,6 +133,13 @@ python3 scripts/research/test_validate_internal_validation_pack.py
 python3 scripts/research/validate_internal_validation_pack.py
 ```
 
+Validate the 30-day training curriculum, progress log, and scorecard:
+
+```bash
+python3 scripts/research/test_validate_product_training_program.py
+python3 scripts/research/validate_product_training_program.py
+```
+
 ## Outputs
 
 - `docs/research/burkert-type-catalog.csv`
@@ -165,6 +172,10 @@ python3 scripts/research/validate_internal_validation_pack.py
 - `docs/research/2026-06-internal-validation-execution.csv`
 - `docs/research/2026-06-internal-evidence-intake.csv`
 - `docs/research/2026-06-internal-validation-fieldbook.md`
+- `docs/research/2026-06-product-knowledge-30-day-curriculum.csv`
+- `docs/research/2026-06-product-knowledge-training-progress.csv`
+- `docs/research/2026-06-product-knowledge-training-scorecard.csv`
+- `docs/research/2026-06-product-knowledge-30-day-training-guide.md`
 
 The competitor-series map is curated separately in
 `docs/research/burkert-competitor-series-map.csv`.

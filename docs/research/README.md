@@ -21,25 +21,28 @@
 5. `2026-06-internal-validation-fieldbook.md`
    用于分派价格、交期、产地、证书、装机和服务验证任务，并控制结论升级。
 
-6. `burkert-full-product-handbook.md`
+6. `2026-06-product-knowledge-30-day-training-guide.md`
+   用于组织30天产品熟练训练、阶段评估、补强和结业答辩。
+
+7. `burkert-full-product-handbook.md`
    用于系统学习 Bürkert 十大产品族、全部当前 Type、选型变量和不可互换边界。
 
-7. `gemu-pharma-series-handbook.md`
+8. `gemu-pharma-series-handbook.md`
    用于查询 GEMÜ 当前官网系列、制药相关性、技术边界及与 Bürkert 的系列级映射。
 
-8. `fujikin-product-series-handbook.md`
+9. `fujikin-product-series-handbook.md`
    用于区分 Fujikin 生命科学卫生、跨行业精密流控和半导体高纯三条能力线。
 
-9. `esg-jingrui-product-handbook.md`
+10. `esg-jingrui-product-handbook.md`
    用于查询 ESG 精锐可核验系列、证据等级、企业声明和内部验证缺口。
 
-10. `2026-06-competitive-battlecards.md`
+11. `2026-06-competitive-battlecards.md`
    用于客户拜访、方案评审和竞争报价前的快速准备。
 
-11. `2026-06-product-knowledge-assessment.md`
+12. `2026-06-product-knowledge-assessment.md`
    用于个人自测、团队培训和季度场景演练。
 
-12. `2026-06-knowledge-maintenance.md`
+13. `2026-06-knowledge-maintenance.md`
    用于把新产品、报价、交期、输赢和售后事实持续回灌。
 
 ## 数据文件
@@ -52,6 +55,9 @@
 | `2026-06-internal-validation-backlog.csv` | 价格、交期、产地、证书、装机和服务的优先验证问题 |
 | `2026-06-internal-validation-execution.csv` | 16项内部验证任务的责任人、样本门槛和验收规则 |
 | `2026-06-internal-evidence-intake.csv` | 原始证据收件、复核、反证和文件位置索引 |
+| `2026-06-product-knowledge-30-day-curriculum.csv` | 30天逐日学习目标、练习、产出和通过标准 |
+| `2026-06-product-knowledge-training-progress.csv` | 学员逐日完成、教练反馈和产出位置记录 |
+| `2026-06-product-knowledge-training-scorecard.csv` | 基线、DAY-10、DAY-20、DAY-30及复测成绩 |
 | `2026-06-pharma-application-selection-matrix.csv` | 12类制药客户任务的候选产品、必问工况和排除条件 |
 | `burkert-type-catalog.csv` | Bürkert官网当前全部Type主数据 |
 | `burkert-type-specifications.csv` | Type页面明确披露的纵向规格记录 |
@@ -85,6 +91,7 @@
 | 从客户任务开始选型 | 应用问诊指南及场景矩阵 |
 | 分派内部竞争验证 | 内部验证执行手册、backlog和execution表 |
 | 录入报价/交期/输赢 | 项目日志模板和证据收件表 |
+| 组织产品知识训练 | 30天训练指南、课程表、进度表和成绩表 |
 | 做卫生阀选型 | 知识手册第3、5节及产品矩阵 |
 | 分析WFI/发酵/CIP项目 | 知识手册第4节 |
 | 查询Bürkert具体Type | 全产品手册及 `burkert-type-catalog.csv` |
@@ -96,7 +103,7 @@
 | 比较ESG与Bürkert系列 | `esg-burkert-series-map.csv` 及双方产品手册 |
 | 判断中国官网/中文资料可见性 | `burkert-type-catalog.csv` 的 `china_visibility` 与资料链接 |
 | 复盘输赢 | 项目台账模板和知识更新机制 |
-| 培训新同事 | 知识手册、战卡、自测题库 |
+| 培训新同事 | 30天训练指南、知识手册、战卡和自测题库 |
 | 核查一句竞争结论 | 证据表中的 `evidence_id` 和来源链接 |
 
 ## 当前成熟度
