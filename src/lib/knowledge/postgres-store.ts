@@ -1,5 +1,9 @@
 import { randomUUID } from "node:crypto";
-import { createPool, type QueryResultRow } from "@vercel/postgres";
+import {
+  createClient,
+  createPool,
+  type QueryResultRow
+} from "@vercel/postgres";
 import type {
   InternalEvidenceInput,
   InternalEvidenceRecord,
@@ -20,7 +24,17 @@ type Sql = <Row extends QueryResultRow = QueryResultRow>(
 ) => Promise<{ rows: Row[] }>;
 type PoolFactory = (config: {
   connectionString: string;
-}) => { sql: Sql };
+}) => {
+  sql: Sql;
+  end?: () => Promise<void>;
+};
+type ClientFactory = (config: {
+  connectionString: string;
+}) => {
+  connect: () => Promise<void>;
+  end: () => Promise<void>;
+  sql: Sql;
+};
 interface KnowledgeDatabaseEnv {
   POSTGRES_URL?: string;
   DATABASE_URL?: string;
@@ -538,6 +552,55 @@ export function selectKnowledgeDatabaseUrl(
 interface KnowledgeStoreDependencies {
   env?: KnowledgeDatabaseEnv;
   createPool?: PoolFactory;
+  createClient?: ClientFactory;
+}
+
+const storeCache = new Map<string, Promise<KnowledgeExecutionStore>>();
+
+export function classifyKnowledgeDatabaseConnection(
+  connectionString: string
+): "POOL" | "CLIENT" {
+  const hostname = new URL(connectionString).hostname;
+  return hostname !== "localhost" && hostname.includes("-pooler.")
+    ? "POOL"
+    : "CLIENT";
+}
+
+async function initializeKnowledgeStore(
+  connectionString: string,
+  dependencies: KnowledgeStoreDependencies
+): Promise<KnowledgeExecutionStore> {
+  let close: (() => Promise<void>) | undefined;
+
+  try {
+    let sql: Sql;
+    if (classifyKnowledgeDatabaseConnection(connectionString) === "POOL") {
+      const poolFactory: PoolFactory =
+        dependencies.createPool ?? ((config) => createPool(config));
+      const pool = poolFactory({ connectionString });
+      sql = pool.sql.bind(pool) as Sql;
+      close = pool.end?.bind(pool);
+    } else {
+      const clientFactory: ClientFactory =
+        dependencies.createClient ?? ((config) => createClient(config));
+      const client = clientFactory({ connectionString });
+      close = client.end.bind(client);
+      await client.connect();
+      sql = client.sql.bind(client) as Sql;
+    }
+
+    await sql`select 1`;
+    return createPostgresKnowledgeStore(sql);
+  } catch (error) {
+    if (close) {
+      try {
+        await close();
+      } catch {
+        // Preserve the original connection or probe error.
+      }
+    }
+    throw error;
+  }
 }
 
 export async function getKnowledgeStore(
@@ -554,12 +617,24 @@ export async function getKnowledgeStore(
     return { available: false, reason: "DATABASE_NOT_CONFIGURED" };
   }
 
+  const cached = storeCache.get(connectionString);
+  if (cached) {
+    try {
+      return await cached;
+    } catch {
+      return { available: false, reason: "DATABASE_ERROR" };
+    }
+  }
+
+  const pending = initializeKnowledgeStore(connectionString, dependencies);
+  storeCache.set(connectionString, pending);
+
   try {
-    const pool = (dependencies.createPool ?? createPool)({ connectionString });
-    const sql = pool.sql.bind(pool) as Sql;
-    await sql`select 1`;
-    return createPostgresKnowledgeStore(sql);
+    return await pending;
   } catch {
+    if (storeCache.get(connectionString) === pending) {
+      storeCache.delete(connectionString);
+    }
     return { available: false, reason: "DATABASE_ERROR" };
   }
 }

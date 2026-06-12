@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { QueryResultRow } from "@vercel/postgres";
 import {
+  classifyKnowledgeDatabaseConnection,
   createPostgresKnowledgeStore,
   getKnowledgeStore,
   mapScoreRow,
@@ -52,20 +53,145 @@ describe("knowledge PostgreSQL store", () => {
     expect(selectKnowledgeDatabaseUrl({})).toBeNull();
   });
 
-  it("creates and probes a pool when only DATABASE_URL is configured", async () => {
-    const connections: string[] = [];
+  it("classifies pooled, direct, and localhost connection strings", () => {
+    expect(
+      classifyKnowledgeDatabaseConnection(
+        "postgres://user:pass@ep-name-pooler.us-east-1.aws.neon.tech/db"
+      )
+    ).toBe("POOL");
+    expect(
+      classifyKnowledgeDatabaseConnection(
+        "postgres://user:pass@ep-name.us-east-1.aws.neon.tech/db"
+      )
+    ).toBe("CLIENT");
+    expect(
+      classifyKnowledgeDatabaseConnection(
+        "postgres://user:pass@localhost:5432/db"
+      )
+    ).toBe("CLIENT");
+  });
+
+  it("uses a pool for pooled URLs without calling client connect", async () => {
+    const poolConnections: string[] = [];
+    let clientCreations = 0;
     const sql = async () => ({ rows: [], rowCount: 0 });
 
     const store = await getKnowledgeStore({
-      env: { DATABASE_URL: "postgres://database-only" },
+      env: {
+        DATABASE_URL:
+          "postgres://user:pass@ep-name-pooler.us-east-1.aws.neon.tech/db"
+      },
       createPool: ({ connectionString }) => {
-        connections.push(connectionString);
+        poolConnections.push(connectionString);
         return { sql };
+      },
+      createClient: () => {
+        clientCreations += 1;
+        throw new Error("client should not be created");
       }
     });
 
-    expect(connections).toEqual(["postgres://database-only"]);
+    expect(poolConnections).toHaveLength(1);
+    expect(clientCreations).toBe(0);
     expect(store.available).toBe(true);
+  });
+
+  it("connects a client for direct DATABASE_URL and reuses the store", async () => {
+    let clientCreations = 0;
+    let connectCalls = 0;
+    let probeCalls = 0;
+    const sql = async () => {
+      probeCalls += 1;
+      return { rows: [], rowCount: 0 };
+    };
+    const dependencies = {
+      env: {
+        DATABASE_URL:
+          "postgres://user:pass@ep-name.us-east-1.aws.neon.tech/db"
+      },
+      createPool: () => {
+        throw new Error("pool should not be created");
+      },
+      createClient: () => {
+        clientCreations += 1;
+        return {
+          connect: async () => {
+            connectCalls += 1;
+          },
+          end: async () => undefined,
+          sql
+        };
+      }
+    };
+
+    const first = await getKnowledgeStore(dependencies);
+    const second = await getKnowledgeStore(dependencies);
+
+    expect(first.available).toBe(true);
+    expect(second).toBe(first);
+    expect(clientCreations).toBe(1);
+    expect(connectCalls).toBe(1);
+    expect(probeCalls).toBe(1);
+  });
+
+  it("uses a connected client for localhost URLs", async () => {
+    let connectCalls = 0;
+    const store = await getKnowledgeStore({
+      env: { DATABASE_URL: "postgres://user:pass@localhost:5432/db" },
+      createPool: () => {
+        throw new Error("pool should not be created");
+      },
+      createClient: () => ({
+        connect: async () => {
+          connectCalls += 1;
+        },
+        end: async () => undefined,
+        sql: async () => ({ rows: [], rowCount: 0 })
+      })
+    });
+
+    expect(store.available).toBe(true);
+    expect(connectCalls).toBe(1);
+  });
+
+  it("closes and does not cache a direct client after probe failure", async () => {
+    let clientCreations = 0;
+    let connectCalls = 0;
+    let endCalls = 0;
+    const dependencies = {
+      env: {
+        DATABASE_URL:
+          "postgres://user:pass@retry-direct.us-east-1.aws.neon.tech/db"
+      },
+      createPool: () => {
+        throw new Error("pool should not be created");
+      },
+      createClient: () => {
+        clientCreations += 1;
+        const attempt = clientCreations;
+        return {
+          connect: async () => {
+            connectCalls += 1;
+          },
+          end: async () => {
+            endCalls += 1;
+          },
+          sql: async () => {
+            if (attempt === 1) throw new Error("probe failed");
+            return { rows: [], rowCount: 0 };
+          }
+        };
+      }
+    };
+
+    const first = await getKnowledgeStore(dependencies);
+    const second = await getKnowledgeStore(dependencies);
+
+    expect(first).toEqual({ available: false, reason: "DATABASE_ERROR" });
+    expect(second.available).toBe(true);
+    expect(clientCreations).toBe(2);
+    expect(connectCalls).toBe(2);
+    expect(endCalls).toBe(1);
   });
 
   it("returns NOT_CONFIGURED without exposing writes", async () => {
@@ -80,12 +206,18 @@ describe("knowledge PostgreSQL store", () => {
 
   it("returns DATABASE_ERROR when the pool probe fails", async () => {
     const store = await getKnowledgeStore({
-      env: { POSTGRES_URL: "postgres://unreachable" },
+      env: {
+        POSTGRES_URL:
+          "postgres://user:pass@unreachable-pooler.us-east-1.aws.neon.tech/db"
+      },
       createPool: () => ({
         sql: async () => {
           throw new Error("connection failed");
         }
-      })
+      }),
+      createClient: () => {
+        throw new Error("client should not be created");
+      }
     });
 
     expect(store).toEqual({
