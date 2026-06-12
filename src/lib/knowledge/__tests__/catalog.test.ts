@@ -142,4 +142,85 @@ describe("knowledge catalog", () => {
       /2026-06-internal-validation-backlog\.csv.*2026-06-internal-validation-execution\.csv/
     );
   });
+
+  it("rejects blank integer fields instead of coercing them to zero", async () => {
+    const researchDirectory = await copyResearchSources();
+    const curriculumPath = path.join(
+      researchDirectory,
+      "2026-06-product-knowledge-30-day-curriculum.csv"
+    );
+    const content = await readFile(curriculumPath, "utf8");
+
+    await writeFile(
+      curriculumPath,
+      content.replace("1,1,基线与方法", "   ,1,基线与方法")
+    );
+
+    await expect(loadKnowledgeCatalog(researchDirectory)).rejects.toThrow(
+      /2026-06-product-knowledge-30-day-curriculum\.csv.*day.*row 2/
+    );
+  });
+
+  it("rejects blank required fields with source and record context", async () => {
+    const cases = [
+      {
+        filename: "burkert-type-catalog.csv",
+        from: "0044,Pneumatic cylinder in plastic according to ISO",
+        to: "0044,   ",
+        expected: /burkert-type-catalog\.csv.*name_en.*0044/
+      },
+      {
+        filename: "gemu-series-catalog.csv",
+        from: "P600M/P600S/P500M,Multi-port valve blocks made of stainless steel",
+        to: "   ,Multi-port valve blocks made of stainless steel",
+        expected: /gemu-series-catalog\.csv.*series_id.*row 2/
+      },
+      {
+        filename: "fujikin-series-catalog.csv",
+        from: "FUBFL-FUB-FUBFN-8D68C619,FINE series PURE Bellows・Metal Diaphragm series",
+        to: "FUBFL-FUB-FUBFN-8D68C619,   ",
+        expected:
+          /fujikin-series-catalog\.csv.*catalogue_title.*FUBFL-FUB-FUBFN-8D68C619/
+      },
+      {
+        filename: "esg-series-catalog.csv",
+        from: "A00,Pneumatic diaphragm valve",
+        to: "A00,   ",
+        expected: /esg-series-catalog\.csv.*name_en.*A00/
+      },
+      {
+        filename: "2026-06-pharma-application-selection-matrix.csv",
+        from: "APP-001,WFI/PW循环回路的卫生隔离与流量监控",
+        to: "APP-001,   ",
+        expected:
+          /2026-06-pharma-application-selection-matrix\.csv.*customer_task.*APP-001/
+      },
+      {
+        filename: "2026-06-product-knowledge-30-day-curriculum.csv",
+        from: "1,1,基线与方法",
+        to: "1,1,   ",
+        expected:
+          /2026-06-product-knowledge-30-day-curriculum\.csv.*module.*day 1/
+      },
+      {
+        filename: "2026-06-internal-validation-backlog.csv",
+        from: "VAL-CROSS-001,P0",
+        to: "   ,P0",
+        expected:
+          /2026-06-internal-validation-backlog\.csv.*validation_id.*row 2/
+      }
+    ] as const;
+
+    for (const testCase of cases) {
+      const researchDirectory = await copyResearchSources();
+      const filePath = path.join(researchDirectory, testCase.filename);
+      const content = await readFile(filePath, "utf8");
+
+      await writeFile(filePath, content.replace(testCase.from, testCase.to));
+
+      await expect(loadKnowledgeCatalog(researchDirectory)).rejects.toThrow(
+        testCase.expected
+      );
+    }
+  });
 });

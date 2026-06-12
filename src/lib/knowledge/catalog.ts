@@ -28,9 +28,124 @@ const cache = new Map<
   { signature: string; value: KnowledgeCatalog }
 >();
 
-type CsvRow = Record<string, string>;
+interface BurkertRow {
+  type_id: string;
+  name_en: string;
+  name_zh: string;
+  category: string;
+  subcategory: string;
+  product_role: string;
+  pharma_applications: string;
+  pharma_relevance: string;
+  china_visibility: string;
+  evidence_grade: string;
+  global_product_url: string;
+  china_product_url: string;
+  notes: string;
+}
 
-async function readCsv<T extends CsvRow>(
+interface GemuRow {
+  series_id: string;
+  name_en: string;
+  category: string;
+  subcategory: string;
+  product_role: string;
+  pharma_applications: string;
+  pharma_relevance: string;
+  evidence_grade: string;
+  official_url: string;
+  notes: string;
+}
+
+interface FujikinRow {
+  record_id: string;
+  catalogue_title: string;
+  category: string;
+  subcategory: string;
+  product_group: string;
+  model_numbers: string;
+  pharma_applications: string;
+  pharma_relevance: string;
+  evidence_grade: string;
+  english_catalogue_url: string;
+  chinese_catalogue_url: string;
+  official_index_url: string;
+  notes: string;
+}
+
+interface EsgRow {
+  series_id: string;
+  name_en: string;
+  name_zh: string;
+  category: string;
+  subcategory: string;
+  product_role: string;
+  pharma_applications: string;
+  pharma_relevance: string;
+  fact_status: string;
+  source_access: string;
+  evidence_grade: string;
+  official_url: string;
+  notes: string;
+}
+
+interface ScenarioRow {
+  scenario_id: string;
+  customer_task: string;
+  process_stage: string;
+  decision_unit: string;
+  burkert_candidates: string;
+  gemu_candidates: string;
+  fujikin_candidates: string;
+  esg_candidates: string;
+  must_ask_conditions: string;
+  burkert_exclusion_or_caution: string;
+  competitor_watchpoint: string;
+  comparison_dimensions: string;
+  evidence_ids: string;
+  internal_validation: string;
+}
+
+interface CurriculumRow {
+  day: string;
+  week: string;
+  module: string;
+  learning_objective: string;
+  primary_material: string;
+  exercise: string;
+  required_output: string;
+  coach_review: string;
+  pass_criteria: string;
+}
+
+interface ValidationBacklogRow {
+  validation_id: string;
+  priority: string;
+  company: string;
+  topic: string;
+  question: string;
+  evidence_required: string;
+  recommended_owner: string;
+  decision_supported: string;
+  status: string;
+}
+
+interface ValidationExecutionRow {
+  validation_id: string;
+  workstream: string;
+  execution_owner: string;
+  contributors: string;
+  minimum_verified_records: string;
+  evidence_types: string;
+  collection_method: string;
+  acceptance_rule: string;
+  rejection_or_insufficient_rule: string;
+  decision_output: string;
+  review_cadence: string;
+  target_window: string;
+}
+
+async function readCsv<T extends object>(
   researchDirectory: string,
   filename: string,
   requiredHeaders: string[]
@@ -58,7 +173,7 @@ async function readCsv<T extends CsvRow>(
       relax_column_count: false,
       skip_empty_lines: true,
       trim: false
-    }) as T[];
+    }) as unknown as T[];
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     throw new Error(`${filename}: ${message}`, { cause: error });
@@ -75,6 +190,20 @@ function optional(value: string): string | undefined {
   return value === "" ? undefined : value;
 }
 
+function required(
+  value: string,
+  filename: string,
+  field: string,
+  recordContext: string
+): string {
+  if (value.trim() === "") {
+    throw new Error(
+      `${filename}: required field ${field} is blank in ${recordContext}`
+    );
+  }
+  return value;
+}
+
 function parseInteger(
   value: string,
   filename: string,
@@ -82,7 +211,7 @@ function parseInteger(
   recordId: string
 ): number {
   const parsed = Number(value);
-  if (!Number.isInteger(parsed)) {
+  if (value.trim() === "" || !Number.isInteger(parsed)) {
     throw new Error(
       `${filename}: invalid integer ${JSON.stringify(value)} for ${field} in ${recordId}`
     );
@@ -122,12 +251,14 @@ function validationPriority(
   );
 }
 
-function mapBurkert(row: CsvRow): KnowledgeProduct {
+function mapBurkert(row: BurkertRow, index: number): KnowledgeProduct {
+  const filename = "burkert-type-catalog.csv";
+  const productId = required(row.type_id, filename, "type_id", `row ${index + 2}`);
   return {
     recordType: "PRODUCT",
     company: "Bürkert",
-    productId: row.type_id,
-    name: row.name_en,
+    productId,
+    name: required(row.name_en, filename, "name_en", productId),
     secondaryName: optional(row.name_zh),
     category: row.category,
     subcategory: row.subcategory,
@@ -141,12 +272,19 @@ function mapBurkert(row: CsvRow): KnowledgeProduct {
   };
 }
 
-function mapGemu(row: CsvRow): KnowledgeProduct {
+function mapGemu(row: GemuRow, index: number): KnowledgeProduct {
+  const filename = "gemu-series-catalog.csv";
+  const productId = required(
+    row.series_id,
+    filename,
+    "series_id",
+    `row ${index + 2}`
+  );
   return {
     recordType: "PRODUCT",
     company: "GEMÜ",
-    productId: row.series_id,
-    name: row.name_en,
+    productId,
+    name: required(row.name_en, filename, "name_en", productId),
     category: row.category,
     subcategory: row.subcategory,
     productRole: row.product_role,
@@ -159,12 +297,24 @@ function mapGemu(row: CsvRow): KnowledgeProduct {
   };
 }
 
-function mapFujikin(row: CsvRow): KnowledgeProduct {
+function mapFujikin(row: FujikinRow, index: number): KnowledgeProduct {
+  const filename = "fujikin-series-catalog.csv";
+  const productId = required(
+    row.record_id,
+    filename,
+    "record_id",
+    `row ${index + 2}`
+  );
   return {
     recordType: "PRODUCT",
     company: "Fujikin",
-    productId: row.record_id,
-    name: row.catalogue_title,
+    productId,
+    name: required(
+      row.catalogue_title,
+      filename,
+      "catalogue_title",
+      productId
+    ),
     secondaryName: optional(row.model_numbers),
     category: row.category,
     subcategory: row.subcategory,
@@ -182,12 +332,19 @@ function mapFujikin(row: CsvRow): KnowledgeProduct {
   };
 }
 
-function mapEsg(row: CsvRow): KnowledgeProduct {
+function mapEsg(row: EsgRow, index: number): KnowledgeProduct {
+  const filename = "esg-series-catalog.csv";
+  const productId = required(
+    row.series_id,
+    filename,
+    "series_id",
+    `row ${index + 2}`
+  );
   return {
     recordType: "PRODUCT",
     company: "ESG 精锐",
-    productId: row.series_id,
-    name: row.name_en,
+    productId,
+    name: required(row.name_en, filename, "name_en", productId),
     secondaryName: optional(row.name_zh),
     category: row.category,
     subcategory: row.subcategory,
@@ -201,11 +358,23 @@ function mapEsg(row: CsvRow): KnowledgeProduct {
   };
 }
 
-function mapScenario(row: CsvRow): ApplicationScenario {
+function mapScenario(row: ScenarioRow, index: number): ApplicationScenario {
+  const filename = "2026-06-pharma-application-selection-matrix.csv";
+  const scenarioId = required(
+    row.scenario_id,
+    filename,
+    "scenario_id",
+    `row ${index + 2}`
+  );
   return {
     recordType: "SCENARIO",
-    scenarioId: row.scenario_id,
-    customerTask: row.customer_task,
+    scenarioId,
+    customerTask: required(
+      row.customer_task,
+      filename,
+      "customer_task",
+      scenarioId
+    ),
     processStage: row.process_stage,
     decisionUnit: row.decision_unit,
     candidates: {
@@ -223,12 +392,14 @@ function mapScenario(row: CsvRow): ApplicationScenario {
   };
 }
 
-function mapCurriculum(row: CsvRow): CurriculumDay {
+function mapCurriculum(row: CurriculumRow, index: number): CurriculumDay {
   const filename = "2026-06-product-knowledge-30-day-curriculum.csv";
+  const recordContext = `row ${index + 2}`;
+  const day = parseInteger(row.day, filename, "day", recordContext);
   return {
-    day: parseInteger(row.day, filename, "day", row.day),
-    week: parseInteger(row.week, filename, "week", row.day),
-    module: row.module,
+    day,
+    week: parseInteger(row.week, filename, "week", `day ${day}`),
+    module: required(row.module, filename, "module", `day ${day}`),
     learningObjective: row.learning_objective,
     primaryMaterial: row.primary_material,
     exercise: row.exercise,
@@ -239,18 +410,42 @@ function mapCurriculum(row: CsvRow): CurriculumDay {
 }
 
 function mapValidationTasks(
-  backlogRows: CsvRow[],
-  executionRows: CsvRow[]
+  backlogRows: ValidationBacklogRow[],
+  executionRows: ValidationExecutionRow[]
 ): ValidationTaskDefinition[] {
+  const backlogFilename = "2026-06-internal-validation-backlog.csv";
+  const executionFilename = "2026-06-internal-validation-execution.csv";
+  const validatedBacklogRows = backlogRows.map((row, index) => ({
+    row,
+    validationId: required(
+      row.validation_id,
+      backlogFilename,
+      "validation_id",
+      `row ${index + 2}`
+    )
+  }));
+  const validatedExecutionRows = executionRows.map((row, index) => ({
+    row,
+    validationId: required(
+      row.validation_id,
+      executionFilename,
+      "validation_id",
+      `row ${index + 2}`
+    )
+  }));
   const executionById = new Map(
-    executionRows.map((row) => [row.validation_id, row])
+    validatedExecutionRows.map(({ row, validationId }) => [validationId, row])
   );
-  const backlogIds = new Set(backlogRows.map((row) => row.validation_id));
-  const executionIds = new Set(executionRows.map((row) => row.validation_id));
+  const backlogIds = new Set(
+    validatedBacklogRows.map(({ validationId }) => validationId)
+  );
+  const executionIds = new Set(
+    validatedExecutionRows.map(({ validationId }) => validationId)
+  );
 
   if (
-    backlogIds.size !== backlogRows.length ||
-    executionIds.size !== executionRows.length ||
+    backlogIds.size !== validatedBacklogRows.length ||
+    executionIds.size !== validatedExecutionRows.length ||
     backlogIds.size !== executionIds.size ||
     [...backlogIds].some((id) => !executionIds.has(id))
   ) {
@@ -259,20 +454,20 @@ function mapValidationTasks(
     );
   }
 
-  return backlogRows.map((backlog) => {
-    const execution = executionById.get(backlog.validation_id);
+  return validatedBacklogRows.map(({ row: backlog, validationId }) => {
+    const execution = executionById.get(validationId);
     if (!execution) {
       throw new Error(
-        `2026-06-internal-validation-backlog.csv and 2026-06-internal-validation-execution.csv: missing execution row ${backlog.validation_id}`
+        `2026-06-internal-validation-backlog.csv and 2026-06-internal-validation-execution.csv: missing execution row ${validationId}`
       );
     }
 
     return {
-      validationId: backlog.validation_id,
+      validationId,
       priority: validationPriority(
         backlog.priority,
         "2026-06-internal-validation-backlog.csv",
-        backlog.validation_id
+        validationId
       ),
       company: backlog.company,
       topic: backlog.topic,
@@ -283,7 +478,7 @@ function mapValidationTasks(
       defaultStatus: validationStatus(
         backlog.status,
         "2026-06-internal-validation-backlog.csv",
-        backlog.validation_id
+        validationId
       ),
       workstream: execution.workstream,
       executionOwner: execution.execution_owner,
@@ -292,7 +487,7 @@ function mapValidationTasks(
         execution.minimum_verified_records,
         "2026-06-internal-validation-execution.csv",
         "minimum_verified_records",
-        backlog.validation_id
+        validationId
       ),
       evidenceTypes: execution.evidence_types,
       collectionMethod: execution.collection_method,
@@ -334,7 +529,7 @@ export async function loadKnowledgeCatalog(
     validationBacklogRows,
     validationExecutionRows
   ] = await Promise.all([
-    readCsv(researchDirectory, SOURCE_FILES[0], [
+    readCsv<BurkertRow>(researchDirectory, SOURCE_FILES[0], [
       "type_id",
       "name_en",
       "name_zh",
@@ -349,7 +544,7 @@ export async function loadKnowledgeCatalog(
       "evidence_grade",
       "notes"
     ]),
-    readCsv(researchDirectory, SOURCE_FILES[1], [
+    readCsv<GemuRow>(researchDirectory, SOURCE_FILES[1], [
       "series_id",
       "name_en",
       "category",
@@ -361,7 +556,7 @@ export async function loadKnowledgeCatalog(
       "evidence_grade",
       "notes"
     ]),
-    readCsv(researchDirectory, SOURCE_FILES[2], [
+    readCsv<FujikinRow>(researchDirectory, SOURCE_FILES[2], [
       "record_id",
       "catalogue_title",
       "category",
@@ -376,7 +571,7 @@ export async function loadKnowledgeCatalog(
       "evidence_grade",
       "notes"
     ]),
-    readCsv(researchDirectory, SOURCE_FILES[3], [
+    readCsv<EsgRow>(researchDirectory, SOURCE_FILES[3], [
       "series_id",
       "name_en",
       "name_zh",
@@ -391,7 +586,7 @@ export async function loadKnowledgeCatalog(
       "evidence_grade",
       "notes"
     ]),
-    readCsv(researchDirectory, SOURCE_FILES[4], [
+    readCsv<ScenarioRow>(researchDirectory, SOURCE_FILES[4], [
       "scenario_id",
       "customer_task",
       "process_stage",
@@ -407,7 +602,7 @@ export async function loadKnowledgeCatalog(
       "evidence_ids",
       "internal_validation"
     ]),
-    readCsv(researchDirectory, SOURCE_FILES[5], [
+    readCsv<CurriculumRow>(researchDirectory, SOURCE_FILES[5], [
       "day",
       "week",
       "module",
@@ -418,7 +613,7 @@ export async function loadKnowledgeCatalog(
       "coach_review",
       "pass_criteria"
     ]),
-    readCsv(researchDirectory, SOURCE_FILES[6], [
+    readCsv<ValidationBacklogRow>(researchDirectory, SOURCE_FILES[6], [
       "validation_id",
       "priority",
       "company",
@@ -429,7 +624,7 @@ export async function loadKnowledgeCatalog(
       "decision_supported",
       "status"
     ]),
-    readCsv(researchDirectory, SOURCE_FILES[7], [
+    readCsv<ValidationExecutionRow>(researchDirectory, SOURCE_FILES[7], [
       "validation_id",
       "workstream",
       "execution_owner",
