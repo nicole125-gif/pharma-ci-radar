@@ -100,3 +100,86 @@ create table weekly_briefs (
   key_opportunities jsonb not null,
   approved_events jsonb not null
 );
+
+create table if not exists training_learners (
+  id text primary key,
+  name text not null,
+  cohort text not null,
+  active boolean not null default true,
+  created_at timestamptz not null default now()
+);
+
+create table if not exists training_progress (
+  learner_id text references training_learners(id) on delete cascade,
+  day integer not null check (day between 1 and 30),
+  scheduled_date date,
+  completion_status text not null check (completion_status in ('NOT_STARTED', 'IN_PROGRESS', 'SUBMITTED', 'COMPLETE')),
+  output_location text,
+  self_reflection text,
+  coach text,
+  coach_result text not null check (coach_result in ('NOT_REVIEWED', 'PASS', 'REWORK')),
+  coach_feedback text,
+  completed_date date,
+  updated_at timestamptz not null default now(),
+  primary key (learner_id, day)
+);
+
+create table if not exists training_scores (
+  id text primary key,
+  learner_id text references training_learners(id) on delete cascade,
+  checkpoint text not null check (checkpoint in ('BASELINE', 'DAY-10', 'DAY-20', 'DAY-30', 'RETEST')),
+  record_date date not null,
+  product_skeleton integer not null check (product_skeleton between 0 and 20),
+  parameter_evidence integer not null check (parameter_evidence between 0 and 20),
+  application_judgment integer not null check (application_judgment between 0 and 30),
+  competitive_strategy integer not null check (competitive_strategy between 0 and 30),
+  total_score integer not null check (total_score between 0 and 100),
+  fatal_error boolean not null,
+  result text not null check (result in ('PASS', 'REMEDIATE', 'NOT_ASSESSED')),
+  assessor text not null,
+  evidence_location text not null,
+  remediation_due date,
+  notes text,
+  created_at timestamptz not null default now()
+);
+
+create unique index if not exists training_scores_checkpoint_record_idx
+  on training_scores (learner_id, checkpoint, record_date);
+
+create table if not exists validation_task_states (
+  validation_id text primary key,
+  owner text,
+  status text not null check (status in ('OPEN', 'IN_PROGRESS', 'VERIFIED', 'REJECTED', 'INSUFFICIENT')),
+  target_date date,
+  conclusion text,
+  updated_by text not null,
+  updated_at timestamptz not null default now()
+);
+
+create table if not exists internal_evidence_records (
+  id text primary key,
+  validation_id text not null,
+  received_date date not null,
+  collector text not null,
+  company text not null,
+  evidence_type text not null,
+  subject_product text,
+  model_or_configuration text,
+  market_scope text,
+  source_owner text,
+  source_date date not null,
+  file_location text not null,
+  confidentiality text not null check (confidentiality in ('INTERNAL', 'RESTRICTED', 'PUBLIC')),
+  fact_summary text not null,
+  supports_or_contradicts text not null check (supports_or_contradicts in ('SUPPORTS', 'CONTRADICTS', 'CONTEXT_ONLY')),
+  verification_status text not null check (verification_status in ('PENDING', 'VERIFIED', 'REJECTED', 'INSUFFICIENT')),
+  verifier text,
+  verified_date date,
+  rejection_reason text,
+  notes text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists internal_evidence_validation_idx
+  on internal_evidence_records (validation_id, verification_status);

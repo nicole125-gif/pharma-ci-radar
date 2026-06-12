@@ -71,6 +71,148 @@ export type EvidenceVerificationStatus =
   | "REJECTED"
   | "INSUFFICIENT";
 
+export interface TrainingLearner {
+  id: string;
+  name: string;
+  cohort: string;
+  active: boolean;
+  createdAt: string;
+}
+
+export interface TrainingLearnerInput {
+  name: string;
+  cohort: string;
+}
+
+export interface TrainingProgress {
+  learnerId: string;
+  day: number;
+  scheduledDate?: string;
+  completionStatus: TrainingCompletionStatus;
+  outputLocation?: string;
+  selfReflection?: string;
+  coach?: string;
+  coachResult: CoachResult;
+  coachFeedback?: string;
+  completedDate?: string;
+  updatedAt: string;
+}
+
+export interface TrainingProgressInput {
+  learnerId: string;
+  day: number;
+  scheduledDate?: string;
+  completionStatus: TrainingCompletionStatus;
+  outputLocation?: string;
+  selfReflection?: string;
+  coach?: string;
+  coachResult: CoachResult;
+  coachFeedback?: string;
+  completedDate?: string;
+}
+
+export interface TrainingScore {
+  id: string;
+  learnerId: string;
+  checkpoint: TrainingCheckpoint;
+  recordDate: string;
+  productSkeleton: number;
+  parameterEvidence: number;
+  applicationJudgment: number;
+  competitiveStrategy: number;
+  totalScore: number;
+  fatalError: boolean;
+  result: TrainingResult;
+  assessor: string;
+  evidenceLocation: string;
+  remediationDue?: string;
+  notes?: string;
+  createdAt: string;
+}
+
+export interface TrainingScoreInput {
+  learnerId: string;
+  checkpoint: TrainingCheckpoint;
+  recordDate: string;
+  productSkeleton: number;
+  parameterEvidence: number;
+  applicationJudgment: number;
+  competitiveStrategy: number;
+  totalScore: number;
+  fatalError: boolean;
+  result: TrainingResult;
+  assessor: string;
+  evidenceLocation: string;
+  remediationDue?: string;
+  notes?: string;
+}
+
+export interface ValidationTaskState {
+  validationId: string;
+  owner?: string;
+  status: ValidationStatus;
+  targetDate?: string;
+  conclusion?: string;
+  updatedBy: string;
+  updatedAt: string;
+}
+
+export interface ValidationTaskStateInput {
+  validationId: string;
+  owner?: string;
+  status: ValidationStatus;
+  targetDate?: string;
+  conclusion?: string;
+  updatedBy: string;
+}
+
+export interface InternalEvidenceRecord {
+  id: string;
+  validationId: string;
+  receivedDate: string;
+  collector: string;
+  company: string;
+  evidenceType: string;
+  subjectProduct?: string;
+  modelOrConfiguration?: string;
+  marketScope?: string;
+  sourceOwner?: string;
+  sourceDate: string;
+  fileLocation: string;
+  confidentiality: "INTERNAL" | "RESTRICTED" | "PUBLIC";
+  factSummary: string;
+  supportsOrContradicts: "SUPPORTS" | "CONTRADICTS" | "CONTEXT_ONLY";
+  verificationStatus: EvidenceVerificationStatus;
+  verifier?: string;
+  verifiedDate?: string;
+  rejectionReason?: string;
+  notes?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface InternalEvidenceInput {
+  validationId: string;
+  receivedDate: string;
+  collector: string;
+  company: string;
+  evidenceType: string;
+  subjectProduct?: string;
+  modelOrConfiguration?: string;
+  marketScope?: string;
+  sourceOwner?: string;
+  sourceDate: string;
+  fileLocation: string;
+  confidentiality: "INTERNAL" | "RESTRICTED" | "PUBLIC";
+  factSummary: string;
+  supportsOrContradicts: "SUPPORTS" | "CONTRADICTS" | "CONTEXT_ONLY";
+  verificationStatus: EvidenceVerificationStatus;
+  verifier?: string;
+  verifiedDate?: string;
+  rejectionReason?: string;
+  notes?: string;
+}
+
 export interface ValidationTaskDefinition {
   validationId: string;
   priority: "P0" | "P1" | "P2";
