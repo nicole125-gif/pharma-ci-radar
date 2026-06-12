@@ -126,4 +126,20 @@ describe("knowledge catalog", () => {
       /2026-06-internal-validation-backlog\.csv: invalid priority "P9"/
     );
   });
+
+  it("names both validation CSV files when their ID sets differ", async () => {
+    const researchDirectory = await copyResearchSources();
+    const executionPath = path.join(
+      researchDirectory,
+      "2026-06-internal-validation-execution.csv"
+    );
+    const content = await readFile(executionPath, "utf8");
+    const rows = content.trimEnd().split("\n");
+
+    await writeFile(executionPath, `${rows.slice(0, -1).join("\n")}\n`);
+
+    await expect(loadKnowledgeCatalog(researchDirectory)).rejects.toThrow(
+      /2026-06-internal-validation-backlog\.csv.*2026-06-internal-validation-execution\.csv/
+    );
+  });
 });

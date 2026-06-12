@@ -255,7 +255,7 @@ function mapValidationTasks(
     [...backlogIds].some((id) => !executionIds.has(id))
   ) {
     throw new Error(
-      "validation task sources: validation_id sets differ or contain duplicates"
+      "2026-06-internal-validation-backlog.csv and 2026-06-internal-validation-execution.csv: validation_id sets differ or contain duplicates"
     );
   }
 
@@ -263,7 +263,7 @@ function mapValidationTasks(
     const execution = executionById.get(backlog.validation_id);
     if (!execution) {
       throw new Error(
-        `validation task sources: missing execution row ${backlog.validation_id}`
+        `2026-06-internal-validation-backlog.csv and 2026-06-internal-validation-execution.csv: missing execution row ${backlog.validation_id}`
       );
     }
 
