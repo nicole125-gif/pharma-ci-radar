@@ -1,6 +1,5 @@
 import { randomUUID } from "node:crypto";
-import type { QueryResultRow } from "@vercel/postgres";
-import { getSql } from "../postgres";
+import { createPool, type QueryResultRow } from "@vercel/postgres";
 import type {
   InternalEvidenceInput,
   InternalEvidenceRecord,
@@ -14,7 +13,18 @@ import type {
 } from "./types";
 import type { KnowledgeExecutionStore, KnowledgeStore } from "./store";
 
-type Sql = NonNullable<ReturnType<typeof getSql>>;
+type Primitive = string | number | boolean | undefined | null;
+type Sql = <Row extends QueryResultRow = QueryResultRow>(
+  strings: TemplateStringsArray,
+  ...values: Primitive[]
+) => Promise<{ rows: Row[] }>;
+type PoolFactory = (config: {
+  connectionString: string;
+}) => { sql: Sql };
+interface KnowledgeDatabaseEnv {
+  POSTGRES_URL?: string;
+  DATABASE_URL?: string;
+}
 type DateValue = string | Date;
 
 interface LearnerRow extends QueryResultRow {
@@ -98,7 +108,12 @@ function toTimestamp(value: DateValue) {
 }
 
 function toDate(value: DateValue) {
-  return value instanceof Date ? value.toISOString().slice(0, 10) : value;
+  if (!(value instanceof Date)) return value;
+
+  const year = value.getFullYear();
+  const month = String(value.getMonth() + 1).padStart(2, "0");
+  const day = String(value.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
 }
 
 function optional<T>(key: string, value: T | null) {
@@ -234,7 +249,19 @@ export function createPostgresKnowledgeStore(
 
     async listProgress(learnerId) {
       const result = await sql<ProgressRow>`
-        select * from training_progress
+        select
+          learner_id,
+          day,
+          scheduled_date::text as scheduled_date,
+          completion_status,
+          output_location,
+          self_reflection,
+          coach,
+          coach_result,
+          coach_feedback,
+          completed_date::text as completed_date,
+          updated_at
+        from training_progress
         where learner_id = ${learnerId}
         order by day
       `;
@@ -264,14 +291,42 @@ export function createPostgresKnowledgeStore(
           coach_feedback = excluded.coach_feedback,
           completed_date = excluded.completed_date,
           updated_at = now()
-        returning *
+        returning
+          learner_id,
+          day,
+          scheduled_date::text as scheduled_date,
+          completion_status,
+          output_location,
+          self_reflection,
+          coach,
+          coach_result,
+          coach_feedback,
+          completed_date::text as completed_date,
+          updated_at
       `;
       return mapProgressRow(result.rows[0]);
     },
 
     async listScores(learnerId) {
       const result = await sql<ScoreRow>`
-        select * from training_scores
+        select
+          id,
+          learner_id,
+          checkpoint,
+          record_date::text as record_date,
+          product_skeleton,
+          parameter_evidence,
+          application_judgment,
+          competitive_strategy,
+          total_score,
+          fatal_error,
+          result,
+          assessor,
+          evidence_location,
+          remediation_due::text as remediation_due,
+          notes,
+          created_at
+        from training_scores
         where learner_id = ${learnerId}
         order by record_date, created_at
       `;
@@ -295,14 +350,38 @@ export function createPostgresKnowledgeStore(
           ${input.assessor}, ${input.evidenceLocation},
           ${input.remediationDue ?? null}, ${input.notes ?? null}
         )
-        returning *
+        returning
+          id,
+          learner_id,
+          checkpoint,
+          record_date::text as record_date,
+          product_skeleton,
+          parameter_evidence,
+          application_judgment,
+          competitive_strategy,
+          total_score,
+          fatal_error,
+          result,
+          assessor,
+          evidence_location,
+          remediation_due::text as remediation_due,
+          notes,
+          created_at
       `;
       return mapScoreRow(result.rows[0]);
     },
 
     async listValidationStates() {
       const result = await sql<ValidationStateRow>`
-        select * from validation_task_states
+        select
+          validation_id,
+          owner,
+          status,
+          target_date::text as target_date,
+          conclusion,
+          updated_by,
+          updated_at
+        from validation_task_states
         order by validation_id
       `;
       return result.rows.map(mapValidationStateRow);
@@ -325,7 +404,14 @@ export function createPostgresKnowledgeStore(
           conclusion = excluded.conclusion,
           updated_by = excluded.updated_by,
           updated_at = now()
-        returning *
+        returning
+          validation_id,
+          owner,
+          status,
+          target_date::text as target_date,
+          conclusion,
+          updated_by,
+          updated_at
       `;
       return mapValidationStateRow(result.rows[0]);
     },
@@ -333,7 +419,30 @@ export function createPostgresKnowledgeStore(
     async listEvidence(validationId) {
       if (validationId) {
         const result = await sql<EvidenceRow>`
-          select * from internal_evidence_records
+          select
+            id,
+            validation_id,
+            received_date::text as received_date,
+            collector,
+            company,
+            evidence_type,
+            subject_product,
+            model_or_configuration,
+            market_scope,
+            source_owner,
+            source_date::text as source_date,
+            file_location,
+            confidentiality,
+            fact_summary,
+            supports_or_contradicts,
+            verification_status,
+            verifier,
+            verified_date::text as verified_date,
+            rejection_reason,
+            notes,
+            created_at,
+            updated_at
+          from internal_evidence_records
           where validation_id = ${validationId}
           order by received_date desc, created_at desc
         `;
@@ -341,7 +450,30 @@ export function createPostgresKnowledgeStore(
       }
 
       const result = await sql<EvidenceRow>`
-        select * from internal_evidence_records
+        select
+          id,
+          validation_id,
+          received_date::text as received_date,
+          collector,
+          company,
+          evidence_type,
+          subject_product,
+          model_or_configuration,
+          market_scope,
+          source_owner,
+          source_date::text as source_date,
+          file_location,
+          confidentiality,
+          fact_summary,
+          supports_or_contradicts,
+          verification_status,
+          verifier,
+          verified_date::text as verified_date,
+          rejection_reason,
+          notes,
+          created_at,
+          updated_at
+        from internal_evidence_records
         order by received_date desc, created_at desc
       `;
       return result.rows.map(mapEvidenceRow);
@@ -368,20 +500,63 @@ export function createPostgresKnowledgeStore(
           ${input.verifiedDate ?? null}, ${input.rejectionReason ?? null},
           ${input.notes ?? null}
         )
-        returning *
+        returning
+          id,
+          validation_id,
+          received_date::text as received_date,
+          collector,
+          company,
+          evidence_type,
+          subject_product,
+          model_or_configuration,
+          market_scope,
+          source_owner,
+          source_date::text as source_date,
+          file_location,
+          confidentiality,
+          fact_summary,
+          supports_or_contradicts,
+          verification_status,
+          verifier,
+          verified_date::text as verified_date,
+          rejection_reason,
+          notes,
+          created_at,
+          updated_at
       `;
       return mapEvidenceRow(result.rows[0]);
     }
   };
 }
 
-export async function getKnowledgeStore(): Promise<KnowledgeStore> {
-  const sql = getSql();
-  if (!sql) {
+export function selectKnowledgeDatabaseUrl(
+  env: KnowledgeDatabaseEnv
+): string | null {
+  return env.POSTGRES_URL || env.DATABASE_URL || null;
+}
+
+interface KnowledgeStoreDependencies {
+  env?: KnowledgeDatabaseEnv;
+  createPool?: PoolFactory;
+}
+
+export async function getKnowledgeStore(
+  dependencies: KnowledgeStoreDependencies = {}
+): Promise<KnowledgeStore> {
+  const processDatabaseEnv: KnowledgeDatabaseEnv = {
+    POSTGRES_URL: process.env.POSTGRES_URL,
+    DATABASE_URL: process.env.DATABASE_URL
+  };
+  const connectionString = selectKnowledgeDatabaseUrl(
+    dependencies.env ?? processDatabaseEnv
+  );
+  if (!connectionString) {
     return { available: false, reason: "DATABASE_NOT_CONFIGURED" };
   }
 
   try {
+    const pool = (dependencies.createPool ?? createPool)({ connectionString });
+    const sql = pool.sql.bind(pool) as Sql;
     await sql`select 1`;
     return createPostgresKnowledgeStore(sql);
   } catch {
