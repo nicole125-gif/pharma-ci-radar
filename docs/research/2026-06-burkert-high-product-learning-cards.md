@@ -606,15 +606,15 @@
 
 **工作原理：** The externally controlled hose pinch valve Type 2707 consists of a pneumatical actuator (optionally ELEMENT, INOX or CLASSIC), a housing with compressor and an interchangeable hose holder that can be adapted to the tubing size. The Bürkert hose pinch valve has been specifically designed for single-use applications in biopharmaceutical production processes. Typical applications include chromatography skids, tangential flow filtration skids (TFF), single-use bioreactors, as well as filling and dosing skids. Installation on racks, e.g. for transfer and/or distribution. Manufactured for modulating applications (ELEMENT actuator) or on/off applications (INOX or CLASSIC actuator). Compressor and hose holder can be replaced with a few simple hand movements, allowing the pinch valve to be adapted to different hose dimensions. Compact, smooth-surfaced, highly integrated system of valve and automation unit. High chemical resistance.
 
-**客户任务：** 在无菌输送/隔离；CIP/SIP；制药用水中完成卫生隔离、切换、调节或低滞留流路设计；具体任务取决于阀体和执行配置。
+**客户任务：** 在无菌输送/隔离；CIP/SIP；制药用水中通过软管夹断或一次性流路实现介质隔离，减少清洗验证负担和交叉污染风险。
 
 **制药应用：** 无菌输送/隔离；CIP/SIP；制药用水
 
 **公开规格：** actuation_method=pneumatic；explicit_connection_types=hose
 
-**选型必问：** 介质与批次风险；DN及目标Cv/Kv；阀体流路和排空方向；接液材料与表面粗糙度；膜片材质和寿命；连接标准；工作与灭菌温压；CIP/SIP程序；死区要求；认证与材料追溯；手动、开关或调节自动化。
+**选型必问：** 软管与接液材料；管径和壁厚；灭菌方式；压力与温度；密封完整性；死体积和滞留；循环次数或一次性使用边界；批次追溯；供应连续性；执行器和反馈要求。
 
-**排除条件：** 不能用系列名称代替具体阀体、膜片和连接配置；未确认排空、死区、温压、材料证明或灭菌循环时，不得判定适用于关键无菌主工艺。
+**排除条件：** 软管尺寸、材料、灭菌方法或寿命未经确认时不得替代；一次性组件与可重复使用阀门的维护、验证和总成本口径不可直接混比。
 
 **相邻产品：** 同类高相关记录未找到；需扩展到相邻产品族判断
 
@@ -1342,15 +1342,15 @@
 
 **工作原理：** The flowmeter Type 8056, which consists of a sensor Type S056 (compact or remote variant) connected to the electronics assembly Type SE56 (without a display in the compact variant or with a display in the compact or remote variant), is designed for liquids with a minimum conductivity of 5 μS/cm. Combined with a dosing valve, the flowmeter Type 8056 can also be used for high-precision filling and dosing procedures and for flow measurements in the food, beverage or pharmaceutical industry.
 
-**客户任务：** 在WFI/PW及CIP流量监控中完成卫生隔离、切换、调节或低滞留流路设计；具体任务取决于阀体和执行配置。
+**客户任务：** 在WFI/PW及CIP流量监控中完成过程测量、监控或闭环控制，为批次放行、清洗终点或工艺稳定性提供信号。
 
 **制药应用：** WFI/PW及CIP流量监控
 
 **公开规格：** nominal_diameter_dn_range_1=DN 03…DN 100
 
-**选型必问：** 介质与批次风险；DN及目标Cv/Kv；阀体流路和排空方向；接液材料与表面粗糙度；膜片材质和寿命；连接标准；工作与灭菌温压；CIP/SIP程序；死区要求；认证与材料追溯；手动、开关或调节自动化。
+**选型必问：** 介质及电导/黏度/气体组分；量程与正常工作点；精度、重复性和响应时间；压力、温度及压降；接液材料；卫生连接与可清洗性；校准和验证要求；输出信号、现场总线和控制系统接口；安装方向与直管段。
 
-**排除条件：** 不能用系列名称代替具体阀体、膜片和连接配置；未确认排空、死区、温压、材料证明或灭菌循环时，不得判定适用于关键无菌主工艺。
+**排除条件：** 量程、介质属性、安装条件或校准口径不一致时不得直接比较精度；没有卫生连接、材料和清洗适配证据时，不得仅凭测量原理判定可用于制药主工艺。
 
 **相邻产品：** S056
 
@@ -1502,15 +1502,15 @@
 
 **工作原理：** The Type 8201 pH measuring system is suitable for measuring absolute pH values in liquids between pH 0 and pH 12 at medium temperatures of up to 140°C and process pressures of max. 6 bar. Due to its hygienic design and the robust glass-free construction, this model is particularly suitable for use in hygienic processes. An example would be the production of foods and active ingredients, during which the pH value of liquid mediums (including those which are viscous or contain solids) is measured. The pH electrode's extremely smooth enamel surface prevents the medium from sticking and is very easy to clean in line. Due to its robust design and high temperature and chemical tolerance, the electrode stays in the process even during a CIP purification. This means that expensive retractable fittings can be dispensed with.
 
-**客户任务：** 在制药用水质量监测中完成卫生隔离、切换、调节或低滞留流路设计；具体任务取决于阀体和执行配置。
+**客户任务：** 在制药用水质量监测中完成过程测量、监控或闭环控制，为批次放行、清洗终点或工艺稳定性提供信号。
 
 **制药应用：** 制药用水质量监测
 
 **公开规格：** explicit_connection_types=hose；explicit_seal_materials=NBR
 
-**选型必问：** 介质与批次风险；DN及目标Cv/Kv；阀体流路和排空方向；接液材料与表面粗糙度；膜片材质和寿命；连接标准；工作与灭菌温压；CIP/SIP程序；死区要求；认证与材料追溯；手动、开关或调节自动化。
+**选型必问：** 介质及电导/黏度/气体组分；量程与正常工作点；精度、重复性和响应时间；压力、温度及压降；接液材料；卫生连接与可清洗性；校准和验证要求；输出信号、现场总线和控制系统接口；安装方向与直管段。
 
-**排除条件：** 不能用系列名称代替具体阀体、膜片和连接配置；未确认排空、死区、温压、材料证明或灭菌循环时，不得判定适用于关键无菌主工艺。
+**排除条件：** 量程、介质属性、安装条件或校准口径不一致时不得直接比较精度；没有卫生连接、材料和清洗适配证据时，不得仅凭测量原理判定可用于制药主工艺。
 
 **相邻产品：** 同类高相关记录未找到；需扩展到相邻产品族判断
 
@@ -1534,15 +1534,15 @@
 
 **工作原理：** The Type 8221 hygienic conductivity probes are used to determine electrical conductivity in a wide range of pure or concentrated liquids. Due to their hygienic and robust design, these conductivity probes are suitable for use in various application sectors, including the food & beverage, pharmaceutical, biotechnology and chemical industry. They are available in two technologies, with either 2 or 4 electrodes. Probes based on the 2-electrode principle are intended for use in pure liquids, particularly ultrapure water, as contamination affects the measurement. Probes based on the 4-electrode principle prevent polarisation phenomena and are not sensitive to contamination. The clever design guarantees an excellent linearity over the entire measurement range. All variants are fitted with an integrated temperature sensor (Pt1000) as standard. The probe has to be connected to the multiCELL transmitter/controller Type 8619.
 
-**客户任务：** 在制药用水质量监测中完成卫生隔离、切换、调节或低滞留流路设计；具体任务取决于阀体和执行配置。
+**客户任务：** 在制药用水质量监测中完成过程测量、监控或闭环控制，为批次放行、清洗终点或工艺稳定性提供信号。
 
 **制药应用：** 制药用水质量监测
 
 **公开规格：** 未公开，需查当前数据表或项目文件
 
-**选型必问：** 介质与批次风险；DN及目标Cv/Kv；阀体流路和排空方向；接液材料与表面粗糙度；膜片材质和寿命；连接标准；工作与灭菌温压；CIP/SIP程序；死区要求；认证与材料追溯；手动、开关或调节自动化。
+**选型必问：** 介质及电导/黏度/气体组分；量程与正常工作点；精度、重复性和响应时间；压力、温度及压降；接液材料；卫生连接与可清洗性；校准和验证要求；输出信号、现场总线和控制系统接口；安装方向与直管段。
 
-**排除条件：** 不能用系列名称代替具体阀体、膜片和连接配置；未确认排空、死区、温压、材料证明或灭菌循环时，不得判定适用于关键无菌主工艺。
+**排除条件：** 量程、介质属性、安装条件或校准口径不一致时不得直接比较精度；没有卫生连接、材料和清洗适配证据时，不得仅凭测量原理判定可用于制药主工艺。
 
 **相邻产品：** 同类高相关记录未找到；需扩展到相邻产品族判断
 
@@ -2046,15 +2046,15 @@
 
 **工作原理：** Hygienic screw connections are gap-free connections that have been specially developed for sterile applications. The O-rings installed in them are chambered and pressed in a defined manner via a metallic stop. Aseptic connections in accordance to DIN 11864-1 are a common type of connection for critical applications that require very good cleanability in the pipework. The patented BBS sterile contour has been further improved in this respect. This connection is virtually gap-free.
 
-**客户任务：** 在卫生管路连接中完成卫生隔离、切换、调节或低滞留流路设计；具体任务取决于阀体和执行配置。
+**客户任务：** 作为卫生管路连接的连接、密封或维护部件，保证完整流路的机械兼容、卫生边界和可追溯性。
 
 **制药应用：** 卫生管路连接
 
 **公开规格：** explicit_connection_types=thread
 
-**选型必问：** 介质与批次风险；DN及目标Cv/Kv；阀体流路和排空方向；接液材料与表面粗糙度；膜片材质和寿命；连接标准；工作与灭菌温压；CIP/SIP程序；死区要求；认证与材料追溯；手动、开关或调节自动化。
+**选型必问：** 配套主产品；尺寸和连接标准；接液材料；表面状态；密封材质；压力与温度；清洗灭菌循环；批次和材料追溯；安装空间；更换周期。
 
-**排除条件：** 不能用系列名称代替具体阀体、膜片和连接配置；未确认排空、死区、温压、材料证明或灭菌循环时，不得判定适用于关键无菌主工艺。
+**排除条件：** 尺寸或材料相近不代表可互换；未经主产品兼容性、材料证明和寿命验证，不得用于关键工艺替换。
 
 **相邻产品：** BBS-05|BBS-06|BBS-07|BBS-10|BBS-25
 
@@ -2078,15 +2078,15 @@
 
 **工作原理：** Hygienic screw connections are gap-free connections that have been specially developed for sterile applications. The O-rings installed in them are chambered and pressed in a defined manner via a metallic stop. Aseptic connections according to DIN 11864-3 are a common type of connection for critical applications that require very good cleanability in the pipework. The patented BBS sterile contour has been further improved in this respect. This connection is virtually gap-free.
 
-**客户任务：** 在卫生管路连接中完成卫生隔离、切换、调节或低滞留流路设计；具体任务取决于阀体和执行配置。
+**客户任务：** 作为卫生管路连接的连接、密封或维护部件，保证完整流路的机械兼容、卫生边界和可追溯性。
 
 **制药应用：** 卫生管路连接
 
 **公开规格：** explicit_connection_types=clamp | weld
 
-**选型必问：** 介质与批次风险；DN及目标Cv/Kv；阀体流路和排空方向；接液材料与表面粗糙度；膜片材质和寿命；连接标准；工作与灭菌温压；CIP/SIP程序；死区要求；认证与材料追溯；手动、开关或调节自动化。
+**选型必问：** 配套主产品；尺寸和连接标准；接液材料；表面状态；密封材质；压力与温度；清洗灭菌循环；批次和材料追溯；安装空间；更换周期。
 
-**排除条件：** 不能用系列名称代替具体阀体、膜片和连接配置；未确认排空、死区、温压、材料证明或灭菌循环时，不得判定适用于关键无菌主工艺。
+**排除条件：** 尺寸或材料相近不代表可互换；未经主产品兼容性、材料证明和寿命验证，不得用于关键工艺替换。
 
 **相邻产品：** BBS-03|BBS-06|BBS-07|BBS-10|BBS-25
 
@@ -2110,15 +2110,15 @@
 
 **工作原理：** Hygienic flange connections are gap-free connections that have been specially developed for sterile applications. The O-rings installed in them are chambered and pressed in a defined manner via a metallic stop. Aseptic connections in accordance to DIN 11864-2 are a common type of connection for critical applications that require very good cleanability in the pipework. The patented BBS sterile contour has been further improved in this respect. This connection is virtually gap-free.
 
-**客户任务：** 在卫生管路连接中完成卫生隔离、切换、调节或低滞留流路设计；具体任务取决于阀体和执行配置。
+**客户任务：** 作为卫生管路连接的连接、密封或维护部件，保证完整流路的机械兼容、卫生边界和可追溯性。
 
 **制药应用：** 卫生管路连接
 
 **公开规格：** explicit_connection_types=weld | flange
 
-**选型必问：** 介质与批次风险；DN及目标Cv/Kv；阀体流路和排空方向；接液材料与表面粗糙度；膜片材质和寿命；连接标准；工作与灭菌温压；CIP/SIP程序；死区要求；认证与材料追溯；手动、开关或调节自动化。
+**选型必问：** 配套主产品；尺寸和连接标准；接液材料；表面状态；密封材质；压力与温度；清洗灭菌循环；批次和材料追溯；安装空间；更换周期。
 
-**排除条件：** 不能用系列名称代替具体阀体、膜片和连接配置；未确认排空、死区、温压、材料证明或灭菌循环时，不得判定适用于关键无菌主工艺。
+**排除条件：** 尺寸或材料相近不代表可互换；未经主产品兼容性、材料证明和寿命验证，不得用于关键工艺替换。
 
 **相邻产品：** BBS-03|BBS-05|BBS-07|BBS-10|BBS-25
 
@@ -2142,15 +2142,15 @@
 
 **工作原理：** Type BBS-07 block flanges are designed for direct tank installation and are available in various designs, see chapter “product connections”. The block flanges are part of the BBS modular system.
 
-**客户任务：** 在卫生管路连接中完成卫生隔离、切换、调节或低滞留流路设计；具体任务取决于阀体和执行配置。
+**客户任务：** 作为卫生管路连接的连接、密封或维护部件，保证完整流路的机械兼容、卫生边界和可追溯性。
 
 **制药应用：** 卫生管路连接
 
 **公开规格：** explicit_connection_types=clamp | flange
 
-**选型必问：** 介质与批次风险；DN及目标Cv/Kv；阀体流路和排空方向；接液材料与表面粗糙度；膜片材质和寿命；连接标准；工作与灭菌温压；CIP/SIP程序；死区要求；认证与材料追溯；手动、开关或调节自动化。
+**选型必问：** 配套主产品；尺寸和连接标准；接液材料；表面状态；密封材质；压力与温度；清洗灭菌循环；批次和材料追溯；安装空间；更换周期。
 
-**排除条件：** 不能用系列名称代替具体阀体、膜片和连接配置；未确认排空、死区、温压、材料证明或灭菌循环时，不得判定适用于关键无菌主工艺。
+**排除条件：** 尺寸或材料相近不代表可互换；未经主产品兼容性、材料证明和寿命验证，不得用于关键工艺替换。
 
 **相邻产品：** BBS-03|BBS-05|BBS-06|BBS-10|BBS-25
 
@@ -2174,15 +2174,15 @@
 
 **工作原理：** These sterile check valves with welded connection are suitable for liquids. The eccentric design and the specially designed internal geometry enable nearly complete draining in a horizontal installation position. In addition, due to the two-part design, the flow direction can be freely selected through a simple conversion.
 
-**客户任务：** 在卫生管路连接中完成卫生隔离、切换、调节或低滞留流路设计；具体任务取决于阀体和执行配置。
+**客户任务：** 作为卫生管路连接的连接、密封或维护部件，保证完整流路的机械兼容、卫生边界和可追溯性。
 
 **制药应用：** 卫生管路连接
 
 **公开规格：** explicit_connection_types=weld
 
-**选型必问：** 介质与批次风险；DN及目标Cv/Kv；阀体流路和排空方向；接液材料与表面粗糙度；膜片材质和寿命；连接标准；工作与灭菌温压；CIP/SIP程序；死区要求；认证与材料追溯；手动、开关或调节自动化。
+**选型必问：** 配套主产品；尺寸和连接标准；接液材料；表面状态；密封材质；压力与温度；清洗灭菌循环；批次和材料追溯；安装空间；更换周期。
 
-**排除条件：** 不能用系列名称代替具体阀体、膜片和连接配置；未确认排空、死区、温压、材料证明或灭菌循环时，不得判定适用于关键无菌主工艺。
+**排除条件：** 尺寸或材料相近不代表可互换；未经主产品兼容性、材料证明和寿命验证，不得用于关键工艺替换。
 
 **相邻产品：** BBS-03|BBS-05|BBS-06|BBS-07|BBS-25
 
@@ -2206,15 +2206,15 @@
 
 **工作原理：** The three-part BBS-25 clamp connections consisting of clamp sockets, clamps and seals are compatible with all standard connections on the market. Clamp connections can be combined in accordance with DIN 32676. For connections with higher demands, we recommend the BBS sterile contour connections BBS-03, BBS-05 oder BBS-06.
 
-**客户任务：** 在卫生管路连接中完成卫生隔离、切换、调节或低滞留流路设计；具体任务取决于阀体和执行配置。
+**客户任务：** 作为卫生管路连接的连接、密封或维护部件，保证完整流路的机械兼容、卫生边界和可追溯性。
 
 **制药应用：** 卫生管路连接
 
 **公开规格：** explicit_connection_types=clamp
 
-**选型必问：** 介质与批次风险；DN及目标Cv/Kv；阀体流路和排空方向；接液材料与表面粗糙度；膜片材质和寿命；连接标准；工作与灭菌温压；CIP/SIP程序；死区要求；认证与材料追溯；手动、开关或调节自动化。
+**选型必问：** 配套主产品；尺寸和连接标准；接液材料；表面状态；密封材质；压力与温度；清洗灭菌循环；批次和材料追溯；安装空间；更换周期。
 
-**排除条件：** 不能用系列名称代替具体阀体、膜片和连接配置；未确认排空、死区、温压、材料证明或灭菌循环时，不得判定适用于关键无菌主工艺。
+**排除条件：** 尺寸或材料相近不代表可互换；未经主产品兼容性、材料证明和寿命验证，不得用于关键工艺替换。
 
 **相邻产品：** BBS-03|BBS-05|BBS-06|BBS-07|BBS-10
 
@@ -2334,15 +2334,15 @@
 
 **工作原理：** The electromagnetic flow sensor Type S056 (compact or remote variant) is suitable for applications with low flow rates and liquids with minimum conductivity. Combining it with the corresponding transmitter Type SE58 S (required minimum conductivity: 20 µS/cm) or Type SE58 M or Type SE58 L transmitters (required minimum conductivity: 5 µS/cm) results in a flowmeter with varying performance, functions, materials, and approvals, suitable for specific applications as per the respective requirements. Compact devices are built with Type SE58 S, while with Type SE58 M or Type SE58 L, both compact devices and remote variants are available, where the transmitter and sensor are connected with 2 cables up to a maximum distance. Standard process connections for Type S056 are available as clamp and threaded (dairy thread) connections.
 
-**客户任务：** 在WFI/PW及CIP流量监控中完成卫生隔离、切换、调节或低滞留流路设计；具体任务取决于阀体和执行配置。
+**客户任务：** 在WFI/PW及CIP流量监控中完成过程测量、监控或闭环控制，为批次放行、清洗终点或工艺稳定性提供信号。
 
 **制药应用：** WFI/PW及CIP流量监控
 
 **公开规格：** explicit_connection_types=clamp | thread；nominal_diameter_dn_range_1=DN 03…DN 100
 
-**选型必问：** 介质与批次风险；DN及目标Cv/Kv；阀体流路和排空方向；接液材料与表面粗糙度；膜片材质和寿命；连接标准；工作与灭菌温压；CIP/SIP程序；死区要求；认证与材料追溯；手动、开关或调节自动化。
+**选型必问：** 介质及电导/黏度/气体组分；量程与正常工作点；精度、重复性和响应时间；压力、温度及压降；接液材料；卫生连接与可清洗性；校准和验证要求；输出信号、现场总线和控制系统接口；安装方向与直管段。
 
-**排除条件：** 不能用系列名称代替具体阀体、膜片和连接配置；未确认排空、死区、温压、材料证明或灭菌循环时，不得判定适用于关键无菌主工艺。
+**排除条件：** 量程、介质属性、安装条件或校准口径不一致时不得直接比较精度；没有卫生连接、材料和清洗适配证据时，不得仅凭测量原理判定可用于制药主工艺。
 
 **相邻产品：** 8056
 
@@ -2366,15 +2366,15 @@
 
 **工作原理：** The diaphragms for Robolux components were developed in order to meet the unique challenges of hygienic and sterile requirements. Bürkert offers diaphragms with precise material composition and high accuracy. Bürkert diaphragms are available in a wide range of materials that have been tried and tested for use in the food and beverage industry, biotechnology and the pharmaceutical and cosmetics industry. The diaphragms are tested during development and production in order to ensure reliability under difficult process conditions. If you would like more help in choosing the right components, please call us. We shall be glad to provide specific personal consultation.
 
-**客户任务：** 在卫生隔膜阀膜片维护中完成卫生隔离、切换、调节或低滞留流路设计；具体任务取决于阀体和执行配置。
+**客户任务：** 作为卫生隔膜阀膜片维护的连接、密封或维护部件，保证完整流路的机械兼容、卫生边界和可追溯性。
 
 **制药应用：** 卫生隔膜阀膜片维护
 
 **公开规格：** explicit_materials=PTFE | EPDM；explicit_seal_materials=EPDM | PTFE
 
-**选型必问：** 介质与批次风险；DN及目标Cv/Kv；阀体流路和排空方向；接液材料与表面粗糙度；膜片材质和寿命；连接标准；工作与灭菌温压；CIP/SIP程序；死区要求；认证与材料追溯；手动、开关或调节自动化。
+**选型必问：** 配套主产品；尺寸和连接标准；接液材料；表面状态；密封材质；压力与温度；清洗灭菌循环；批次和材料追溯；安装空间；更换周期。
 
-**排除条件：** 不能用系列名称代替具体阀体、膜片和连接配置；未确认排空、死区、温压、材料证明或灭菌循环时，不得判定适用于关键无菌主工艺。
+**排除条件：** 尺寸或材料相近不代表可互换；未经主产品兼容性、材料证明和寿命验证，不得用于关键工艺替换。
 
 **相邻产品：** SV02
 
@@ -2398,15 +2398,15 @@
 
 **工作原理：** The diaphragms were developed in order to meet the unique challenges of hygienic and sterile requirements. Bürkert offers diaphragms with precise material composition and high accuracy. Bürkert diaphragms are available in a wide range of materials that have been tried and tested for use in the food and beverage industry, biotechnology and the pharmaceutical and cosmetics industry. The diaphragms are tested during development and production in order to ensure reliability under difficult process conditions. If you would like more help in choosing the right components, please call us. We shall be glad to provide specific personal consultation.
 
-**客户任务：** 在卫生隔膜阀膜片维护中完成卫生隔离、切换、调节或低滞留流路设计；具体任务取决于阀体和执行配置。
+**客户任务：** 作为卫生隔膜阀膜片维护的连接、密封或维护部件，保证完整流路的机械兼容、卫生边界和可追溯性。
 
 **制药应用：** 卫生隔膜阀膜片维护
 
 **公开规格：** explicit_materials=PTFE | EPDM；explicit_seal_materials=EPDM | PTFE | FKM
 
-**选型必问：** 介质与批次风险；DN及目标Cv/Kv；阀体流路和排空方向；接液材料与表面粗糙度；膜片材质和寿命；连接标准；工作与灭菌温压；CIP/SIP程序；死区要求；认证与材料追溯；手动、开关或调节自动化。
+**选型必问：** 配套主产品；尺寸和连接标准；接液材料；表面状态；密封材质；压力与温度；清洗灭菌循环；批次和材料追溯；安装空间；更换周期。
 
-**排除条件：** 不能用系列名称代替具体阀体、膜片和连接配置；未确认排空、死区、温压、材料证明或灭菌循环时，不得判定适用于关键无菌主工艺。
+**排除条件：** 尺寸或材料相近不代表可互换；未经主产品兼容性、材料证明和寿命验证，不得用于关键工艺替换。
 
 **相邻产品：** SV01
 

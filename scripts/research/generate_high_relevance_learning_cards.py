@@ -160,6 +160,15 @@ def unique_join(values: Iterable[str], separator: str = "；") -> str:
     return separator.join(result)
 
 
+def pipe_values(values: Iterable[str]) -> list[str]:
+    return [
+        part.strip()
+        for value in values
+        for part in value.split("|")
+        if part.strip()
+    ]
+
+
 def identifier_present(value: str, identifier: str) -> bool:
     pattern = rf"(?<![A-Za-z0-9]){re.escape(identifier)}(?![A-Za-z0-9])"
     return re.search(pattern, value, flags=re.IGNORECASE) is not None
@@ -175,7 +184,6 @@ def guidance_for(row: dict[str, str], company: str) -> Guidance:
             "product_group",
             "name_en",
             "catalogue_title",
-            "pharma_applications",
         )
     ).lower()
     applications = row.get("pharma_applications", "").strip() or "制药流体过程中的适用任务"
@@ -186,23 +194,29 @@ def guidance_for(row: dict[str, str], company: str) -> Guidance:
         or row.get("catalogue_title", "")
     )
 
-    if any(term in searchable for term in ("diaphragm", "隔膜", "aseptic", "hygienic", "multi-port", "multiport", "tank bottom")):
-        return Guidance(
-            f"在{applications}中完成卫生隔离、切换、调节或低滞留流路设计；具体任务取决于阀体和执行配置。",
-            "介质与批次风险；DN及目标Cv/Kv；阀体流路和排空方向；接液材料与表面粗糙度；膜片材质和寿命；连接标准；工作与灭菌温压；CIP/SIP程序；死区要求；认证与材料追溯；手动、开关或调节自动化。",
-            "不能用系列名称代替具体阀体、膜片和连接配置；未确认排空、死区、温压、材料证明或灭菌循环时，不得判定适用于关键无菌主工艺。",
+    if any(
+        term in searchable
+        for term in (
+            "flowmeter",
+            "flow meter",
+            "flow measurement",
+            "mfc",
+            "mfm",
+            "流量计",
+            "流量测量",
+            "conductivity",
+            "orp",
+            "analysis sensor",
+            "liquid analysis",
+            "sensor",
+            "transmitter",
+            "measuring device",
         )
-    if any(term in searchable for term in ("flow", "mfc", "mfm", "流量", "conductivity", "ph", "analysis", "sensor", "transmitter", "measuring")):
+    ):
         return Guidance(
             f"在{applications}中完成过程测量、监控或闭环控制，为批次放行、清洗终点或工艺稳定性提供信号。",
             "介质及电导/黏度/气体组分；量程与正常工作点；精度、重复性和响应时间；压力、温度及压降；接液材料；卫生连接与可清洗性；校准和验证要求；输出信号、现场总线和控制系统接口；安装方向与直管段。",
             "量程、介质属性、安装条件或校准口径不一致时不得直接比较精度；没有卫生连接、材料和清洗适配证据时，不得仅凭测量原理判定可用于制药主工艺。",
-        )
-    if any(term in searchable for term in ("positioner", "control head", "automation", "controller", "remote", "interface")):
-        return Guidance(
-            f"为{applications}提供阀门驱动、位置反馈、诊断或分布式自动化，降低接线和维护复杂度。",
-            "兼容的阀门与执行器；开关或连续调节；供气与供电；输入输出信号；通信协议；反馈和诊断深度；故障安全位；防护与防爆等级；清洗环境；调试和资产管理方式。",
-            "机械接口、行程、供气供电或协议不兼容时不得替换；系列具备诊断能力不代表每个配置都已启用相同功能。",
         )
     if any(term in searchable for term in ("single use", "single-use", "pinch", "tube", "tubing", "一次性")):
         return Guidance(
@@ -210,17 +224,29 @@ def guidance_for(row: dict[str, str], company: str) -> Guidance:
             "软管与接液材料；管径和壁厚；灭菌方式；压力与温度；密封完整性；死体积和滞留；循环次数或一次性使用边界；批次追溯；供应连续性；执行器和反馈要求。",
             "软管尺寸、材料、灭菌方法或寿命未经确认时不得替代；一次性组件与可重复使用阀门的维护、验证和总成本口径不可直接混比。",
         )
-    if any(term in searchable for term in ("ball", "butterfly", "globe", "angle", "seat", "bellows", "valve", "阀")):
-        return Guidance(
-            f"在{applications}中完成介质隔离、切换或调节，适用性由阀体结构、密封和工况共同决定。",
-            "介质；DN与目标Cv/Kv；压力、温度和压差；阀体与密封材料；连接标准；泄漏等级；执行方式和故障安全位；循环频率；清洗或灭菌要求；认证与材料文件。",
-            "不同阀体结构、密封原理和调节任务不可仅按口径互换；缺少接液材料、温压、排空或卫生证明时，不得外推到关键无菌流路。",
-        )
     if any(term in searchable for term in ("fitting", "connection", "component", "accessor", "膜片", "diaphragms")):
         return Guidance(
             f"作为{applications}的连接、密封或维护部件，保证完整流路的机械兼容、卫生边界和可追溯性。",
             "配套主产品；尺寸和连接标准；接液材料；表面状态；密封材质；压力与温度；清洗灭菌循环；批次和材料追溯；安装空间；更换周期。",
             "尺寸或材料相近不代表可互换；未经主产品兼容性、材料证明和寿命验证，不得用于关键工艺替换。",
+        )
+    if any(term in searchable for term in ("diaphragm", "隔膜", "aseptic", "hygienic", "multi-port", "multiport", "tank bottom")):
+        return Guidance(
+            f"在{applications}中完成卫生隔离、切换、调节或低滞留流路设计；具体任务取决于阀体和执行配置。",
+            "介质与批次风险；DN及目标Cv/Kv；阀体流路和排空方向；接液材料与表面粗糙度；膜片材质和寿命；连接标准；工作与灭菌温压；CIP/SIP程序；死区要求；认证与材料追溯；手动、开关或调节自动化。",
+            "不能用系列名称代替具体阀体、膜片和连接配置；未确认排空、死区、温压、材料证明或灭菌循环时，不得判定适用于关键无菌主工艺。",
+        )
+    if any(term in searchable for term in ("positioner", "control head", "automation", "controller", "remote", "interface")):
+        return Guidance(
+            f"为{applications}提供阀门驱动、位置反馈、诊断或分布式自动化，降低接线和维护复杂度。",
+            "兼容的阀门与执行器；开关或连续调节；供气与供电；输入输出信号；通信协议；反馈和诊断深度；故障安全位；防护与防爆等级；清洗环境；调试和资产管理方式。",
+            "机械接口、行程、供气供电或协议不兼容时不得替换；系列具备诊断能力不代表每个配置都已启用相同功能。",
+        )
+    if any(term in searchable for term in ("ball", "butterfly", "globe", "angle", "seat", "bellows", "valve", "阀")):
+        return Guidance(
+            f"在{applications}中完成介质隔离、切换或调节，适用性由阀体结构、密封和工况共同决定。",
+            "介质；DN与目标Cv/Kv；压力、温度和压差；阀体与密封材料；连接标准；泄漏等级；执行方式和故障安全位；循环频率；清洗或灭菌要求；认证与材料文件。",
+            "不同阀体结构、密封原理和调节任务不可仅按口径互换；缺少接液材料、温压、排空或卫生证明时，不得外推到关键无菌流路。",
         )
 
     return Guidance(
@@ -277,7 +303,8 @@ def mapping_summary(
         ]
         overlap_parts.append(" / ".join(value for value in candidates if value))
     evidence_ids = unique_join(
-        (row.get("evidence_ids", "") for row in matches), separator="|"
+        pipe_values(row.get("evidence_ids", "") for row in matches),
+        separator="|",
     )
     return (
         unique_join(overlap_parts),
@@ -410,7 +437,7 @@ def build_card(
 def write_csv(cards: list[dict[str, str]], output_directory: Path) -> None:
     path = output_directory / OUTPUT_FILENAME
     with path.open("w", encoding="utf-8-sig", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=CARD_FIELDS)
+        writer = csv.DictWriter(handle, fieldnames=CARD_FIELDS, lineterminator="\n")
         writer.writeheader()
         writer.writerows(cards)
 

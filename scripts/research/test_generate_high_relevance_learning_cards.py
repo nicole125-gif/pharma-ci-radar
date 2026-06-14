@@ -61,6 +61,28 @@ class GenerateHighRelevanceLearningCardsTest(unittest.TestCase):
             self.assertIn("价格", esg_a00["knowledge_gaps"])
             self.assertIn("交期", esg_a00["knowledge_gaps"])
 
+            esg_t_valve = next(
+                card
+                for card in cards
+                if card["company"] == "ESG 精锐" and card["product_id"] == "T-VALVE"
+            )
+            self.assertIn("DN与目标Cv/Kv", esg_t_valve["selection_questions"])
+            self.assertNotIn("量程与正常工作点", esg_t_valve["selection_questions"])
+
+            burkert_flowave = next(
+                card
+                for card in cards
+                if card["company"] == "Bürkert" and card["product_id"] == "8056"
+            )
+            self.assertIn("量程与正常工作点", burkert_flowave["selection_questions"])
+
+            burkert_ph = next(
+                card
+                for card in cards
+                if card["company"] == "Bürkert" and card["product_id"] == "8201"
+            )
+            self.assertIn("校准和验证要求", burkert_ph["selection_questions"])
+
     def test_writes_one_handbook_section_per_card(self):
         with tempfile.TemporaryDirectory() as temporary_directory:
             output_directory = Path(temporary_directory)

@@ -121,6 +121,9 @@ def validate(
         for source_url in row.get("source_urls", "").split("|"):
             if source_url and not validate_url(source_url):
                 errors.append(f"{context}: invalid source URL {source_url}")
+        evidence_ids = row.get("evidence_ids", "").split("|")
+        if len(evidence_ids) != len(set(evidence_ids)):
+            errors.append(f"{context}: duplicate evidence IDs")
         gaps = row.get("knowledge_gaps", "")
         for required_gap in ("价格", "库存", "产地", "交期", "装机量", "售后"):
             if required_gap not in gaps:
