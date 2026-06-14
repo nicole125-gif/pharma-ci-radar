@@ -27,7 +27,19 @@ function productScore(product: KnowledgeProduct, query: string): number {
   const id = normalize(product.productId);
   const name = normalize(`${product.name} ${product.secondaryName ?? ""}`);
   const body = normalize(
-    `${product.category} ${product.subcategory} ${product.productRole} ${product.applications}`
+    [
+      product.category,
+      product.subcategory,
+      product.productRole,
+      product.applications,
+      product.learningCard?.customerJobs,
+      product.learningCard?.keySpecifications,
+      product.learningCard?.selectionQuestions,
+      product.learningCard?.competitorOverlap,
+      product.learningCard?.memoryHook
+    ]
+      .filter(Boolean)
+      .join(" ")
   );
 
   if (!needle) return product.pharmaRelevance === "HIGH" ? 20 : 10;

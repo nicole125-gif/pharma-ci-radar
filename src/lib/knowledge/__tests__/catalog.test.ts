@@ -12,7 +12,8 @@ const SOURCE_FILES = [
   "2026-06-pharma-application-selection-matrix.csv",
   "2026-06-product-knowledge-30-day-curriculum.csv",
   "2026-06-internal-validation-backlog.csv",
-  "2026-06-internal-validation-execution.csv"
+  "2026-06-internal-validation-execution.csv",
+  "2026-06-high-relevance-product-learning-cards.csv"
 ] as const;
 
 const temporaryDirectories: string[] = [];
@@ -53,6 +54,7 @@ describe("knowledge catalog", () => {
     expect(catalog.scenarios).toHaveLength(12);
     expect(catalog.curriculum).toHaveLength(30);
     expect(catalog.validationTasks).toHaveLength(16);
+    expect(catalog.learningCards).toHaveLength(136);
   });
 
   it("maps source-specific rows to stable product records", async () => {
@@ -67,6 +69,11 @@ describe("knowledge catalog", () => {
       category: "过程与控制阀"
     });
     expect(type2103?.sourceUrl).toContain("/type/2103");
+    expect(type2103?.learningCard).toMatchObject({
+      productId: "2103",
+      reviewStatus: "GENERATED_REVIEWED_BY_RULES"
+    });
+    expect(type2103?.learningCard?.selectionQuestions).toContain("介质");
   });
 
   it("reuses unchanged files and reloads after a source mtime changes", async () => {
