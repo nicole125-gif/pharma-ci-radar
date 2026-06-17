@@ -9,11 +9,23 @@ import { StatusBadge } from "@/components/status-badge";
 import { getRepository } from "@/lib/repository";
 import type { ActionQueueItem, CompetitorAnalysis, IntelEvent } from "@/lib/types";
 
-export default function DashboardPage() {
+export default async function DashboardPage({
+  searchParams
+}: {
+  searchParams?: Promise<{ monitor?: string; scanned?: string; events?: string }>;
+}) {
+  const resolvedSearchParams = await searchParams;
   const dashboard = getRepository().getDashboard();
   const externalCompetitors = dashboard.competitors.filter((competitor) => competitor.role === "COMPETITOR");
   const ownCompany = dashboard.competitors.find((competitor) => competitor.role === "OWN_COMPANY");
   const view = buildDashboardView(dashboard);
+  const monitorResult =
+    resolvedSearchParams?.monitor === "done"
+      ? {
+          scannedSources: Number(resolvedSearchParams.scanned ?? 0),
+          createdEvents: Number(resolvedSearchParams.events ?? 0)
+        }
+      : null;
 
   return (
     <AppShell>
@@ -23,6 +35,8 @@ export default function DashboardPage() {
         description="分数只是历史专家参考；首页优先展示对竞品意图、威胁等级、证据可信度和 Bürkert 应对动作的判断。"
         action={<RunMonitorButton />}
       />
+
+      {monitorResult ? <MonitorResult scannedSources={monitorResult.scannedSources} createdEvents={monitorResult.createdEvents} /> : null}
 
       <section className="grid grid-cols-4 gap-4 max-[1100px]:grid-cols-2 max-[620px]:grid-cols-1">
         <MetricCard label="我方基准" value={ownCompany?.name ?? "Bürkert"} detail="矩阵和周报均以 Bürkert 为比较对象" />
@@ -148,6 +162,36 @@ function MiniSignal({ label, value, detail }: { label: string; value: string; de
       <div className="mt-2 font-semibold">{value}</div>
       <div className="mt-1 text-xs leading-5 text-[var(--muted)]">{detail}</div>
     </div>
+  );
+}
+
+function MonitorResult({ scannedSources, createdEvents }: { scannedSources: number; createdEvents: number }) {
+  const hasApprovedSources = scannedSources > 0;
+
+  return (
+    <section className="mb-5 rounded border border-[var(--line)] bg-[var(--panel-strong)] p-4">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-start gap-3">
+          {hasApprovedSources ? (
+            <CheckCircle2 className="mt-0.5 shrink-0 text-emerald-200" size={18} />
+          ) : (
+            <AlertTriangle className="mt-0.5 shrink-0 text-amber-200" size={18} />
+          )}
+          <div>
+            <div className="text-sm font-semibold">{hasApprovedSources ? "监测已运行" : "监测已运行，但没有可扫描来源"}</div>
+            <p className="mt-1 text-sm leading-6 text-[var(--muted)]">
+              本次扫描 {scannedSources} 个已批准来源，生成 {createdEvents} 条变化事件。
+              {hasApprovedSources ? " 如有新事件，会进入重大变化、提醒和评分建议。" : " 请先在来源审核中批准候选来源，再运行监测。"}
+            </p>
+          </div>
+        </div>
+        {!hasApprovedSources ? (
+          <Link href="/sources" className="rounded border border-[var(--line)] px-3 py-2 text-sm text-[var(--accent-2)] hover:bg-white/5">
+            去审核来源
+          </Link>
+        ) : null}
+      </div>
+    </section>
   );
 }
 

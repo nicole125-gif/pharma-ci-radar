@@ -14,10 +14,11 @@ export async function reviewSourceAction(formData: FormData) {
 }
 
 export async function runMonitorAction() {
-  await getRepository().runMonitorJob();
+  const result = await getRepository().runMonitorJob();
   revalidatePath("/");
   revalidatePath("/alerts");
   revalidatePath("/score-suggestions");
+  redirect(`/?monitor=done&scanned=${result.scannedSources}&events=${result.createdEvents}`);
 }
 
 export async function reviewScoreSuggestionAction(formData: FormData) {
