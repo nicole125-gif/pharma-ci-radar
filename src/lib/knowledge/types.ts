@@ -17,6 +17,31 @@ export interface KnowledgeProduct {
   evidenceGrade: string;
   sourceUrl?: string;
   boundary: string;
+  learningCard?: ProductLearningCard;
+}
+
+export interface ProductLearningCard {
+  cardId: string;
+  company: KnowledgeCompany;
+  productId: string;
+  operatingPrinciple: string;
+  customerJobs: string;
+  pharmaApplications: string;
+  keySpecifications: string;
+  selectionQuestions: string;
+  exclusionConditions: string;
+  adjacentOrRelatedProducts: string;
+  competitorOverlap: string;
+  comparisonDimensions: string;
+  factBoundary: string;
+  sourceUrls: string[];
+  evidenceIds: string[];
+  knowledgeGaps: string;
+  memoryHook: string;
+  quizQuestion: string;
+  reviewStatus: "GENERATED_REVIEWED_BY_RULES";
+  sourceAccessedDate: string;
+  generatedDate: string;
 }
 
 export interface ApplicationScenario {
@@ -243,6 +268,7 @@ export interface KnowledgeCatalog {
   fujikinProducts: KnowledgeProduct[];
   esgProducts: KnowledgeProduct[];
   scenarios: ApplicationScenario[];
+  learningCards: ProductLearningCard[];
   curriculum: CurriculumDay[];
   validationTasks: ValidationTaskDefinition[];
 }

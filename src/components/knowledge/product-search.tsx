@@ -1,6 +1,8 @@
+import React from "react";
 import Link from "next/link";
-import { ExternalLink, Search } from "lucide-react";
+import { BookOpenCheck, ExternalLink, Search } from "lucide-react";
 import type { KnowledgeSearchFilters, KnowledgeSearchResult } from "@/lib/knowledge/search";
+import type { ProductLearningCard } from "@/lib/knowledge/types";
 
 export function ProductSearch({
   filters,
@@ -29,10 +31,13 @@ export function ProductSearch({
       <div className="text-sm text-[var(--muted)]">找到 {results.length} 条记录</div>
       <div className="panel divide-y divide-[var(--line)] overflow-hidden">
         {results.map((result) => result.recordType === "PRODUCT" ? (
-          <article key={`${result.company}-${result.productId}`} className="grid grid-cols-[170px_1fr_190px] gap-4 p-4 max-[850px]:grid-cols-1">
-            <div><div className="metric-number text-[var(--accent)]">{result.productId}</div><div className="mt-1 text-xs text-[var(--muted)]">{result.company}</div></div>
-            <div><h2 className="font-semibold">{result.name}</h2>{result.secondaryName && <p className="mt-1 text-sm">{result.secondaryName}</p>}<p className="mt-2 text-xs leading-5 text-[var(--muted)]">{result.category} / {result.subcategory} · {result.productRole}</p><p className="mt-2 text-xs leading-5 text-[var(--muted)]">{result.boundary}</p></div>
-            <div className="text-xs text-[var(--muted)]"><div>{result.pharmaRelevance} · 证据 {result.evidenceGrade}</div><div className="mt-2">{result.chinaOrEvidenceStatus || "中国可见性未确认"}</div>{result.sourceUrl && <a href={result.sourceUrl} target="_blank" rel="noreferrer" className="mt-3 inline-flex items-center gap-1 text-[var(--accent-2)]">官方来源<ExternalLink size={13} /></a>}</div>
+          <article key={`${result.company}-${result.productId}`} className="p-4">
+            <div className="grid grid-cols-[170px_1fr_190px] gap-4 max-[850px]:grid-cols-1">
+              <div><div className="metric-number text-[var(--accent)]">{result.productId}</div><div className="mt-1 text-xs text-[var(--muted)]">{result.company}</div></div>
+              <div><h2 className="font-semibold">{result.name}</h2>{result.secondaryName && <p className="mt-1 text-sm">{result.secondaryName}</p>}<p className="mt-2 text-xs leading-5 text-[var(--muted)]">{result.category} / {result.subcategory} · {result.productRole}</p><p className="mt-2 text-xs leading-5 text-[var(--muted)]">{result.boundary}</p></div>
+              <div className="text-xs text-[var(--muted)]"><div>{result.pharmaRelevance} · 证据 {result.evidenceGrade}</div><div className="mt-2">{result.chinaOrEvidenceStatus || "中国可见性未确认"}</div>{result.sourceUrl && <a href={result.sourceUrl} target="_blank" rel="noreferrer" className="mt-3 inline-flex items-center gap-1 text-[var(--accent-2)]">官方来源<ExternalLink size={13} /></a>}</div>
+            </div>
+            {result.learningCard && <LearningCard card={result.learningCard} />}
           </article>
         ) : (
           <article key={result.scenarioId} className="p-4">
@@ -46,6 +51,45 @@ export function ProductSearch({
       </div>
     </div>
   );
+}
+
+function LearningCard({ card }: { card: ProductLearningCard }) {
+  return (
+    <details className="mt-4 border-t border-[var(--line)] pt-3">
+      <summary className="flex cursor-pointer list-none items-center gap-2 text-sm font-semibold text-[var(--accent-2)]">
+        <BookOpenCheck size={16} />
+        深度学习卡
+        <span className="ml-auto text-xs font-normal text-[var(--muted)]">{card.sourceAccessedDate} · 规则复核</span>
+      </summary>
+      <div className="mt-4 grid grid-cols-2 gap-x-6 gap-y-4 text-sm max-[760px]:grid-cols-1">
+        <CardField label="客户任务" value={card.customerJobs} />
+        <CardField label="工作原理" value={card.operatingPrinciple} />
+        <CardField label="公开规格" value={card.keySpecifications} />
+        <CardField label="选型必问" value={card.selectionQuestions} />
+        <CardField label="排除条件" value={card.exclusionConditions} />
+        <CardField label="竞品重叠" value={card.competitorOverlap} />
+        <CardField label="比较维度" value={card.comparisonDimensions} />
+        <CardField label="相邻产品" value={card.adjacentOrRelatedProducts} />
+        <CardField label="事实边界" value={card.factBoundary} />
+        <CardField label="待内部验证" value={card.knowledgeGaps} />
+        <CardField label="快速记忆" value={card.memoryHook} />
+        <CardField label="自测题" value={card.quizQuestion} />
+      </div>
+      {card.sourceUrls.length > 0 && (
+        <div className="mt-4 flex flex-wrap gap-3 border-t border-[var(--line)] pt-3 text-xs">
+          {card.sourceUrls.map((url, index) => (
+            <a key={url} href={url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-[var(--accent-2)]">
+              来源 {index + 1}<ExternalLink size={12} />
+            </a>
+          ))}
+        </div>
+      )}
+    </details>
+  );
+}
+
+function CardField({ label, value }: { label: string; value: string }) {
+  return <div><div className="text-xs font-semibold text-[var(--muted)]">{label}</div><p className="mt-1 leading-6">{value}</p></div>;
 }
 
 function Select({ name, label, value, options }: { name: string; label: string; value?: string; options: string[] }) {

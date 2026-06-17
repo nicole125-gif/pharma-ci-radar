@@ -7,6 +7,7 @@ import type {
   KnowledgeCatalog,
   KnowledgeProduct,
   PharmaRelevance,
+  ProductLearningCard,
   ValidationStatus,
   ValidationTaskDefinition
 } from "./types";
@@ -20,7 +21,8 @@ const SOURCE_FILES = [
   "2026-06-pharma-application-selection-matrix.csv",
   "2026-06-product-knowledge-30-day-curriculum.csv",
   "2026-06-internal-validation-backlog.csv",
-  "2026-06-internal-validation-execution.csv"
+  "2026-06-internal-validation-execution.csv",
+  "2026-06-high-relevance-product-learning-cards.csv"
 ] as const;
 
 const cache = new Map<
@@ -143,6 +145,30 @@ interface ValidationExecutionRow {
   decision_output: string;
   review_cadence: string;
   target_window: string;
+}
+
+interface LearningCardRow {
+  card_id: string;
+  company: string;
+  product_id: string;
+  operating_principle: string;
+  customer_jobs: string;
+  pharma_applications: string;
+  key_specifications: string;
+  selection_questions: string;
+  exclusion_conditions: string;
+  adjacent_or_related_products: string;
+  competitor_overlap: string;
+  comparison_dimensions: string;
+  fact_boundary: string;
+  source_urls: string;
+  evidence_ids: string;
+  knowledge_gaps: string;
+  memory_hook: string;
+  quiz_question: string;
+  review_status: string;
+  source_accessed_date: string;
+  generated_date: string;
 }
 
 async function readCsv<T extends object>(
@@ -392,6 +418,59 @@ function mapScenario(row: ScenarioRow, index: number): ApplicationScenario {
   };
 }
 
+function mapLearningCard(
+  row: LearningCardRow,
+  index: number
+): ProductLearningCard {
+  const filename = "2026-06-high-relevance-product-learning-cards.csv";
+  const productId = required(
+    row.product_id,
+    filename,
+    "product_id",
+    `row ${index + 2}`
+  );
+  if (
+    row.company !== "Bürkert" &&
+    row.company !== "GEMÜ" &&
+    row.company !== "Fujikin" &&
+    row.company !== "ESG 精锐"
+  ) {
+    throw new Error(
+      `${filename}: invalid company ${JSON.stringify(row.company)} in ${productId}`
+    );
+  }
+  if (row.review_status !== "GENERATED_REVIEWED_BY_RULES") {
+    throw new Error(
+      `${filename}: invalid review_status ${JSON.stringify(row.review_status)} in ${productId}`
+    );
+  }
+  return {
+    cardId: required(row.card_id, filename, "card_id", productId),
+    company: row.company,
+    productId,
+    operatingPrinciple: row.operating_principle,
+    customerJobs: row.customer_jobs,
+    pharmaApplications: row.pharma_applications,
+    keySpecifications: row.key_specifications,
+    selectionQuestions: row.selection_questions,
+    exclusionConditions: row.exclusion_conditions,
+    adjacentOrRelatedProducts: row.adjacent_or_related_products,
+    competitorOverlap: row.competitor_overlap,
+    comparisonDimensions: row.comparison_dimensions,
+    factBoundary: row.fact_boundary,
+    sourceUrls:
+      row.source_urls === "" ? [] : row.source_urls.split("|").filter(Boolean),
+    evidenceIds:
+      row.evidence_ids === "" ? [] : row.evidence_ids.split("|").filter(Boolean),
+    knowledgeGaps: row.knowledge_gaps,
+    memoryHook: row.memory_hook,
+    quizQuestion: row.quiz_question,
+    reviewStatus: row.review_status,
+    sourceAccessedDate: row.source_accessed_date,
+    generatedDate: row.generated_date
+  };
+}
+
 function mapCurriculum(row: CurriculumRow, index: number): CurriculumDay {
   const filename = "2026-06-product-knowledge-30-day-curriculum.csv";
   const recordContext = `row ${index + 2}`;
@@ -527,7 +606,8 @@ export async function loadKnowledgeCatalog(
     scenarioRows,
     curriculumRows,
     validationBacklogRows,
-    validationExecutionRows
+    validationExecutionRows,
+    learningCardRows
   ] = await Promise.all([
     readCsv<BurkertRow>(researchDirectory, SOURCE_FILES[0], [
       "type_id",
@@ -637,13 +717,46 @@ export async function loadKnowledgeCatalog(
       "decision_output",
       "review_cadence",
       "target_window"
+    ]),
+    readCsv<LearningCardRow>(researchDirectory, SOURCE_FILES[8], [
+      "card_id",
+      "company",
+      "product_id",
+      "operating_principle",
+      "customer_jobs",
+      "pharma_applications",
+      "key_specifications",
+      "selection_questions",
+      "exclusion_conditions",
+      "adjacent_or_related_products",
+      "competitor_overlap",
+      "comparison_dimensions",
+      "fact_boundary",
+      "source_urls",
+      "evidence_ids",
+      "knowledge_gaps",
+      "memory_hook",
+      "quiz_question",
+      "review_status",
+      "source_accessed_date",
+      "generated_date"
     ])
   ]);
 
-  const burkertProducts = burkertRows.map(mapBurkert);
-  const gemuProducts = gemuRows.map(mapGemu);
-  const fujikinProducts = fujikinRows.map(mapFujikin);
-  const esgProducts = esgRows.map(mapEsg);
+  const learningCards = learningCardRows.map(mapLearningCard);
+  const learningCardsByProduct = new Map(
+    learningCards.map((card) => [`${card.company}\u0000${card.productId}`, card])
+  );
+  const attachLearningCard = (product: KnowledgeProduct): KnowledgeProduct => ({
+    ...product,
+    learningCard: learningCardsByProduct.get(
+      `${product.company}\u0000${product.productId}`
+    )
+  });
+  const burkertProducts = burkertRows.map(mapBurkert).map(attachLearningCard);
+  const gemuProducts = gemuRows.map(mapGemu).map(attachLearningCard);
+  const fujikinProducts = fujikinRows.map(mapFujikin).map(attachLearningCard);
+  const esgProducts = esgRows.map(mapEsg).map(attachLearningCard);
   const value: KnowledgeCatalog = {
     products: [
       ...burkertProducts,
@@ -656,6 +769,7 @@ export async function loadKnowledgeCatalog(
     fujikinProducts,
     esgProducts,
     scenarios: scenarioRows.map(mapScenario),
+    learningCards,
     curriculum: curriculumRows.map(mapCurriculum),
     validationTasks: mapValidationTasks(
       validationBacklogRows,

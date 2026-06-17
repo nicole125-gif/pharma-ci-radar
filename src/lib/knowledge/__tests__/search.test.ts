@@ -10,8 +10,27 @@ describe("knowledge search", () => {
     expect(results[0]).toMatchObject({
       recordType: "PRODUCT",
       company: "Bürkert",
-      productId: "2103"
+      productId: "2103",
+      learningCard: {
+        productId: "2103"
+      }
     });
+  });
+
+  it("searches deep-card fields without changing product identity", async () => {
+    const catalog = await loadKnowledgeCatalog();
+    const results = searchKnowledge(catalog, {
+      query: "死区要求",
+      company: "GEMÜ",
+      recordType: "PRODUCT"
+    });
+
+    expect(results.some(
+      (item) =>
+        item.recordType === "PRODUCT" &&
+        item.company === "GEMÜ" &&
+        item.learningCard?.selectionQuestions.includes("死区要求")
+    )).toBe(true);
   });
 
   it("finds competitor series and application scenarios", async () => {
