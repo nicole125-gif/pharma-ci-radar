@@ -1,3 +1,4 @@
+import React from "react";
 import type { EvidenceRecord, InternalEvidenceRecord, ValidationTaskDefinition, ValidationTaskState } from "@/lib/knowledge/types";
 import { EvidenceRecordForm, ValidationStateForm } from "./knowledge-forms";
 import { evidenceHref } from "@/lib/knowledge/traceability";
@@ -38,7 +39,7 @@ export function ValidationWorkspace({
   });
   return (
     <div className="grid gap-4">
-      <form className="panel flex flex-wrap gap-3 p-4"><input type="hidden" name="view" value="validation" /><label className="grid min-w-64 gap-1 text-xs text-[var(--muted)]">关键词<input name="q" defaultValue={query} className="rounded border border-[var(--line)] bg-black/20 px-3 py-2 text-sm" placeholder="任务、证据编号、主题..." /></label><Filter name="priority" label="优先级" value={priority} values={["ALL", "P0", "P1", "P2"]} /><Filter name="company" label="公司" value={company} values={["ALL", "All", "Bürkert", "GEMÜ", "Fujikin", "ESG Jingrui"]} /><button className="self-end rounded bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-black">筛选</button></form>
+      <form className="panel flex flex-wrap gap-3 p-4"><input type="hidden" name="view" value="validation" /><label className="grid min-w-64 gap-1 text-xs text-[var(--muted)]">关键词<input name="q" defaultValue={query} className="rounded border border-[var(--line)] bg-black/20 px-3 py-2 text-sm" placeholder="任务、证据编号、主题..." /></label><Filter name="priority" label="优先级" value={priority} values={["ALL", "P0", "P1", "P2"]} /><Filter name="company" label="公司" value={company} values={["ALL", "Bürkert", "GEMÜ", "Fujikin", "ESG 精锐"]} /><button className="self-end rounded bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-black">筛选</button></form>
       <div className="grid gap-4">{visible.map((task) => {
         const records = evidence.filter((item) => item.validationId === task.definition.validationId);
         const publicEvidence = publicEvidenceByTask[task.definition.validationId] ?? [];

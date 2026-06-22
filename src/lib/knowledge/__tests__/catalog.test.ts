@@ -123,6 +123,25 @@ describe("knowledge catalog", () => {
     expect(catalog.evidenceRecords.some((record) => record.company === "ESG Jingrui")).toBe(false);
   });
 
+  it("normalizes validation task company labels for filtering", async () => {
+    const catalog = await loadKnowledgeCatalog();
+
+    expect(catalog.validationTasks).toContainEqual(
+      expect.objectContaining({
+        validationId: "VAL-ESG-001",
+        company: "ESG 精锐"
+      })
+    );
+    expect(catalog.validationTasks).toContainEqual(
+      expect.objectContaining({
+        validationId: "VAL-CROSS-001",
+        company: "四家公司"
+      })
+    );
+    expect(catalog.validationTasks.some((task) => task.company === "ESG Jingrui")).toBe(false);
+    expect(catalog.validationTasks.some((task) => task.company === "All")).toBe(false);
+  });
+
   it("reuses unchanged files and reloads after a source mtime changes", async () => {
     const researchDirectory = await copyResearchSources();
     const first = await loadKnowledgeCatalog(researchDirectory);

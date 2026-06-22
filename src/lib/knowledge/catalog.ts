@@ -255,7 +255,9 @@ function normalizeFactStatus(value: string): FactStatus {
 }
 
 function normalizeEvidenceCompany(value: string): string {
-  return value === "ESG Jingrui" ? "ESG 精锐" : value;
+  if (value === "ESG Jingrui") return "ESG 精锐";
+  if (value === "All") return "四家公司";
+  return value;
 }
 
 function optional(value: string): string | undefined {
@@ -626,7 +628,7 @@ function mapValidationTasks(
         "2026-06-internal-validation-backlog.csv",
         validationId
       ),
-      company: backlog.company,
+      company: normalizeEvidenceCompany(backlog.company),
       topic: backlog.topic,
       question: backlog.question,
       evidenceRequired: backlog.evidence_required,
