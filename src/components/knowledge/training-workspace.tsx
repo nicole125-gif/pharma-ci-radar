@@ -1,5 +1,7 @@
+import React from "react";
 import Link from "next/link";
 import type { CurriculumDay, TrainingLearner, TrainingProgress, TrainingScore } from "@/lib/knowledge/types";
+import { getTrainingClosure } from "@/lib/knowledge/training-closure";
 import { CreateLearnerForm, TrainingProgressForm, TrainingScoreForm } from "./knowledge-forms";
 
 export function TrainingWorkspace({
@@ -32,7 +34,8 @@ export function TrainingWorkspace({
             <div className="border-b border-[var(--line)] px-4 py-3 font-semibold">第 {week} 周</div>
             <div className="divide-y divide-[var(--line)]">{curriculum.filter((day) => day.week === week).map((day) => {
               const dayProgress = progress.find((item) => item.day === day.day);
-              return <details key={day.day} className="group"><summary className="grid cursor-pointer grid-cols-[70px_150px_1fr_auto] gap-3 px-4 py-3 text-sm max-[700px]:grid-cols-1"><span className="metric-number text-[var(--accent)]">DAY {day.day}</span><span className="font-semibold">{day.module}</span><span className="text-[var(--muted)]">{day.learningObjective}</span><span className="text-xs text-[var(--accent-2)]">{dayProgress?.completionStatus ?? "NOT_STARTED"}</span></summary><div className="border-t border-[var(--line)] bg-black/10 p-4"><div className="mb-4 grid grid-cols-3 gap-4 text-xs leading-5 max-[700px]:grid-cols-1"><Text label="练习" value={day.exercise} /><Text label="要求产出" value={day.requiredOutput} /><Text label="通过标准" value={day.passCriteria} /></div>{selectedLearner && <TrainingProgressForm learnerId={selectedLearner.id} day={day} progress={dayProgress} disabled={readOnly} />}</div></details>;
+              const closure = getTrainingClosure(day.day);
+              return <details key={day.day} className="group"><summary className="grid cursor-pointer grid-cols-[70px_150px_1fr_auto] gap-3 px-4 py-3 text-sm max-[700px]:grid-cols-1"><span className="metric-number text-[var(--accent)]">DAY {day.day}</span><span className="font-semibold">{day.module}</span><span className="text-[var(--muted)]">{day.learningObjective}</span><span className="text-xs text-[var(--accent-2)]">{dayProgress?.completionStatus ?? "NOT_STARTED"}</span></summary><div className="border-t border-[var(--line)] bg-black/10 p-4"><div className="mb-4 grid grid-cols-3 gap-4 text-xs leading-5 max-[700px]:grid-cols-1"><Text label="练习" value={day.exercise} /><Text label="要求产出" value={day.requiredOutput} /><Text label="通过标准" value={day.passCriteria} /></div>{closure && <TrainingClosure closure={closure} />}{selectedLearner && <TrainingProgressForm learnerId={selectedLearner.id} day={day} progress={dayProgress} disabled={readOnly} />}</div></details>;
             })}</div>
           </section>
         ))}
@@ -42,3 +45,39 @@ export function TrainingWorkspace({
   );
 }
 function Text({ label, value }: { label: string; value: string }) { return <div><div className="font-semibold text-[var(--accent-2)]">{label}</div><p className="mt-1 text-[var(--muted)]">{value}</p></div>; }
+
+function TrainingClosure({ closure }: { closure: NonNullable<ReturnType<typeof getTrainingClosure>> }) {
+  return (
+    <section className="mb-4 rounded border border-[var(--line)] bg-black/10 p-4">
+      <div className="mb-2 text-sm font-semibold text-[var(--accent)]">{closure.title}</div>
+      <p className="mb-4 text-sm leading-6 text-[var(--muted)]">{closure.deliverable}</p>
+      <div className="grid grid-cols-2 gap-4 max-[760px]:grid-cols-1">
+        <ClosureList title="提交清单" items={closure.submissionChecklist} />
+        <ClosureList title="返工红线" items={closure.reworkTriggers} />
+      </div>
+      <div className="mt-4 grid grid-cols-4 gap-3 max-[900px]:grid-cols-2 max-[560px]:grid-cols-1">
+        {closure.scoringRubric.map((item) => (
+          <div key={item.dimension} className="rounded border border-[var(--line)] p-3 text-xs leading-5">
+            <div className="mb-1 font-semibold text-[var(--accent-2)]">{item.dimension} / {item.points}</div>
+            <p className="text-[var(--muted)]">{item.passSignal}</p>
+          </div>
+        ))}
+      </div>
+      <div className="mt-4 grid grid-cols-[1fr_1fr] gap-4 max-[760px]:grid-cols-1">
+        <ClosureList title="必须引用证据" items={closure.requiredEvidenceIds} />
+        <ClosureList title="自我复盘问题" items={closure.reflectionPrompts} />
+      </div>
+    </section>
+  );
+}
+
+function ClosureList({ title, items }: { title: string; items: string[] }) {
+  return (
+    <div>
+      <div className="mb-2 text-xs font-semibold text-[var(--accent-2)]">{title}</div>
+      <ul className="grid gap-2 text-xs leading-5 text-[var(--muted)]">
+        {items.map((item) => <li key={item}>- {item}</li>)}
+      </ul>
+    </div>
+  );
+}
