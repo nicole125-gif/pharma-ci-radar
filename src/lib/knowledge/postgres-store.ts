@@ -240,10 +240,110 @@ export function mapEvidenceRow(row: EvidenceRow): InternalEvidenceRecord {
 export function createPostgresKnowledgeStore(
   sql: Sql
 ): KnowledgeExecutionStore {
+  let schemaReady: Promise<void> | undefined;
+
+  function ensureSchema() {
+    schemaReady ??= (async () => {
+      await sql`
+        create table if not exists training_learners (
+          id text primary key,
+          name text not null,
+          cohort text not null,
+          active boolean not null default true,
+          created_at timestamptz not null default now()
+        )
+      `;
+      await sql`
+        create table if not exists training_progress (
+          learner_id text references training_learners(id) on delete cascade,
+          day integer not null check (day between 1 and 30),
+          scheduled_date date,
+          completion_status text not null check (completion_status in ('NOT_STARTED', 'IN_PROGRESS', 'SUBMITTED', 'COMPLETE')),
+          output_location text,
+          self_reflection text,
+          coach text,
+          coach_result text not null check (coach_result in ('NOT_REVIEWED', 'PASS', 'REWORK')),
+          coach_feedback text,
+          completed_date date,
+          updated_at timestamptz not null default now(),
+          primary key (learner_id, day)
+        )
+      `;
+      await sql`
+        create table if not exists training_scores (
+          id text primary key,
+          learner_id text references training_learners(id) on delete cascade,
+          checkpoint text not null check (checkpoint in ('BASELINE', 'DAY-10', 'DAY-20', 'DAY-30', 'RETEST')),
+          record_date date not null,
+          product_skeleton integer not null check (product_skeleton between 0 and 20),
+          parameter_evidence integer not null check (parameter_evidence between 0 and 20),
+          application_judgment integer not null check (application_judgment between 0 and 30),
+          competitive_strategy integer not null check (competitive_strategy between 0 and 30),
+          total_score integer not null check (total_score between 0 and 100),
+          fatal_error boolean not null,
+          result text not null check (result in ('PASS', 'REMEDIATE', 'NOT_ASSESSED')),
+          assessor text not null,
+          evidence_location text not null,
+          remediation_due date,
+          notes text,
+          created_at timestamptz not null default now()
+        )
+      `;
+      await sql`
+        create unique index if not exists training_scores_checkpoint_record_idx
+          on training_scores (learner_id, checkpoint, record_date)
+      `;
+      await sql`
+        create table if not exists validation_task_states (
+          validation_id text primary key,
+          owner text,
+          status text not null check (status in ('OPEN', 'IN_PROGRESS', 'VERIFIED', 'REJECTED', 'INSUFFICIENT')),
+          target_date date,
+          conclusion text,
+          updated_by text not null,
+          updated_at timestamptz not null default now()
+        )
+      `;
+      await sql`
+        create table if not exists internal_evidence_records (
+          id text primary key,
+          validation_id text not null,
+          received_date date not null,
+          collector text not null,
+          company text not null,
+          evidence_type text not null,
+          subject_product text,
+          model_or_configuration text,
+          market_scope text,
+          source_owner text,
+          source_date date not null,
+          file_location text not null,
+          confidentiality text not null check (confidentiality in ('INTERNAL', 'RESTRICTED', 'PUBLIC')),
+          fact_summary text not null,
+          supports_or_contradicts text not null check (supports_or_contradicts in ('SUPPORTS', 'CONTRADICTS', 'CONTEXT_ONLY')),
+          verification_status text not null check (verification_status in ('PENDING', 'VERIFIED', 'REJECTED', 'INSUFFICIENT')),
+          verifier text,
+          verified_date date,
+          rejection_reason text,
+          notes text,
+          created_at timestamptz not null default now(),
+          updated_at timestamptz not null default now()
+        )
+      `;
+      await sql`
+        create index if not exists internal_evidence_validation_idx
+          on internal_evidence_records (validation_id, verification_status)
+      `;
+    })();
+
+    return schemaReady;
+  }
+
   return {
     available: true,
 
     async listLearners() {
+      await ensureSchema();
       const result = await sql<LearnerRow>`
         select * from training_learners
         order by cohort, name, id
@@ -252,6 +352,7 @@ export function createPostgresKnowledgeStore(
     },
 
     async createLearner(input) {
+      await ensureSchema();
       const id = randomUUID();
       const result = await sql<LearnerRow>`
         insert into training_learners (id, name, cohort)
@@ -262,6 +363,7 @@ export function createPostgresKnowledgeStore(
     },
 
     async listProgress(learnerId) {
+      await ensureSchema();
       const result = await sql<ProgressRow>`
         select
           learner_id,
@@ -283,6 +385,7 @@ export function createPostgresKnowledgeStore(
     },
 
     async upsertProgress(input: TrainingProgressInput) {
+      await ensureSchema();
       const result = await sql<ProgressRow>`
         insert into training_progress (
           learner_id, day, scheduled_date, completion_status, output_location,
@@ -322,6 +425,7 @@ export function createPostgresKnowledgeStore(
     },
 
     async listScores(learnerId) {
+      await ensureSchema();
       const result = await sql<ScoreRow>`
         select
           id,
@@ -348,6 +452,7 @@ export function createPostgresKnowledgeStore(
     },
 
     async createScore(input: TrainingScoreInput) {
+      await ensureSchema();
       const id = randomUUID();
       const result = await sql<ScoreRow>`
         insert into training_scores (
@@ -386,6 +491,7 @@ export function createPostgresKnowledgeStore(
     },
 
     async listValidationStates() {
+      await ensureSchema();
       const result = await sql<ValidationStateRow>`
         select
           validation_id,
@@ -402,6 +508,7 @@ export function createPostgresKnowledgeStore(
     },
 
     async upsertValidationState(input: ValidationTaskStateInput) {
+      await ensureSchema();
       const result = await sql<ValidationStateRow>`
         insert into validation_task_states (
           validation_id, owner, status, target_date, conclusion, updated_by
@@ -431,6 +538,7 @@ export function createPostgresKnowledgeStore(
     },
 
     async listEvidence(validationId) {
+      await ensureSchema();
       if (validationId) {
         const result = await sql<EvidenceRow>`
           select
@@ -494,6 +602,7 @@ export function createPostgresKnowledgeStore(
     },
 
     async createEvidence(input: InternalEvidenceInput) {
+      await ensureSchema();
       const id = randomUUID();
       const result = await sql<EvidenceRow>`
         insert into internal_evidence_records (
