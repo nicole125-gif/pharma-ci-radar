@@ -62,6 +62,19 @@ describe("knowledge catalog", () => {
     expect(catalog.evidenceRecords.length).toBeGreaterThan(300);
   });
 
+  it("keeps the Bürkert-GEMÜ pharma valve automation deep dive in the training plan", async () => {
+    const catalog = await loadKnowledgeCatalog();
+    const day8 = catalog.curriculum.find((item) => item.day === 8);
+
+    expect(day8).toMatchObject({
+      module: "Bürkert-GEMÜ卫生阀自动化深挖",
+      primaryMaterial:
+        "2026-06-burkert-gemu-pharma-valve-automation-deep-dive.md"
+    });
+    expect(day8?.exercise).toContain("2103/2034/8652");
+    expect(day8?.passCriteria).toContain("直接对标");
+  });
+
   it("maps source-specific rows to stable product records", async () => {
     const catalog = await loadKnowledgeCatalog();
     const type2103 = catalog.products.find(
