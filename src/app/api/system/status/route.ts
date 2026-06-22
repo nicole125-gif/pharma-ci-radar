@@ -23,7 +23,9 @@ export async function GET() {
               .length ?? 0,
           events: appState?.events.length ?? 0,
           alerts: appState?.alerts.length ?? 0,
-          scoreSuggestions: appState?.scoreSuggestions.length ?? 0
+          scoreSuggestions: appState?.scoreSuggestions.length ?? 0,
+          monitorRuns: appState?.monitorRuns?.length ?? 0,
+          lastMonitorRun: appState?.monitorRuns?.[0] ?? null
         }
       : {
           available: false,

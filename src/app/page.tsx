@@ -7,7 +7,7 @@ import { MetricCard } from "@/components/metric-card";
 import { PageHeader } from "@/components/page-header";
 import { StatusBadge } from "@/components/status-badge";
 import { getRepository } from "@/lib/repository";
-import type { ActionQueueItem, CompetitorAnalysis, IntelEvent } from "@/lib/types";
+import type { ActionQueueItem, CompetitorAnalysis, IntelEvent, MonitorRun } from "@/lib/types";
 
 export default async function DashboardPage({
   searchParams
@@ -38,6 +38,8 @@ export default async function DashboardPage({
       />
 
       {monitorResult ? <MonitorResult scannedSources={monitorResult.scannedSources} createdEvents={monitorResult.createdEvents} /> : null}
+
+      <MonitorStatus run={dashboard.lastMonitorRun} />
 
       <section className="grid grid-cols-4 gap-4 max-[1100px]:grid-cols-2 max-[620px]:grid-cols-1">
         <MetricCard label="我方基准" value={ownCompany?.name ?? "Bürkert"} detail="矩阵和周报均以 Bürkert 为比较对象" />
@@ -194,6 +196,45 @@ function MonitorResult({ scannedSources, createdEvents }: { scannedSources: numb
       </div>
     </section>
   );
+}
+
+function MonitorStatus({ run }: { run?: MonitorRun }) {
+  return (
+    <section className="mb-5 rounded border border-[var(--line)] bg-black/10 p-4">
+      <div className="grid grid-cols-[1fr_auto_auto_auto] items-center gap-4 max-[760px]:grid-cols-1">
+        <div>
+          <div className="flex items-center gap-2 text-sm font-semibold text-[var(--accent-2)]">
+            <Clock3 size={16} />
+            监测状态
+          </div>
+          <p className="mt-1 text-sm leading-6 text-[var(--muted)]">
+            {run ? `最近完成于 ${formatDateTime(run.completedAt)}` : "尚未记录监测运行。批准来源后可运行一次监测。"}
+          </p>
+        </div>
+        <MiniStatus label="已批准来源" value={run?.approvedSources ?? 0} />
+        <MiniStatus label="本次扫描" value={run?.scannedSources ?? 0} />
+        <MiniStatus label="新增事件" value={run?.createdEvents ?? 0} />
+      </div>
+    </section>
+  );
+}
+
+function MiniStatus({ label, value }: { label: string; value: number }) {
+  return (
+    <div className="min-w-28 rounded border border-[var(--line)] px-3 py-2 text-right max-[760px]:text-left">
+      <div className="metric-number text-xl font-semibold">{value}</div>
+      <div className="mt-1 text-xs text-[var(--muted)]">{label}</div>
+    </div>
+  );
+}
+
+function formatDateTime(value: string) {
+  return new Intl.DateTimeFormat("zh-CN", {
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit"
+  }).format(new Date(value));
 }
 
 function ActionRow({ item }: { item: ActionQueueItem }) {
