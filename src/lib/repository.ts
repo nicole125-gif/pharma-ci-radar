@@ -33,8 +33,9 @@ import {
   createSnapshotIfChanged,
   createWeeklyBrief
 } from "./workflow";
+import { getAppStateStore } from "./app-state-store";
 
-interface AppState {
+export interface AppState {
   competitors: Competitor[];
   dimensions: Dimension[];
   scores: CompetitorScore[];
@@ -65,7 +66,7 @@ function clone<T>(value: T): T {
   return structuredClone(value);
 }
 
-function createInitialState(): AppState {
+export function createInitialState(): AppState {
   const seedEvent: IntelEvent = {
     id: "event-seed-gemu",
     competitorId: "gemu",
@@ -450,6 +451,10 @@ export function createAppRepository(initialState = createInitialState()) {
   }
 
   return {
+    getState() {
+      return clone(state);
+    },
+
     getStrategicBrief,
     getBattlecards,
 
@@ -734,13 +739,30 @@ function threatRank(level: CompetitorAnalysis["threatLevel"]) {
 type AppRepository = ReturnType<typeof createAppRepository>;
 
 const globalForRepo = globalThis as typeof globalThis & {
-  __pharmaCiRepo?: AppRepository;
+  __pharmaCiRepo?: Promise<AppRepository>;
 };
 
-export function getRepository() {
+export async function getRepository() {
+  const store = await getAppStateStore();
+  if (store.available) {
+    const persistedState = await store.loadState();
+    const repo = createAppRepository(persistedState ?? createInitialState());
+    if (!persistedState) {
+      await store.saveState(repo.getState());
+    }
+    return repo;
+  }
+
   if (!globalForRepo.__pharmaCiRepo) {
-    globalForRepo.__pharmaCiRepo = createAppRepository();
+    globalForRepo.__pharmaCiRepo = Promise.resolve(createAppRepository());
   }
 
   return globalForRepo.__pharmaCiRepo;
+}
+
+export async function persistRepositoryState(repository: AppRepository) {
+  const store = await getAppStateStore();
+  if (store.available) {
+    await store.saveState(repository.getState());
+  }
 }

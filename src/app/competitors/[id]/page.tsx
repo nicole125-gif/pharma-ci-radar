@@ -6,8 +6,9 @@ import { getRepository } from "@/lib/repository";
 
 export default async function CompetitorDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const detail = getRepository().getCompetitorDetail(id);
-  const dimensions = getRepository().getMatrix().dimensions;
+  const repo = await getRepository();
+  const detail = repo.getCompetitorDetail(id);
+  const dimensions = repo.getMatrix().dimensions;
   if (!detail) notFound();
 
   return (

@@ -3,7 +3,8 @@ import { getRepository } from "@/lib/repository";
 
 export async function GET(_: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const detail = getRepository().getCompetitorDetail(id);
+  const repo = await getRepository();
+  const detail = repo.getCompetitorDetail(id);
 
   if (!detail) {
     return NextResponse.json({ error: "Competitor not found" }, { status: 404 });

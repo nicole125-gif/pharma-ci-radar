@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
-import { getRepository } from "@/lib/repository";
+import { getRepository, persistRepositoryState } from "@/lib/repository";
 
 export async function POST(request: Request) {
   const body = await request.json().catch(() => ({}));
-  return NextResponse.json(await getRepository().runMonitorJob(body.sampleContent));
+  const repo = await getRepository();
+  const result = await repo.runMonitorJob(body.sampleContent);
+  await persistRepositoryState(repo);
+  return NextResponse.json(result);
 }

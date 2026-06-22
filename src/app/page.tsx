@@ -15,7 +15,8 @@ export default async function DashboardPage({
   searchParams?: Promise<{ monitor?: string; scanned?: string; events?: string }>;
 }) {
   const resolvedSearchParams = await searchParams;
-  const dashboard = getRepository().getDashboard();
+  const repo = await getRepository();
+  const dashboard = repo.getDashboard();
   const externalCompetitors = dashboard.competitors.filter((competitor) => competitor.role === "COMPETITOR");
   const ownCompany = dashboard.competitors.find((competitor) => competitor.role === "OWN_COMPANY");
   const view = buildDashboardView(dashboard);

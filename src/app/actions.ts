@@ -2,19 +2,23 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { getRepository } from "@/lib/repository";
+import { getRepository, persistRepositoryState } from "@/lib/repository";
 import type { ImpactLevel, ReviewStatus, SalesIntelReliability, SalesIntelSignalType, SalesIntelStatus } from "@/lib/types";
 
 export async function reviewSourceAction(formData: FormData) {
   const sourceId = String(formData.get("sourceId"));
   const reviewStatus = String(formData.get("reviewStatus")) as ReviewStatus;
-  getRepository().reviewSource(sourceId, reviewStatus);
+  const repo = await getRepository();
+  repo.reviewSource(sourceId, reviewStatus);
+  await persistRepositoryState(repo);
   revalidatePath("/sources");
   revalidatePath("/");
 }
 
 export async function runMonitorAction() {
-  const result = await getRepository().runMonitorJob();
+  const repo = await getRepository();
+  const result = await repo.runMonitorJob();
+  await persistRepositoryState(repo);
   revalidatePath("/");
   revalidatePath("/alerts");
   revalidatePath("/score-suggestions");
@@ -24,23 +28,29 @@ export async function runMonitorAction() {
 export async function reviewScoreSuggestionAction(formData: FormData) {
   const suggestionId = String(formData.get("suggestionId"));
   const approve = String(formData.get("approve")) === "true";
-  getRepository().reviewScoreSuggestion(suggestionId, approve);
+  const repo = await getRepository();
+  repo.reviewScoreSuggestion(suggestionId, approve);
+  await persistRepositoryState(repo);
   revalidatePath("/");
   revalidatePath("/matrix");
   revalidatePath("/score-suggestions");
 }
 
 export async function createWeeklyBriefAction() {
-  getRepository().createWeeklyBrief();
+  const repo = await getRepository();
+  repo.createWeeklyBrief();
+  await persistRepositoryState(repo);
   revalidatePath("/");
 }
 
 export async function createCompetitorAction(formData: FormData) {
-  const competitor = getRepository().createCompetitor({
+  const repo = await getRepository();
+  const competitor = repo.createCompetitor({
     name: String(formData.get("name") ?? ""),
     differentiation: String(formData.get("differentiation") ?? ""),
     officialUrl: String(formData.get("officialUrl") ?? "")
   });
+  await persistRepositoryState(repo);
 
   revalidatePath("/");
   revalidatePath("/competitors");
@@ -55,7 +65,8 @@ export async function goToCompetitorAction(formData: FormData) {
 }
 
 export async function createSalesIntelAction(formData: FormData) {
-  getRepository().createSalesIntel({
+  const repo = await getRepository();
+  repo.createSalesIntel({
     competitorId: String(formData.get("competitorId") ?? ""),
     accountContext: String(formData.get("accountContext") ?? ""),
     region: String(formData.get("region") ?? ""),
@@ -66,12 +77,15 @@ export async function createSalesIntelAction(formData: FormData) {
     summary: String(formData.get("summary") ?? ""),
     sensitive: String(formData.get("sensitive") ?? "") === "on"
   });
+  await persistRepositoryState(repo);
 
   revalidatePath("/sales-intel");
 }
 
 export async function reviewSalesIntelAction(formData: FormData) {
-  getRepository().reviewSalesIntel(String(formData.get("intelId")), String(formData.get("status")) as SalesIntelStatus);
+  const repo = await getRepository();
+  repo.reviewSalesIntel(String(formData.get("intelId")), String(formData.get("status")) as SalesIntelStatus);
+  await persistRepositoryState(repo);
   revalidatePath("/sales-intel");
   revalidatePath("/");
   revalidatePath("/analysis");

@@ -4,8 +4,9 @@ import { PageHeader } from "@/components/page-header";
 import { StatusBadge } from "@/components/status-badge";
 import { getRepository } from "@/lib/repository";
 
-export default function AlertsPage() {
-  const alerts = getRepository().getAlerts();
+export default async function AlertsPage() {
+  const repo = await getRepository();
+  const alerts = repo.getAlerts();
 
   return (
     <AppShell>

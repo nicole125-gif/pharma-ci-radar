@@ -13,9 +13,9 @@ const ownerLabels = {
   Marketing: "市场"
 };
 
-export default function BriefingPage() {
-  const brief = getRepository().getStrategicBrief();
-  const repo = getRepository();
+export default async function BriefingPage() {
+  const repo = await getRepository();
+  const brief = repo.getStrategicBrief();
   const highThreatCount = brief.priorityThreats.filter((item) => item.threatLevel === "HIGH").length;
 
   return (

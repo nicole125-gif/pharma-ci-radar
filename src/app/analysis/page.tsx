@@ -6,8 +6,9 @@ import { PageHeader } from "@/components/page-header";
 import { StatusBadge } from "@/components/status-badge";
 import { getRepository } from "@/lib/repository";
 
-export default function AnalysisPage() {
-  const analyses = getRepository().getAnalyses();
+export default async function AnalysisPage() {
+  const repo = await getRepository();
+  const analyses = repo.getAnalyses();
   const highThreatCount = analyses.filter((analysis) => analysis.threatLevel === "HIGH").length;
   const watchingCount = analyses.filter((analysis) => analysis.threatLevel === "WATCHING").length;
   const topJudgment = analyses[0]?.oneLineJudgment ?? "当前没有分析内容。";

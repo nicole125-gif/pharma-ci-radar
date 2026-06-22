@@ -39,7 +39,8 @@ export default async function SalesIntelPage({
   }>;
 }) {
   const resolvedSearchParams = await searchParams;
-  const board = getRepository().getSalesIntelBoard();
+  const repo = await getRepository();
+  const board = repo.getSalesIntelBoard();
   const selectedStatus = resolvedSearchParams?.status ?? "ALL";
   const selectedCompetitor = resolvedSearchParams?.competitor ?? "ALL";
 
