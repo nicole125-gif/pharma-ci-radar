@@ -3,6 +3,9 @@ import path from "node:path";
 import { parse } from "csv-parse/sync";
 import type {
   ApplicationScenario,
+  EvidenceGrade,
+  EvidenceRecord,
+  FactStatus,
   CurriculumDay,
   KnowledgeCatalog,
   KnowledgeProduct,
@@ -22,7 +25,11 @@ const SOURCE_FILES = [
   "2026-06-product-knowledge-30-day-curriculum.csv",
   "2026-06-internal-validation-backlog.csv",
   "2026-06-internal-validation-execution.csv",
-  "2026-06-high-relevance-product-learning-cards.csv"
+  "2026-06-high-relevance-product-learning-cards.csv",
+  "2026-06-four-company-evidence.csv",
+  "gemu-series-evidence.csv",
+  "fujikin-series-evidence.csv",
+  "esg-series-evidence.csv"
 ] as const;
 
 const cache = new Map<
@@ -171,6 +178,23 @@ interface LearningCardRow {
   generated_date: string;
 }
 
+interface EvidenceRow {
+  evidence_id: string;
+  company: string;
+  topic: string;
+  product_category?: string;
+  fact_status: string;
+  summary: string;
+  source_type: string;
+  source_title: string;
+  source_url: string;
+  accessed_date?: string;
+  market_scope?: string;
+  evidence_grade: string;
+  supports_conclusion: string;
+  notes: string;
+}
+
 async function readCsv<T extends object>(
   researchDirectory: string,
   filename: string,
@@ -209,6 +233,24 @@ async function readCsv<T extends object>(
 function normalizeRelevance(value: string): PharmaRelevance {
   return value === "HIGH" || value === "MEDIUM" || value === "LOW"
     ? value
+    : "UNKNOWN";
+}
+
+function normalizeEvidenceGrade(value: string): EvidenceGrade {
+  const grade = value.trim().slice(0, 1).toUpperCase();
+  return grade === "A" || grade === "B" || grade === "C" || grade === "D"
+    ? grade
+    : "UNKNOWN";
+}
+
+function normalizeFactStatus(value: string): FactStatus {
+  const status = value.trim().toUpperCase().replaceAll(" ", "_");
+  return status === "FACT" ||
+    status === "INFERENCE" ||
+    status === "CLAIM" ||
+    status === "GAP" ||
+    status === "INTERNAL_VALIDATION"
+    ? status
     : "UNKNOWN";
 }
 
@@ -471,6 +513,36 @@ function mapLearningCard(
   };
 }
 
+function mapEvidence(
+  row: EvidenceRow,
+  index: number,
+  filename: string
+): EvidenceRecord {
+  const evidenceId = required(
+    row.evidence_id,
+    filename,
+    "evidence_id",
+    `row ${index + 2}`
+  );
+  return {
+    evidenceId,
+    company: required(row.company, filename, "company", evidenceId),
+    topic: required(row.topic, filename, "topic", evidenceId),
+    productCategory: optional(row.product_category ?? ""),
+    factStatus: normalizeFactStatus(row.fact_status),
+    summary: required(row.summary, filename, "summary", evidenceId),
+    sourceType: row.source_type,
+    sourceTitle: row.source_title,
+    sourceUrl: optional(row.source_url),
+    accessedDate: optional(row.accessed_date ?? ""),
+    marketScope: optional(row.market_scope ?? ""),
+    evidenceGrade: normalizeEvidenceGrade(row.evidence_grade),
+    supportsConclusion: row.supports_conclusion,
+    notes: optional(row.notes),
+    sourceFile: filename
+  };
+}
+
 function mapCurriculum(row: CurriculumRow, index: number): CurriculumDay {
   const filename = "2026-06-product-knowledge-30-day-curriculum.csv";
   const recordContext = `row ${index + 2}`;
@@ -607,7 +679,11 @@ export async function loadKnowledgeCatalog(
     curriculumRows,
     validationBacklogRows,
     validationExecutionRows,
-    learningCardRows
+    learningCardRows,
+    fourCompanyEvidenceRows,
+    gemuEvidenceRows,
+    fujikinEvidenceRows,
+    esgEvidenceRows
   ] = await Promise.all([
     readCsv<BurkertRow>(researchDirectory, SOURCE_FILES[0], [
       "type_id",
@@ -740,6 +816,58 @@ export async function loadKnowledgeCatalog(
       "review_status",
       "source_accessed_date",
       "generated_date"
+    ]),
+    readCsv<EvidenceRow>(researchDirectory, SOURCE_FILES[9], [
+      "evidence_id",
+      "company",
+      "topic",
+      "fact_status",
+      "summary",
+      "source_type",
+      "source_title",
+      "source_url",
+      "evidence_grade",
+      "supports_conclusion",
+      "notes"
+    ]),
+    readCsv<EvidenceRow>(researchDirectory, SOURCE_FILES[10], [
+      "evidence_id",
+      "company",
+      "topic",
+      "fact_status",
+      "summary",
+      "source_type",
+      "source_title",
+      "source_url",
+      "evidence_grade",
+      "supports_conclusion",
+      "notes"
+    ]),
+    readCsv<EvidenceRow>(researchDirectory, SOURCE_FILES[11], [
+      "evidence_id",
+      "company",
+      "topic",
+      "fact_status",
+      "summary",
+      "source_type",
+      "source_title",
+      "source_url",
+      "evidence_grade",
+      "supports_conclusion",
+      "notes"
+    ]),
+    readCsv<EvidenceRow>(researchDirectory, SOURCE_FILES[12], [
+      "evidence_id",
+      "company",
+      "topic",
+      "fact_status",
+      "summary",
+      "source_type",
+      "source_title",
+      "source_url",
+      "evidence_grade",
+      "supports_conclusion",
+      "notes"
     ])
   ]);
 
@@ -757,6 +885,20 @@ export async function loadKnowledgeCatalog(
   const gemuProducts = gemuRows.map(mapGemu).map(attachLearningCard);
   const fujikinProducts = fujikinRows.map(mapFujikin).map(attachLearningCard);
   const esgProducts = esgRows.map(mapEsg).map(attachLearningCard);
+  const evidenceRecords = [
+    ...fourCompanyEvidenceRows.map((row, index) =>
+      mapEvidence(row, index, SOURCE_FILES[9])
+    ),
+    ...gemuEvidenceRows.map((row, index) =>
+      mapEvidence(row, index, SOURCE_FILES[10])
+    ),
+    ...fujikinEvidenceRows.map((row, index) =>
+      mapEvidence(row, index, SOURCE_FILES[11])
+    ),
+    ...esgEvidenceRows.map((row, index) =>
+      mapEvidence(row, index, SOURCE_FILES[12])
+    )
+  ];
   const value: KnowledgeCatalog = {
     products: [
       ...burkertProducts,
@@ -774,7 +916,8 @@ export async function loadKnowledgeCatalog(
     validationTasks: mapValidationTasks(
       validationBacklogRows,
       validationExecutionRows
-    )
+    ),
+    evidenceRecords
   };
 
   cache.set(researchDirectory, { signature, value });

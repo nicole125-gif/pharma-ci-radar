@@ -2,22 +2,23 @@ import { AppShell } from "@/components/app-shell";
 import { PageHeader } from "@/components/page-header";
 import { KnowledgeNav } from "@/components/knowledge/knowledge-nav";
 import { KnowledgeWorkbench } from "@/components/knowledge/knowledge-workbench";
+import { EvidenceQa } from "@/components/knowledge/evidence-qa";
 import { ProductSearch } from "@/components/knowledge/product-search";
 import { TrainingWorkspace } from "@/components/knowledge/training-workspace";
 import { ValidationWorkspace } from "@/components/knowledge/validation-workspace";
 import { searchKnowledge, type KnowledgeSearchFilters } from "@/lib/knowledge/search";
 import { buildKnowledgeWorkspace } from "@/lib/knowledge/service";
-import type { KnowledgeCompany, KnowledgeRecordType, PharmaRelevance } from "@/lib/knowledge/types";
+import type { EvidenceGrade, FactStatus, KnowledgeCompany, KnowledgeRecordType, PharmaRelevance } from "@/lib/knowledge/types";
 
-type View = "workbench" | "products" | "training" | "validation";
+type View = "workbench" | "products" | "training" | "validation" | "evidence";
 function normalizeView(value?: string): View {
-  return value === "products" || value === "training" || value === "validation" ? value : "workbench";
+  return value === "products" || value === "training" || value === "validation" || value === "evidence" ? value : "workbench";
 }
 
 export default async function KnowledgePage({
   searchParams
 }: {
-  searchParams: Promise<{ view?: string; q?: string; company?: string; category?: string; relevance?: string; type?: string; learner?: string; priority?: string }>;
+  searchParams: Promise<{ view?: string; q?: string; company?: string; category?: string; relevance?: string; type?: string; learner?: string; priority?: string; grade?: string; status?: string }>;
 }) {
   const params = await searchParams;
   const view = normalizeView(params.view);
@@ -40,6 +41,7 @@ export default async function KnowledgePage({
       {view === "products" && <ProductSearch filters={filters} results={results} categories={categories} />}
       {view === "training" && <TrainingWorkspace curriculum={workspace.catalog.curriculum} learners={workspace.training.learners} selectedLearner={workspace.training.selectedLearner} progress={workspace.training.progress} scores={workspace.training.scores} readOnly={!workspace.database.available} />}
       {view === "validation" && <ValidationWorkspace tasks={workspace.validation.tasks} evidence={workspace.validation.evidence} readOnly={!workspace.database.available} priority={params.priority} company={params.company} />}
+      {view === "evidence" && <EvidenceQa evidence={workspace.catalog.evidenceRecords} filters={{ query: params.q, company: params.company, grade: (params.grade || "ALL") as EvidenceGrade | "ALL", status: (params.status || "ALL") as FactStatus | "ALL" }} />}
     </AppShell>
   );
 }

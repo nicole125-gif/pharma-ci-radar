@@ -1,6 +1,14 @@
 export type KnowledgeCompany = "Bürkert" | "GEMÜ" | "Fujikin" | "ESG 精锐";
 export type PharmaRelevance = "HIGH" | "MEDIUM" | "LOW" | "UNKNOWN";
 export type KnowledgeRecordType = "PRODUCT" | "SCENARIO" | "MAPPING";
+export type EvidenceGrade = "A" | "B" | "C" | "D" | "UNKNOWN";
+export type FactStatus =
+  | "FACT"
+  | "INFERENCE"
+  | "CLAIM"
+  | "GAP"
+  | "INTERNAL_VALIDATION"
+  | "UNKNOWN";
 
 export interface KnowledgeProduct {
   recordType: "PRODUCT";
@@ -238,6 +246,24 @@ export interface InternalEvidenceInput {
   notes?: string;
 }
 
+export interface EvidenceRecord {
+  evidenceId: string;
+  company: string;
+  topic: string;
+  productCategory?: string;
+  factStatus: FactStatus;
+  summary: string;
+  sourceType: string;
+  sourceTitle: string;
+  sourceUrl?: string;
+  accessedDate?: string;
+  marketScope?: string;
+  evidenceGrade: EvidenceGrade;
+  supportsConclusion: string;
+  notes?: string;
+  sourceFile: string;
+}
+
 export interface ValidationTaskDefinition {
   validationId: string;
   priority: "P0" | "P1" | "P2";
@@ -271,4 +297,5 @@ export interface KnowledgeCatalog {
   learningCards: ProductLearningCard[];
   curriculum: CurriculumDay[];
   validationTasks: ValidationTaskDefinition[];
+  evidenceRecords: EvidenceRecord[];
 }

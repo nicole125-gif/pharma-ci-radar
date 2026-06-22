@@ -13,7 +13,11 @@ const SOURCE_FILES = [
   "2026-06-product-knowledge-30-day-curriculum.csv",
   "2026-06-internal-validation-backlog.csv",
   "2026-06-internal-validation-execution.csv",
-  "2026-06-high-relevance-product-learning-cards.csv"
+  "2026-06-high-relevance-product-learning-cards.csv",
+  "2026-06-four-company-evidence.csv",
+  "gemu-series-evidence.csv",
+  "fujikin-series-evidence.csv",
+  "esg-series-evidence.csv"
 ] as const;
 
 const temporaryDirectories: string[] = [];
@@ -55,6 +59,7 @@ describe("knowledge catalog", () => {
     expect(catalog.curriculum).toHaveLength(30);
     expect(catalog.validationTasks).toHaveLength(16);
     expect(catalog.learningCards).toHaveLength(136);
+    expect(catalog.evidenceRecords.length).toBeGreaterThan(300);
   });
 
   it("maps source-specific rows to stable product records", async () => {
@@ -74,6 +79,28 @@ describe("knowledge catalog", () => {
       reviewStatus: "GENERATED_REVIEWED_BY_RULES"
     });
     expect(type2103?.learningCard?.selectionQuestions).toContain("介质");
+  });
+
+  it("loads public evidence records with normalized grades and fact status", async () => {
+    const catalog = await loadKnowledgeCatalog();
+
+    expect(catalog.evidenceRecords).toContainEqual(
+      expect.objectContaining({
+        evidenceId: "BURKERT-COMPANY-001",
+        company: "Bürkert",
+        factStatus: "FACT",
+        evidenceGrade: "B",
+        sourceFile: "2026-06-four-company-evidence.csv"
+      })
+    );
+    expect(catalog.evidenceRecords).toContainEqual(
+      expect.objectContaining({
+        evidenceId: "GEMU-SERIES-P600M-P600S-P500M",
+        company: "GEMÜ",
+        factStatus: "FACT",
+        evidenceGrade: "A"
+      })
+    );
   });
 
   it("reuses unchanged files and reloads after a source mtime changes", async () => {
