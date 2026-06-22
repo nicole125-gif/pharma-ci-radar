@@ -1,33 +1,40 @@
 import { ExternalLink, Search } from "lucide-react";
 import type { EvidenceGrade, EvidenceRecord, FactStatus } from "@/lib/knowledge/types";
 import type { EvidenceTraceMap } from "@/lib/knowledge/traceability";
+import type { EvidenceValidationMap } from "@/lib/knowledge/validation-linking";
+import { isRiskyEvidence } from "@/lib/knowledge/validation-linking";
 
 export interface EvidenceQaFilters {
   query?: string;
   company?: string;
   grade?: EvidenceGrade | "ALL";
   status?: FactStatus | "ALL";
+  risk?: "ALL" | "NEEDS_VALIDATION" | "UNLINKED";
 }
 
 export function EvidenceQa({
   evidence,
   filters,
-  traceMap = {}
+  traceMap = {},
+  validationMap = {}
 }: {
   evidence: EvidenceRecord[];
   filters: EvidenceQaFilters;
   traceMap?: EvidenceTraceMap;
+  validationMap?: EvidenceValidationMap;
 }) {
   const companies = Array.from(new Set(evidence.map((item) => item.company))).sort((a, b) =>
     a.localeCompare(b, "zh-CN")
   );
-  const visible = filterEvidence(evidence, filters).slice(0, 200);
+  const visible = filterEvidence(evidence, filters, validationMap).slice(0, 200);
   const strong = evidence.filter((item) => item.evidenceGrade === "A" || item.evidenceGrade === "B").length;
   const weak = evidence.filter((item) => item.evidenceGrade === "C" || item.evidenceGrade === "D").length;
   const needsValidation = evidence.filter(
     (item) => item.factStatus === "GAP" || item.factStatus === "INTERNAL_VALIDATION"
   ).length;
   const claims = evidence.filter((item) => item.factStatus === "CLAIM").length;
+  const risky = evidence.filter(isRiskyEvidence);
+  const unlinkedRisky = risky.filter((item) => (validationMap[item.evidenceId] ?? []).length === 0).length;
 
   return (
     <div className="grid gap-4">
@@ -37,8 +44,12 @@ export function EvidenceQa({
         <Metric label="C/D 慎用" value={weak} tone="caution" />
         <Metric label="待验证/宣传" value={needsValidation + claims} tone="warning" />
       </div>
+      <div className="grid grid-cols-2 gap-3 max-[700px]:grid-cols-1">
+        <Metric label="需内部验证证据" value={risky.length} tone="warning" />
+        <Metric label="未归档验证项" value={unlinkedRisky} tone={unlinkedRisky > 0 ? "warning" : "strong"} />
+      </div>
 
-      <form className="panel grid grid-cols-[2fr_repeat(3,minmax(130px,1fr))_auto] gap-3 p-4 max-[1000px]:grid-cols-2 max-[620px]:grid-cols-1">
+      <form className="panel grid grid-cols-[2fr_repeat(4,minmax(130px,1fr))_auto] gap-3 p-4 max-[1120px]:grid-cols-2 max-[620px]:grid-cols-1">
         <input type="hidden" name="view" value="evidence" />
         <label className="grid gap-1 text-xs text-[var(--muted)]">
           关键词
@@ -54,6 +65,7 @@ export function EvidenceQa({
         </label>
         <Select name="company" label="公司" value={filters.company} options={["ALL", ...companies]} />
         <Select name="grade" label="证据等级" value={filters.grade} options={["ALL", "A", "B", "C", "D", "UNKNOWN"]} />
+        <Select name="risk" label="验证范围" value={filters.risk} options={["ALL", "NEEDS_VALIDATION", "UNLINKED"]} />
         <Select
           name="status"
           label="事实状态"
@@ -91,6 +103,7 @@ export function EvidenceQa({
               )}
               {record.notes && <p className="mt-1 text-xs leading-5 text-[var(--muted)]">边界：{record.notes}</p>}
               <TraceLinks evidenceId={record.evidenceId} traceMap={traceMap} />
+              <ValidationLinks evidenceId={record.evidenceId} validationMap={validationMap} />
             </div>
             <div className="text-xs leading-5 text-[var(--muted)]">
               <div>{record.sourceType || "来源类型未标注"}</div>
@@ -111,6 +124,34 @@ export function EvidenceQa({
           </article>
         ))}
       </div>
+    </div>
+  );
+}
+
+function ValidationLinks({
+  evidenceId,
+  validationMap
+}: {
+  evidenceId: string;
+  validationMap: EvidenceValidationMap;
+}) {
+  const links = validationMap[evidenceId] ?? [];
+  if (links.length === 0) {
+    return <p className="mt-2 text-xs leading-5 text-[var(--muted)]">验证任务：未归档</p>;
+  }
+
+  return (
+    <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
+      <span className="font-semibold text-[var(--muted)]">验证任务</span>
+      {links.map((link) => (
+        <a
+          key={link.validationId}
+          href={link.href}
+          className="rounded border border-amber-300/70 px-2 py-1 text-amber-300 hover:border-amber-200"
+        >
+          {link.priority} · {link.validationId}
+        </a>
+      ))}
     </div>
   );
 }
@@ -145,7 +186,11 @@ function TraceLinks({
   );
 }
 
-function filterEvidence(evidence: EvidenceRecord[], filters: EvidenceQaFilters): EvidenceRecord[] {
+function filterEvidence(
+  evidence: EvidenceRecord[],
+  filters: EvidenceQaFilters,
+  validationMap: EvidenceValidationMap
+): EvidenceRecord[] {
   const query = filters.query?.trim().toLocaleLowerCase("zh-CN") ?? "";
   return evidence.filter((record) => {
     const body = [
@@ -166,7 +211,11 @@ function filterEvidence(evidence: EvidenceRecord[], filters: EvidenceQaFilters):
       (!query || body.includes(query)) &&
       (!filters.company || filters.company === "ALL" || record.company === filters.company) &&
       (!filters.grade || filters.grade === "ALL" || record.evidenceGrade === filters.grade) &&
-      (!filters.status || filters.status === "ALL" || record.factStatus === filters.status)
+      (!filters.status || filters.status === "ALL" || record.factStatus === filters.status) &&
+      (!filters.risk ||
+        filters.risk === "ALL" ||
+        (filters.risk === "NEEDS_VALIDATION" && isRiskyEvidence(record)) ||
+        (filters.risk === "UNLINKED" && isRiskyEvidence(record) && (validationMap[record.evidenceId] ?? []).length === 0))
     );
   });
 }
