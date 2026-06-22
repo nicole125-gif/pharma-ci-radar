@@ -10,6 +10,7 @@ import {
   assessTrainingScore
 } from "./rules";
 import { buildKnowledgeSummary } from "./search";
+import { buildEvidenceHealthSummary } from "./evidence-health";
 import type { KnowledgeExecutionStore, KnowledgeStore } from "./store";
 import type {
   InternalEvidenceInput,
@@ -44,11 +45,16 @@ export async function buildKnowledgeWorkspace(options?: {
   const catalog = await loadKnowledgeCatalog();
   const store = await resolveStore(options?.store);
   const summary = buildKnowledgeSummary(catalog);
+  const evidenceHealth = buildEvidenceHealthSummary(
+    catalog.evidenceRecords,
+    catalog.validationTasks
+  );
 
   if (!store.available) {
     return {
       catalog,
       summary,
+      evidenceHealth,
       database: store,
       training: {
         learners: [],
@@ -92,6 +98,7 @@ export async function buildKnowledgeWorkspace(options?: {
   return {
     catalog,
     summary,
+    evidenceHealth,
     database: store,
     training: { learners, selectedLearner, progress, scores },
     validation: {

@@ -8,6 +8,7 @@ import {
   SearchCheck,
   UsersRound
 } from "lucide-react";
+import type { EvidenceHealthSummary } from "@/lib/knowledge/evidence-health";
 import type { TrainingLearner, ValidationTaskDefinition } from "@/lib/knowledge/types";
 import type { KnowledgeStore } from "@/lib/knowledge/store";
 
@@ -21,11 +22,13 @@ const taskItems = [
 
 export function KnowledgeWorkbench({
   summary,
+  evidenceHealth,
   database,
   validationTasks,
   learners
 }: {
   summary: { burkertTypes: number; competitorRecords: number; scenarios: number; validationTasks: number; p0Tasks: number };
+  evidenceHealth: EvidenceHealthSummary;
   database: KnowledgeStore;
   validationTasks: Array<{ definition: ValidationTaskDefinition; state: { status: string }; verifiedEvidenceCount: number; totalEvidenceCount: number }>;
   learners: TrainingLearner[];
@@ -50,6 +53,48 @@ export function KnowledgeWorkbench({
               <p className="mt-2 text-xs leading-5 text-[var(--muted)]">{item.detail}</p>
             </Link>
           ))}
+        </div>
+      </section>
+      <section className="grid gap-3">
+        <div className="flex items-center justify-between gap-3 max-[640px]:grid">
+          <div className="text-sm font-semibold text-[var(--accent-2)]">证据健康与优先行动</div>
+          <Link href="/knowledge?view=evidence&risk=NEEDS_VALIDATION" className="text-xs text-[var(--accent-2)]">
+            查看需验证证据
+          </Link>
+        </div>
+        <div className="grid grid-cols-4 gap-3 max-[900px]:grid-cols-2 max-[560px]:grid-cols-1">
+          <Metric label="可直接引用证据" value={evidenceHealth.directlyUsableEvidence} />
+          <Metric label="需内部验证证据" value={evidenceHealth.riskyEvidence} tone="warning" />
+          <Metric label="未归档风险证据" value={evidenceHealth.unlinkedRiskyEvidence} tone={evidenceHealth.unlinkedRiskyEvidence > 0 ? "warning" : "good"} />
+          <Metric label="P0 验证任务" value={evidenceHealth.p0ValidationTasks} />
+        </div>
+        <div className="grid grid-cols-[1fr_1fr] gap-5 max-[1000px]:grid-cols-1">
+          <div className="panel overflow-hidden">
+            <div className="border-b border-[var(--line)] px-4 py-3 font-semibold">公司级风险分布</div>
+            <div className="divide-y divide-[var(--line)]">
+              {evidenceHealth.companyHealth.map((item) => (
+                <div key={item.company} className="grid grid-cols-[1fr_repeat(4,80px)] gap-3 px-4 py-3 text-xs max-[760px]:grid-cols-2">
+                  <span className="font-semibold">{item.company}</span>
+                  <span><span className="text-[var(--muted)]">强</span> {item.strongEvidence}</span>
+                  <span><span className="text-[var(--muted)]">风险</span> {item.riskyEvidence}</span>
+                  <span><span className="text-[var(--muted)]">已归档</span> {item.linkedRiskyEvidence}</span>
+                  <span className={item.unlinkedRiskyEvidence > 0 ? "text-amber-300" : "text-[var(--muted)]"}><span>未归档</span> {item.unlinkedRiskyEvidence}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="panel overflow-hidden">
+            <div className="border-b border-[var(--line)] px-4 py-3 font-semibold">优先行动</div>
+            <div className="divide-y divide-[var(--line)]">
+              {evidenceHealth.priorityActions.map((action) => (
+                <Link key={action.id} href={action.href} className="grid grid-cols-[72px_1fr_auto] gap-3 px-4 py-3 text-sm hover:bg-white/5 max-[700px]:grid-cols-1">
+                  <span className={`rounded border px-2 py-1 text-center text-xs ${action.priority === "UNLINKED" ? "border-amber-300/70 text-amber-300" : "border-[var(--accent-2)] text-[var(--accent-2)]"}`}>{action.priority}</span>
+                  <span><span className="font-semibold">{action.title}</span><br /><span className="text-xs text-[var(--muted)]">{action.detail}</span></span>
+                  <ArrowUpRight size={15} className="text-[var(--muted)]" />
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
       <section className="grid grid-cols-4 gap-3 max-[760px]:grid-cols-2">
@@ -82,6 +127,7 @@ export function KnowledgeWorkbench({
   );
 }
 
-function Metric({ label, value }: { label: string; value: number }) {
-  return <div className="panel p-4"><div className="metric-number text-3xl">{value}</div><div className="mt-2 text-xs text-[var(--muted)]">{label}</div></div>;
+function Metric({ label, value, tone = "default" }: { label: string; value: number; tone?: "default" | "warning" | "good" }) {
+  const toneClass = tone === "warning" ? "text-amber-300" : tone === "good" ? "text-[var(--accent-2)]" : "";
+  return <div className="panel p-4"><div className={`metric-number text-3xl ${toneClass}`}>{value}</div><div className="mt-2 text-xs text-[var(--muted)]">{label}</div></div>;
 }

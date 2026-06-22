@@ -42,7 +42,7 @@ export default async function KnowledgePage({
     <AppShell>
       <PageHeader eyebrow="Product manager workspace" title="产品知识中心" description="从客户任务出发，检索四家公司产品与制药场景，并在同一处推进训练和内部验证。" />
       <KnowledgeNav activeView={view} />
-      {view === "workbench" && <KnowledgeWorkbench summary={workspace.summary} database={workspace.database} validationTasks={workspace.validation.tasks} learners={workspace.training.learners} />}
+      {view === "workbench" && <KnowledgeWorkbench summary={workspace.summary} evidenceHealth={workspace.evidenceHealth} database={workspace.database} validationTasks={workspace.validation.tasks} learners={workspace.training.learners} />}
       {view === "products" && <ProductSearch filters={filters} results={results} categories={categories} />}
       {view === "training" && <TrainingWorkspace curriculum={workspace.catalog.curriculum} learners={workspace.training.learners} selectedLearner={workspace.training.selectedLearner} progress={workspace.training.progress} scores={workspace.training.scores} readOnly={!workspace.database.available} />}
       {view === "validation" && <ValidationWorkspace tasks={workspace.validation.tasks} evidence={workspace.validation.evidence} publicEvidenceByTask={validationEvidenceMap} readOnly={!workspace.database.available} priority={params.priority} company={params.company} query={params.q} />}
