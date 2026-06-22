@@ -3,6 +3,7 @@ import Link from "next/link";
 import { BookOpenCheck, ExternalLink, Search } from "lucide-react";
 import type { KnowledgeSearchFilters, KnowledgeSearchResult } from "@/lib/knowledge/search";
 import type { ProductLearningCard } from "@/lib/knowledge/types";
+import { evidenceHref } from "@/lib/knowledge/traceability";
 
 export function ProductSearch({
   filters,
@@ -37,6 +38,7 @@ export function ProductSearch({
               <div><h2 className="font-semibold">{result.name}</h2>{result.secondaryName && <p className="mt-1 text-sm">{result.secondaryName}</p>}<p className="mt-2 text-xs leading-5 text-[var(--muted)]">{result.category} / {result.subcategory} · {result.productRole}</p><p className="mt-2 text-xs leading-5 text-[var(--muted)]">{result.boundary}</p></div>
               <div className="text-xs text-[var(--muted)]"><div>{result.pharmaRelevance} · 证据 {result.evidenceGrade}</div><div className="mt-2">{result.chinaOrEvidenceStatus || "中国可见性未确认"}</div>{result.sourceUrl && <a href={result.sourceUrl} target="_blank" rel="noreferrer" className="mt-3 inline-flex items-center gap-1 text-[var(--accent-2)]">官方来源<ExternalLink size={13} /></a>}</div>
             </div>
+            {result.learningCard?.evidenceIds.length ? <EvidenceLinks evidenceIds={result.learningCard.evidenceIds} /> : null}
             {result.learningCard && <LearningCard card={result.learningCard} />}
           </article>
         ) : (
@@ -46,9 +48,30 @@ export function ProductSearch({
             <p className="mt-4 text-sm leading-6"><span className="text-[var(--muted)]">必问工况：</span>{result.mustAskConditions}</p>
             <p className="mt-2 text-sm leading-6"><span className="text-[var(--muted)]">Bürkert 边界：</span>{result.burkertCaution}</p>
             <p className="mt-2 text-sm leading-6"><span className="text-[var(--muted)]">内部验证：</span>{result.internalValidation}</p>
+            {result.evidenceIds.length ? <EvidenceLinks evidenceIds={result.evidenceIds} /> : null}
           </article>
         ))}
       </div>
+    </div>
+  );
+}
+
+function EvidenceLinks({ evidenceIds }: { evidenceIds: string[] }) {
+  const visible = evidenceIds.slice(0, 12);
+  const remaining = evidenceIds.length - visible.length;
+  return (
+    <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-[var(--line)] pt-3 text-xs">
+      <span className="font-semibold text-[var(--muted)]">证据追溯</span>
+      {visible.map((evidenceId) => (
+        <Link
+          key={evidenceId}
+          href={evidenceHref(evidenceId)}
+          className="rounded border border-[var(--line)] px-2 py-1 text-[var(--accent-2)] hover:border-[var(--accent-2)]"
+        >
+          {evidenceId}
+        </Link>
+      ))}
+      {remaining > 0 && <span className="text-[var(--muted)]">另 {remaining} 条</span>}
     </div>
   );
 }

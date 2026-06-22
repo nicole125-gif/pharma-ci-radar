@@ -8,6 +8,7 @@ import { TrainingWorkspace } from "@/components/knowledge/training-workspace";
 import { ValidationWorkspace } from "@/components/knowledge/validation-workspace";
 import { searchKnowledge, type KnowledgeSearchFilters } from "@/lib/knowledge/search";
 import { buildKnowledgeWorkspace } from "@/lib/knowledge/service";
+import { buildEvidenceTraceMap } from "@/lib/knowledge/traceability";
 import type { EvidenceGrade, FactStatus, KnowledgeCompany, KnowledgeRecordType, PharmaRelevance } from "@/lib/knowledge/types";
 
 type View = "workbench" | "products" | "training" | "validation" | "evidence";
@@ -32,6 +33,7 @@ export default async function KnowledgePage({
   };
   const results = view === "products" ? searchKnowledge(workspace.catalog, filters) : [];
   const categories = [...new Set(workspace.catalog.products.map((item) => item.category))].sort((a, b) => a.localeCompare(b, "zh-CN"));
+  const evidenceTraceMap = view === "evidence" ? buildEvidenceTraceMap(workspace.catalog) : {};
 
   return (
     <AppShell>
@@ -41,7 +43,7 @@ export default async function KnowledgePage({
       {view === "products" && <ProductSearch filters={filters} results={results} categories={categories} />}
       {view === "training" && <TrainingWorkspace curriculum={workspace.catalog.curriculum} learners={workspace.training.learners} selectedLearner={workspace.training.selectedLearner} progress={workspace.training.progress} scores={workspace.training.scores} readOnly={!workspace.database.available} />}
       {view === "validation" && <ValidationWorkspace tasks={workspace.validation.tasks} evidence={workspace.validation.evidence} readOnly={!workspace.database.available} priority={params.priority} company={params.company} />}
-      {view === "evidence" && <EvidenceQa evidence={workspace.catalog.evidenceRecords} filters={{ query: params.q, company: params.company, grade: (params.grade || "ALL") as EvidenceGrade | "ALL", status: (params.status || "ALL") as FactStatus | "ALL" }} />}
+      {view === "evidence" && <EvidenceQa evidence={workspace.catalog.evidenceRecords} traceMap={evidenceTraceMap} filters={{ query: params.q, company: params.company, grade: (params.grade || "ALL") as EvidenceGrade | "ALL", status: (params.status || "ALL") as FactStatus | "ALL" }} />}
     </AppShell>
   );
 }

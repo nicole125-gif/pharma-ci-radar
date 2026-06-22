@@ -254,6 +254,10 @@ function normalizeFactStatus(value: string): FactStatus {
     : "UNKNOWN";
 }
 
+function normalizeEvidenceCompany(value: string): string {
+  return value === "ESG Jingrui" ? "ESG 精锐" : value;
+}
+
 function optional(value: string): string | undefined {
   return value === "" ? undefined : value;
 }
@@ -526,7 +530,9 @@ function mapEvidence(
   );
   return {
     evidenceId,
-    company: required(row.company, filename, "company", evidenceId),
+    company: normalizeEvidenceCompany(
+      required(row.company, filename, "company", evidenceId)
+    ),
     topic: required(row.topic, filename, "topic", evidenceId),
     productCategory: optional(row.product_category ?? ""),
     factStatus: normalizeFactStatus(row.fact_status),

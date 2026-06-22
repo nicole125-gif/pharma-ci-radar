@@ -1,5 +1,6 @@
 import { ExternalLink, Search } from "lucide-react";
 import type { EvidenceGrade, EvidenceRecord, FactStatus } from "@/lib/knowledge/types";
+import type { EvidenceTraceMap } from "@/lib/knowledge/traceability";
 
 export interface EvidenceQaFilters {
   query?: string;
@@ -10,10 +11,12 @@ export interface EvidenceQaFilters {
 
 export function EvidenceQa({
   evidence,
-  filters
+  filters,
+  traceMap = {}
 }: {
   evidence: EvidenceRecord[];
   filters: EvidenceQaFilters;
+  traceMap?: EvidenceTraceMap;
 }) {
   const companies = Array.from(new Set(evidence.map((item) => item.company))).sort((a, b) =>
     a.localeCompare(b, "zh-CN")
@@ -87,6 +90,7 @@ export function EvidenceQa({
                 <p className="mt-2 text-xs leading-5 text-[var(--muted)]">支持结论：{record.supportsConclusion}</p>
               )}
               {record.notes && <p className="mt-1 text-xs leading-5 text-[var(--muted)]">边界：{record.notes}</p>}
+              <TraceLinks evidenceId={record.evidenceId} traceMap={traceMap} />
             </div>
             <div className="text-xs leading-5 text-[var(--muted)]">
               <div>{record.sourceType || "来源类型未标注"}</div>
@@ -107,6 +111,36 @@ export function EvidenceQa({
           </article>
         ))}
       </div>
+    </div>
+  );
+}
+
+function TraceLinks({
+  evidenceId,
+  traceMap
+}: {
+  evidenceId: string;
+  traceMap: EvidenceTraceMap;
+}) {
+  const links = traceMap[evidenceId] ?? [];
+  if (links.length === 0) {
+    return <p className="mt-2 text-xs leading-5 text-[var(--muted)]">反向追溯：暂无产品或场景引用</p>;
+  }
+  const visible = links.slice(0, 8);
+  const remaining = links.length - visible.length;
+  return (
+    <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
+      <span className="font-semibold text-[var(--muted)]">反向追溯</span>
+      {visible.map((link) => (
+        <a
+          key={`${link.kind}-${link.href}`}
+          href={link.href}
+          className="rounded border border-[var(--line)] px-2 py-1 text-[var(--accent-2)] hover:border-[var(--accent-2)]"
+        >
+          {link.kind === "PRODUCT" ? "产品" : "场景"} · {link.label}
+        </a>
+      ))}
+      {remaining > 0 && <span className="text-[var(--muted)]">另 {remaining} 条</span>}
     </div>
   );
 }

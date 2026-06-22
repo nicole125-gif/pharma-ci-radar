@@ -101,6 +101,13 @@ describe("knowledge catalog", () => {
         evidenceGrade: "A"
       })
     );
+    expect(catalog.evidenceRecords).toContainEqual(
+      expect.objectContaining({
+        evidenceId: "ESG-SERIES-A00",
+        company: "ESG 精锐"
+      })
+    );
+    expect(catalog.evidenceRecords.some((record) => record.company === "ESG Jingrui")).toBe(false);
   });
 
   it("reuses unchanged files and reloads after a source mtime changes", async () => {
