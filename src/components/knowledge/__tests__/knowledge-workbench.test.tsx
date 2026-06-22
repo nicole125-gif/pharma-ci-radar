@@ -51,6 +51,7 @@ describe("knowledge workbench", () => {
     expect(screen.getByText("继续训练")).toBeTruthy();
     expect(screen.getByText("验证一个判断")).toBeTruthy();
     expect(screen.getByText("证据健康与优先行动")).toBeTruthy();
+    expect(screen.getByText("管理层简报")).toBeTruthy();
     expect(screen.getByText("公司级风险分布")).toBeTruthy();
     expect(screen.getByText("VAL-ESG-001 · Certificate originals")).toBeTruthy();
     expect(screen.getByText(/只读模式/)).toBeTruthy();

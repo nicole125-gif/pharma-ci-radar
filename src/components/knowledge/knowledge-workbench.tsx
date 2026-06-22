@@ -58,9 +58,10 @@ export function KnowledgeWorkbench({
       <section className="grid gap-3">
         <div className="flex items-center justify-between gap-3 max-[640px]:grid">
           <div className="text-sm font-semibold text-[var(--accent-2)]">证据健康与优先行动</div>
-          <Link href="/knowledge?view=evidence&risk=NEEDS_VALIDATION" className="text-xs text-[var(--accent-2)]">
-            查看需验证证据
-          </Link>
+          <div className="flex gap-3 text-xs">
+            <Link href="/briefing" className="text-[var(--accent-2)]">管理层简报</Link>
+            <Link href="/knowledge?view=evidence&risk=NEEDS_VALIDATION" className="text-[var(--accent-2)]">查看需验证证据</Link>
+          </div>
         </div>
         <div className="grid grid-cols-4 gap-3 max-[900px]:grid-cols-2 max-[560px]:grid-cols-1">
           <Metric label="可直接引用证据" value={evidenceHealth.directlyUsableEvidence} />
