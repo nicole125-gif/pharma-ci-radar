@@ -91,6 +91,87 @@ export function buildExecutiveEvidenceBrief(
   };
 }
 
+export function renderExecutiveEvidenceBriefMarkdown(
+  brief: ExecutiveEvidenceBrief,
+  generatedDate = new Date().toISOString().slice(0, 10)
+): string {
+  const lines = [
+    "# Bürkert Pharma CI Executive Brief",
+    "",
+    `生成日期：${generatedDate}`,
+    "",
+    "## 一句话结论",
+    "",
+    brief.headline,
+    "",
+    "## 证据可信度总览",
+    "",
+    `- 可直接引用证据：${brief.directlyUsableEvidence} 条`,
+    `- 需内部验证证据：${brief.riskyEvidence} 条`,
+    `- 未归档风险证据：${brief.unlinkedRiskyEvidence} 条`,
+    "",
+    "## 四家公司证据风险排序",
+    "",
+    "| 公司 | 强证据 | 风险证据 | 未归档风险 |",
+    "|---|---:|---:|---:|",
+    ...brief.companyRiskRanking.map(
+      (item) =>
+        `| ${escapeMarkdownTableCell(item.company)} | ${item.strongEvidence} | ${item.riskyEvidence} | ${item.unlinkedRiskyEvidence} |`
+    ),
+    "",
+    "## Top 风险判断",
+    "",
+    ...formatRiskEvidence(brief.topRiskEvidence),
+    "",
+    "## Top 内部验证任务",
+    "",
+    ...formatValidationActions(brief.topValidationActions),
+    "",
+    "## 判断使用边界",
+    "",
+    ...brief.usageBoundaries.map(
+      (item) => `- **${item.label}**（${item.count} 条）：${item.rule}`
+    ),
+    "",
+    "## 使用提醒",
+    "",
+    "- 本简报为公开证据草稿，适合管理层、销售、产品和市场团队进行内部讨论。",
+    "- 价格、交期、客户份额和未公开客户名称仍需内部验证，不应直接对外引用。",
+    "- 所有高影响判断应回到证据编号、来源链接和验证任务后再进入正式材料。"
+  ];
+
+  return `${lines.join("\n")}\n`;
+}
+
+function formatRiskEvidence(items: ExecutiveRiskEvidence[]): string[] {
+  if (!items.length) return ["暂无风险证据。"];
+
+  return items.flatMap((item, index) => [
+    `${index + 1}. **${item.evidenceId}**（${item.company} / ${item.topic}，${item.grade} · ${item.status}）`,
+    `   - 摘要：${item.summary}`,
+    `   - 已关联产品或场景：${item.linkedProductsOrScenarios}`,
+    `   - 验证任务：${item.validationTaskIds.length ? item.validationTaskIds.join(", ") : "未归档"}`,
+    `   - 链接：${item.href}`,
+    ""
+  ]);
+}
+
+function formatValidationActions(items: EvidenceActionItem[]): string[] {
+  if (!items.length) return ["暂无内部验证任务。"];
+
+  return items.flatMap((item, index) => [
+    `${index + 1}. **${item.priority} · ${item.id}**`,
+    `   - 任务：${item.title}`,
+    `   - 说明：${item.detail}`,
+    `   - 链接：${item.href}`,
+    ""
+  ]);
+}
+
+function escapeMarkdownTableCell(value: string): string {
+  return value.replace(/\|/g, "\\|");
+}
+
 function compareRiskEvidence(
   left: {
     record: EvidenceRecord;

@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { loadKnowledgeCatalog } from "../catalog";
-import { buildExecutiveEvidenceBrief } from "../executive-brief";
+import {
+  buildExecutiveEvidenceBrief,
+  renderExecutiveEvidenceBriefMarkdown
+} from "../executive-brief";
 
 describe("executive evidence brief", () => {
   it("builds a management-ready evidence risk summary", async () => {
@@ -29,5 +32,20 @@ describe("executive evidence brief", () => {
       "仅内部讨论",
       "不应作为结论"
     ]);
+  });
+
+  it("exports a markdown draft for executive review", async () => {
+    const catalog = await loadKnowledgeCatalog();
+    const brief = buildExecutiveEvidenceBrief(catalog);
+    const markdown = renderExecutiveEvidenceBriefMarkdown(brief, "2026-06-22");
+
+    expect(markdown).toContain("# Bürkert Pharma CI Executive Brief");
+    expect(markdown).toContain("生成日期：2026-06-22");
+    expect(markdown).toContain("## 证据可信度总览");
+    expect(markdown).toContain("## Top 风险判断");
+    expect(markdown).toContain("## 判断使用边界");
+    expect(markdown).toContain(brief.topRiskEvidence[0].evidenceId);
+    expect(markdown).not.toContain("undefined");
+    expect(markdown).not.toContain("TBD");
   });
 });

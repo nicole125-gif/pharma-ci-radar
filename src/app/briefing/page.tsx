@@ -74,7 +74,17 @@ export default async function BriefingPage() {
 
       <section className="mb-5 grid gap-4">
         <article className="panel p-5">
-          <div className="mb-3 text-sm font-semibold text-[var(--accent-2)]">证据型 Executive Brief</div>
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+            <div className="text-sm font-semibold text-[var(--accent-2)]">证据型 Executive Brief</div>
+            <div className="flex flex-wrap gap-2">
+              <Link href="/briefing/markdown" className="rounded border border-[var(--line)] px-3 py-2 text-xs hover:bg-white/5">
+                Markdown 草稿
+              </Link>
+              <a href="/api/briefing/markdown" className="rounded border border-[var(--line)] px-3 py-2 text-xs text-[var(--accent-2)] hover:bg-white/5">
+                原始 Markdown
+              </a>
+            </div>
+          </div>
           <h2 className="max-w-4xl text-2xl font-semibold leading-8 max-[560px]:text-xl">{evidenceBrief.headline}</h2>
           <div className="mt-5 grid grid-cols-4 gap-3 max-[980px]:grid-cols-2 max-[560px]:grid-cols-1">
             <MetricCard label="可直接引用" value={evidenceBrief.directlyUsableEvidence} detail="A/B 且 FACT" />
