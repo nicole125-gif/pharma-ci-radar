@@ -224,10 +224,18 @@ export function EvidenceRecordForm({
       <label className="grid gap-1 text-xs text-[var(--muted)]">公司<input name="company" disabled={disabled} className={inputClass} /></label>
       <label className="grid gap-1 text-xs text-[var(--muted)]">证据类型<input name="evidenceType" disabled={disabled} className={inputClass} /></label>
       <label className="grid gap-1 text-xs text-[var(--muted)]">文件或记录位置<input name="fileLocation" disabled={disabled} className={inputClass} /></label>
+      <label className="grid gap-1 text-xs text-[var(--muted)]">产品或系列<input name="subjectProduct" disabled={disabled} className={inputClass} /></label>
+      <label className="grid gap-1 text-xs text-[var(--muted)]">型号或配置<input name="modelOrConfiguration" disabled={disabled} className={inputClass} /></label>
+      <label className="grid gap-1 text-xs text-[var(--muted)]">市场范围<input name="marketScope" disabled={disabled} className={inputClass} /></label>
+      <label className="grid gap-1 text-xs text-[var(--muted)]">来源负责人<input name="sourceOwner" disabled={disabled} className={inputClass} /></label>
       <label className="grid gap-1 text-xs text-[var(--muted)]">保密级别<select name="confidentiality" disabled={disabled} className={inputClass}><option>INTERNAL</option><option>RESTRICTED</option><option>PUBLIC</option></select></label>
+      <label className="grid gap-1 text-xs text-[var(--muted)]">支持/反驳<select name="supportsOrContradicts" disabled={disabled} className={inputClass}><option value="SUPPORTS">SUPPORTS</option><option value="CONTRADICTS">CONTRADICTS</option><option value="CONTEXT_ONLY">CONTEXT_ONLY</option></select></label>
       <label className="grid gap-1 text-xs text-[var(--muted)]">验证状态<select name="verificationStatus" disabled={disabled} className={inputClass}><option>PENDING</option><option>VERIFIED</option><option>REJECTED</option><option>INSUFFICIENT</option></select></label>
+      <label className="grid gap-1 text-xs text-[var(--muted)]">验证人<input name="verifier" disabled={disabled} className={inputClass} /></label>
+      <label className="grid gap-1 text-xs text-[var(--muted)]">验证日期<input type="date" name="verifiedDate" disabled={disabled} className={inputClass} /></label>
+      <label className="col-span-2 grid gap-1 text-xs text-[var(--muted)] max-[620px]:col-span-1">拒绝或不足原因<textarea name="rejectionReason" disabled={disabled} className={inputClass} rows={2} /></label>
       <label className="col-span-2 grid gap-1 text-xs text-[var(--muted)] max-[620px]:col-span-1">事实摘要<textarea name="factSummary" disabled={disabled} className={inputClass} rows={2} /></label>
-      <input type="hidden" name="supportsOrContradicts" value="CONTEXT_ONLY" />
+      <label className="col-span-2 grid gap-1 text-xs text-[var(--muted)] max-[620px]:col-span-1">备注<textarea name="notes" disabled={disabled} className={inputClass} rows={2} /></label>
       <div className="col-span-2 flex items-center justify-between gap-3 max-[620px]:col-span-1"><Message state={state} disabled={disabled} /><SubmitButton disabled={disabled} /></div>
     </form>
   );

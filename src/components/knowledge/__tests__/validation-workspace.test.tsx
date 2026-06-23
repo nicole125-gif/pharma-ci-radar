@@ -62,4 +62,20 @@ describe("validation workspace", () => {
     expect(screen.queryByText("VAL-GEMU-001")).toBeNull();
     expect(screen.queryByText("ESG Jingrui")).toBeNull();
   });
+
+  it("renders the internal evidence fields needed to close a validation task", () => {
+    render(
+      <ValidationWorkspace
+        tasks={[task("VAL-GEMU-001", "GEMÜ", "交付能力")]}
+        evidence={[]}
+        readOnly={false}
+      />
+    );
+
+    expect(screen.getByLabelText("支持/反驳")).toBeTruthy();
+    expect(screen.getByLabelText("验证人")).toBeTruthy();
+    expect(screen.getByLabelText("验证日期")).toBeTruthy();
+    expect(screen.getByLabelText("拒绝或不足原因")).toBeTruthy();
+    expect(screen.getByLabelText("备注")).toBeTruthy();
+  });
 });
