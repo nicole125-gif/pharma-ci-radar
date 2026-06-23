@@ -4,6 +4,37 @@ import { describe, expect, it } from "vitest";
 import { TrainingWorkspace } from "../training-workspace";
 
 describe("training workspace", () => {
+  it("renders the learning loop for the day 7 ESG local competitor exercise", () => {
+    render(
+      <TrainingWorkspace
+        curriculum={[
+          {
+            day: 7,
+            week: 1,
+            module: "ESG骨架",
+            learningObjective: "掌握可核验系列与低成熟证据边界",
+            primaryMaterial: "esg-jingrui-product-handbook.md",
+            exercise: "制作A00、100、800/801、0P1证据卡",
+            requiredOutput: "四张证据卡含FACT CLAIM GAP",
+            coachReview: "质量或产品经理复核证据等级",
+            passCriteria: "每项声明正确标记且未预设价格交期优势"
+          }
+        ]}
+        learners={[]}
+        progress={[]}
+        scores={[]}
+        readOnly
+      />
+    );
+
+    expect(screen.getByText("ESG 精锐本土竞争边界学习闭环")).toBeTruthy();
+    expect(screen.getByText("返工红线")).toBeTruthy();
+    expect(screen.getByText(/ESG-DIAPHRAGM-001/)).toBeTruthy();
+    expect(screen.getByText(/ESG-100-001/)).toBeTruthy();
+    expect(screen.getByText(/ESG-801-001/)).toBeTruthy();
+    expect(screen.getAllByText(/价格交期优势/).length).toBeGreaterThan(0);
+  });
+
   it("renders the learning loop for the day 6 Fujikin boundary exercise", () => {
     render(
       <TrainingWorkspace

@@ -40,6 +40,27 @@ describe("training closure definitions", () => {
     expect(closure?.reworkTriggers.join(" ")).toContain("半导体高纯");
   });
 
+  it("defines a scorable loop for the ESG day 7 local competitor boundary exercise", () => {
+    const closure = getTrainingClosure(7);
+
+    expect(closure).toMatchObject({
+      day: 7,
+      title: "ESG 精锐本土竞争边界学习闭环"
+    });
+    expect(closure?.requiredEvidenceIds).toContain("ESG-DIAPHRAGM-001");
+    expect(closure?.requiredEvidenceIds).toContain("ESG-100-001");
+    expect(closure?.requiredEvidenceIds).toContain("ESG-801-001");
+    expect(closure?.submissionChecklist.join(" ")).toContain("FACT");
+    expect(closure?.submissionChecklist.join(" ")).toContain("CLAIM");
+    expect(closure?.scoringRubric.map((item) => item.points)).toEqual([
+      20,
+      20,
+      30,
+      30
+    ]);
+    expect(closure?.reworkTriggers.join(" ")).toContain("价格交期优势");
+  });
+
   it("only enables closures for configured training days", () => {
     expect(getTrainingClosure(1)).toBeUndefined();
   });

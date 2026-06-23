@@ -76,6 +76,69 @@ const closures: TrainingClosureDefinition[] = [
     ]
   },
   {
+    day: 7,
+    title: "ESG 精锐本土竞争边界学习闭环",
+    deliverable:
+      "提交四张证据卡，覆盖 A00/A01 卫生隔膜阀、100 系列角座阀、800/801 疏水阀和 0P1 定位器，并标出 FACT、CLAIM、GAP 与内部验证问题。",
+    requiredEvidenceIds: [
+      "ESG-COMPANY-001",
+      "ESG-PRODUCT-001",
+      "ESG-CHINA-001",
+      "ESG-PHARMA-001",
+      "ESG-DIAPHRAGM-001",
+      "ESG-CERT-001",
+      "ESG-AUTOMATION-001",
+      "ESG-100-001",
+      "ESG-801-001",
+      "ESG-PORTFOLIO-GAP-001"
+    ],
+    submissionChecklist: [
+      "制作 A00/A01、100、800/801 和 0P1 四张证据卡，每张卡都标明 FACT、CLAIM、GAP 或 INTERNAL_VALIDATION。",
+      "区分直接重叠、邻近重叠和不可等价：卫生隔膜阀、角座阀、公用工程疏水阀、基础定位器不能混成一个能力结论。",
+      "对每条卫生认证、材料、Ra、膜片、压力温度和自动化声明写出证据等级，并说明是否取得证书或当前数据表原件。",
+      "列出至少 4 个内部验证问题，覆盖证书原件、批次文件、真实净价、实际交期、制药案例和备件服务。",
+      "明确 ESG 可能形成商业压力的场景，同时写出不能预设价格交期优势的条件。"
+    ],
+    scoringRubric: [
+      {
+        dimension: "产品骨架",
+        points: 20,
+        passSignal:
+          "能正确说明 ESG 以本土不锈钢过程阀为主，重点覆盖卫生阀、公用工程阀和基础自动化。"
+      },
+      {
+        dimension: "证据分级",
+        points: 20,
+        passSignal:
+          "能把官网事实、企业认证声明、失效页面和缺口分别标成 FACT、CLAIM、GAP 或内部验证。"
+      },
+      {
+        dimension: "应用判断",
+        points: 30,
+        passSignal:
+          "能按标准阀包、低风险公用工程、关键卫生阀和自动化调节分别给出候选与排除条件。"
+      },
+      {
+        dimension: "竞争策略",
+        points: 30,
+        passSignal:
+          "能说明 Bürkert 面对 ESG 时如何拆分技术准入、商业验证和本地响应，而不是简单压价。"
+      }
+    ],
+    reworkTriggers: [
+      "预设国产厂商一定具备价格交期优势，但没有同规格报价、订单或交付证据。",
+      "把普通工业阀、公用工程阀或疏水阀直接写成关键无菌主工艺适配。",
+      "把 FDA、USP、EC 1935/2004 等官网表述当成已独立验证的证书事实。",
+      "把 103 三通角座阀或 T 阀信号等同于复杂低死区多通隔膜阀块。",
+      "没有索取当前数据表、证书原件、材料批次或 Ra 报告，就给出高威胁结论。"
+    ],
+    reflectionPrompts: [
+      "ESG 最可能在哪类客户任务里给 Bürkert 造成商业压力？",
+      "哪些 ESG 声明只能作为 CLAIM，必须由质量或应用工程复核？",
+      "下次销售说 ESG 更便宜或更快时，你会要求补哪三类证据？"
+    ]
+  },
+  {
     day: 8,
     title: "Bürkert-GEMÜ 卫生阀自动化学习闭环",
     deliverable:
