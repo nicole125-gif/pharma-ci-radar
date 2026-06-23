@@ -35,7 +35,7 @@ export function TrainingWorkspace({
       </aside>
       <div className="grid gap-5">
         {!selectedLearner && <div className="panel p-4 text-sm text-[var(--muted)]">课程可直接浏览；选择或创建学习者后可记录进度和评分。</div>}
-        <TrainingClosureOverview summaries={closureSummaries} />
+        <TrainingClosureOverview summaries={closureSummaries} progress={progress} />
         {weeks.map((week) => (
           <section key={week} className="panel overflow-hidden">
             <div className="border-b border-[var(--line)] px-4 py-3 font-semibold">第 {week} 周</div>
@@ -54,12 +54,14 @@ export function TrainingWorkspace({
 function Text({ label, value }: { label: string; value: string }) { return <div><div className="font-semibold text-[var(--accent-2)]">{label}</div><p className="mt-1 text-[var(--muted)]">{value}</p></div>; }
 
 function TrainingClosureOverview({
-  summaries
+  summaries,
+  progress
 }: {
   summaries: Array<{
     closure: NonNullable<ReturnType<typeof getTrainingClosure>>;
     day: CurriculumDay;
   }>;
+  progress: TrainingProgress[];
 }) {
   if (summaries.length === 0) return null;
 
@@ -67,6 +69,10 @@ function TrainingClosureOverview({
     (total, item) => total + item.closure.requiredEvidenceIds.length,
     0
   );
+  const completedCount = summaries.filter(({ day }) => {
+    const dayProgress = progress.find((item) => item.day === day.day);
+    return dayProgress?.completionStatus === "COMPLETE";
+  }).length;
 
   return (
     <section className="panel p-4">
@@ -84,29 +90,38 @@ function TrainingClosureOverview({
           <span className="rounded border border-[var(--line)] px-3 py-1 text-[var(--accent-2)]">
             {evidenceCount} 条必须引用证据
           </span>
+          <span className="rounded border border-[var(--line)] px-3 py-1 text-[var(--accent-2)]">
+            {completedCount} / {summaries.length} 已完成
+          </span>
         </div>
       </div>
       <div className="grid gap-3">
-        {summaries.map(({ closure, day }) => (
-          <div key={closure.day} className="rounded border border-[var(--line)] p-3">
-            <div className="mb-1 text-xs font-semibold text-[var(--accent-2)]">
-              DAY {day.day} · {day.module}
-            </div>
-            <div className="text-sm font-semibold">{closure.title}</div>
-            <p className="mt-2 text-xs leading-5 text-[var(--muted)]">{closure.deliverable}</p>
-            <div className="mt-3 grid grid-cols-[1fr_1fr] gap-3 max-[700px]:grid-cols-1">
-              <div className="text-xs leading-5 text-[var(--muted)]">
-                <span className="font-semibold text-[var(--accent-2)]">证据：</span>
-                {closure.requiredEvidenceIds.slice(0, 3).join(" / ")}
-                {closure.requiredEvidenceIds.length > 3 ? " ..." : ""}
+        {summaries.map(({ closure, day }) => {
+          const status =
+            progress.find((item) => item.day === day.day)?.completionStatus ??
+            "NOT_STARTED";
+          return (
+            <div key={closure.day} className="rounded border border-[var(--line)] p-3">
+              <div className="mb-1 flex flex-wrap items-center justify-between gap-2 text-xs font-semibold text-[var(--accent-2)]">
+                <span>DAY {day.day} · {day.module}</span>
+                <span>{status}</span>
               </div>
-              <div className="text-xs leading-5 text-[var(--muted)]">
-                <span className="font-semibold text-[var(--accent-2)]">红线：</span>
-                {closure.reworkTriggers[0]}
+              <div className="text-sm font-semibold">{closure.title}</div>
+              <p className="mt-2 text-xs leading-5 text-[var(--muted)]">{closure.deliverable}</p>
+              <div className="mt-3 grid grid-cols-[1fr_1fr] gap-3 max-[700px]:grid-cols-1">
+                <div className="text-xs leading-5 text-[var(--muted)]">
+                  <span className="font-semibold text-[var(--accent-2)]">证据：</span>
+                  {closure.requiredEvidenceIds.slice(0, 3).join(" / ")}
+                  {closure.requiredEvidenceIds.length > 3 ? " ..." : ""}
+                </div>
+                <div className="text-xs leading-5 text-[var(--muted)]">
+                  <span className="font-semibold text-[var(--accent-2)]">红线：</span>
+                  {closure.reworkTriggers[0]}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </section>
   );
