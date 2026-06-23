@@ -52,6 +52,20 @@ def read_evidence_ids(paths: list[Path]) -> set[str]:
     }
 
 
+def extract_evidence_references(text: str, known_evidence_ids: set[str]) -> set[str]:
+    known_namespaces = {
+        "-".join(evidence_id.split("-")[:2])
+        for evidence_id in known_evidence_ids
+        if len(evidence_id.split("-")) >= 3
+    }
+    candidates = re.findall(r"\b[A-Z][A-Z0-9]*(?:-[A-Z0-9]+){2,}\b", text)
+    return {
+        candidate
+        for candidate in candidates
+        if "-".join(candidate.split("-")[:2]) in known_namespaces
+    }
+
+
 def require(condition: bool, message: str, errors: list[str]) -> None:
     if not condition:
         errors.append(message)
@@ -223,12 +237,13 @@ def main() -> None:
     evidence_ids = read_evidence_ids(
         [evidence_path, gemu_evidence_path, fujikin_evidence_path, esg_evidence_path]
     )
-    evidence_pattern = re.compile(r"\b[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+-\d{3}\b")
     referenced_evidence_ids: set[str] = set()
     for row in product_matrix + competitor_map:
         referenced_evidence_ids.update(filter(None, row["evidence_ids"].split("|")))
     for path in RESEARCH.glob("*.md"):
-        referenced_evidence_ids.update(evidence_pattern.findall(path.read_text(encoding="utf-8")))
+        referenced_evidence_ids.update(
+            extract_evidence_references(path.read_text(encoding="utf-8"), evidence_ids)
+        )
     require(
         referenced_evidence_ids <= evidence_ids,
         f"Unknown evidence IDs referenced: {sorted(referenced_evidence_ids - evidence_ids)}",

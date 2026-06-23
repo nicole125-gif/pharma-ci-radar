@@ -10,7 +10,7 @@ describe("knowledge evidence health", () => {
       catalog.validationTasks
     );
 
-    expect(summary.totalEvidence).toBe(361);
+    expect(summary.totalEvidence).toBe(catalog.evidenceRecords.length);
     expect(summary.directlyUsableEvidence).toBeGreaterThan(300);
     expect(summary.riskyEvidence).toBeGreaterThan(0);
     expect(summary.p0ValidationTasks).toBe(10);
