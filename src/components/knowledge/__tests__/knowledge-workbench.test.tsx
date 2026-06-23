@@ -55,5 +55,11 @@ describe("knowledge workbench", () => {
     expect(screen.getByText("公司级风险分布")).toBeTruthy();
     expect(screen.getByText("VAL-ESG-001 · Certificate originals")).toBeTruthy();
     expect(screen.getByText(/只读模式/)).toBeTruthy();
+    expect(screen.getByText("AI 作用层级")).toBeTruthy();
+    expect(screen.getByText("研究层")).toBeTruthy();
+    expect(screen.getByText("监测层")).toBeTruthy();
+    expect(screen.getByText("证据层")).toBeTruthy();
+    expect(screen.getByText("Enablement 层")).toBeTruthy();
+    expect(screen.getByText("行动层")).toBeTruthy();
   });
 });

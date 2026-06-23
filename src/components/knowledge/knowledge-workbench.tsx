@@ -4,8 +4,13 @@ import {
   ArrowUpRight,
   BookOpenCheck,
   ClipboardCheck,
+  FileSearch,
   GitCompareArrows,
+  Layers3,
+  Radar,
   SearchCheck,
+  ShieldCheck,
+  Sparkles,
   UsersRound
 } from "lucide-react";
 import type { EvidenceHealthSummary } from "@/lib/knowledge/evidence-health";
@@ -18,6 +23,39 @@ const taskItems = [
   { label: "准备客户拜访", detail: "进入战术卡，整理证据与提问路径", href: "/battlecards", icon: UsersRound },
   { label: "继续训练", detail: "推进 30 天课程和检查点评分", href: "/knowledge?view=training", icon: BookOpenCheck },
   { label: "验证一个判断", detail: "补齐价格、交付、服务与客户证据", href: "/knowledge?view=validation", icon: ClipboardCheck }
+];
+
+const aiLayerItems = [
+  {
+    label: "研究层",
+    detail: "产品、系列、应用场景和来源资料结构化",
+    href: "/knowledge?view=products",
+    icon: FileSearch
+  },
+  {
+    label: "监测层",
+    detail: "官网、新闻、来源审核和变化事件持续进入队列",
+    href: "/sources",
+    icon: Radar
+  },
+  {
+    label: "证据层",
+    detail: "FACT / CLAIM / GAP / INTERNAL_VALIDATION 分清边界",
+    href: "/knowledge?view=evidence",
+    icon: ShieldCheck
+  },
+  {
+    label: "Enablement 层",
+    detail: "战卡、培训课、管理层简报和 Markdown 草稿",
+    href: "/briefing",
+    icon: Sparkles
+  },
+  {
+    label: "行动层",
+    detail: "风险证据转成验证任务、销售动作和产品建议",
+    href: "/knowledge?view=validation",
+    icon: Layers3
+  }
 ];
 
 export function KnowledgeWorkbench({
@@ -40,6 +78,30 @@ export function KnowledgeWorkbench({
           当前为只读模式：产品知识可正常使用，训练进度和验证任务需要配置 PostgreSQL 后更新。
         </div>
       )}
+      <section className="panel overflow-hidden">
+        <div className="border-b border-[var(--line)] px-4 py-4">
+          <div className="text-sm font-semibold text-[var(--accent-2)]">AI 作用层级</div>
+          <p className="mt-2 max-w-3xl text-sm leading-6 text-[var(--muted)]">
+            不是把 AI 放在聊天入口，而是让它嵌入研究、监测、证据归类、销售赋能和行动转译的工作流。
+          </p>
+        </div>
+        <div className="grid grid-cols-5 divide-x divide-[var(--line)] max-[1100px]:grid-cols-1 max-[1100px]:divide-x-0 max-[1100px]:divide-y">
+          {aiLayerItems.map((item, index) => (
+            <Link key={item.label} href={item.href} className="group min-h-36 p-4 transition hover:bg-white/[0.03]">
+              <div className="flex items-center justify-between">
+                <span className="metric-number text-xs text-[var(--muted)]">0{index + 1}</span>
+                <item.icon size={19} className="text-[var(--accent)]" />
+              </div>
+              <div className="mt-5 font-semibold">{item.label}</div>
+              <p className="mt-2 text-xs leading-5 text-[var(--muted)]">{item.detail}</p>
+              <div className="mt-4 inline-flex items-center gap-1 text-xs text-[var(--accent-2)] opacity-0 transition group-hover:opacity-100">
+                进入工作流
+                <ArrowUpRight size={13} />
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
       <section>
         <div className="mb-3 text-sm font-semibold text-[var(--accent-2)]">今天要完成什么</div>
         <div className="grid grid-cols-5 gap-3 max-[1200px]:grid-cols-3 max-[760px]:grid-cols-1">
