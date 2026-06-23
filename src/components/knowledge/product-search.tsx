@@ -26,7 +26,7 @@ export function ProductSearch({
       </form>
       <div className="flex gap-2 overflow-x-auto">
         {[["ALL", "全部"], ["PRODUCT", "产品"], ["SCENARIO", "场景"]].map(([value, label]) => (
-          <Link key={value} href={`/knowledge?view=products&type=${value}`} className={`shrink-0 rounded border px-3 py-1.5 text-xs ${filters.recordType === value || (!filters.recordType && value === "ALL") ? "border-[var(--accent)] text-[var(--accent)]" : "border-[var(--line)] text-[var(--muted)]"}`}>{label}</Link>
+          <Link key={value} href={productTabHref(filters, value)} className={`shrink-0 rounded border px-3 py-1.5 text-xs ${filters.recordType === value || (!filters.recordType && value === "ALL") ? "border-[var(--accent)] text-[var(--accent)]" : "border-[var(--line)] text-[var(--muted)]"}`}>{label}</Link>
         ))}
       </div>
       <div className="text-sm text-[var(--muted)]">找到 {results.length} 条记录</div>
@@ -54,6 +54,15 @@ export function ProductSearch({
       </div>
     </div>
   );
+}
+
+function productTabHref(filters: KnowledgeSearchFilters, recordType: string): string {
+  const params = new URLSearchParams({ view: "products", type: recordType });
+  if (filters.query) params.set("q", filters.query);
+  if (filters.company && filters.company !== "ALL") params.set("company", filters.company);
+  if (filters.pharmaRelevance && filters.pharmaRelevance !== "ALL") params.set("relevance", filters.pharmaRelevance);
+  if (filters.category) params.set("category", filters.category);
+  return `/knowledge?${params.toString()}`;
 }
 
 function EvidenceLinks({ evidenceIds }: { evidenceIds: string[] }) {

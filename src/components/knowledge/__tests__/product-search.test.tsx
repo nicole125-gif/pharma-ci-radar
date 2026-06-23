@@ -4,6 +4,32 @@ import { describe, expect, it } from "vitest";
 import { ProductSearch } from "../product-search";
 
 describe("product search", () => {
+  it("keeps current filters when switching product and scenario tabs", () => {
+    render(
+      <ProductSearch
+        filters={{
+          query: "2103",
+          company: "GEMÜ",
+          pharmaRelevance: "HIGH",
+          category: "过程与控制阀",
+          recordType: "PRODUCT"
+        }}
+        categories={["过程与控制阀"]}
+        results={[]}
+      />
+    );
+
+    expect(screen.getByRole("link", { name: "全部" }).getAttribute("href")).toBe(
+      "/knowledge?view=products&type=ALL&q=2103&company=GEM%C3%9C&relevance=HIGH&category=%E8%BF%87%E7%A8%8B%E4%B8%8E%E6%8E%A7%E5%88%B6%E9%98%80"
+    );
+    expect(screen.getByRole("link", { name: "产品" }).getAttribute("href")).toBe(
+      "/knowledge?view=products&type=PRODUCT&q=2103&company=GEM%C3%9C&relevance=HIGH&category=%E8%BF%87%E7%A8%8B%E4%B8%8E%E6%8E%A7%E5%88%B6%E9%98%80"
+    );
+    expect(screen.getByRole("link", { name: "场景" }).getAttribute("href")).toBe(
+      "/knowledge?view=products&type=SCENARIO&q=2103&company=GEM%C3%9C&relevance=HIGH&category=%E8%BF%87%E7%A8%8B%E4%B8%8E%E6%8E%A7%E5%88%B6%E9%98%80"
+    );
+  });
+
   it("renders an evidence-bounded deep learning card", () => {
     render(
       <ProductSearch
