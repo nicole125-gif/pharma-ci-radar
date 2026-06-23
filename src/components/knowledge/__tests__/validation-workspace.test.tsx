@@ -7,7 +7,8 @@ import type { ValidationTaskDefinition } from "@/lib/knowledge/types";
 function task(
   validationId: string,
   company: string,
-  topic: string
+  topic: string,
+  counts?: { verifiedEvidenceCount?: number; minimumVerifiedRecords?: number }
 ): {
   definition: ValidationTaskDefinition;
   state: { validationId: string; status: "OPEN" };
@@ -28,7 +29,7 @@ function task(
       workstream: "Product",
       executionOwner: "Product",
       contributors: "Sales",
-      minimumVerifiedRecords: 1,
+      minimumVerifiedRecords: counts?.minimumVerifiedRecords ?? 1,
       evidenceTypes: "Interview",
       collectionMethod: "CRM",
       acceptanceRule: "One verified record",
@@ -38,7 +39,7 @@ function task(
       targetWindow: "2026-Q3"
     },
     state: { validationId, status: "OPEN" },
-    verifiedEvidenceCount: 0,
+    verifiedEvidenceCount: counts?.verifiedEvidenceCount ?? 0,
     totalEvidenceCount: 0
   };
 }
@@ -77,5 +78,41 @@ describe("validation workspace", () => {
     expect(screen.getByLabelText("验证日期")).toBeTruthy();
     expect(screen.getByLabelText("拒绝或不足原因")).toBeTruthy();
     expect(screen.getByLabelText("备注")).toBeTruthy();
+  });
+
+  it("shows the remaining verified evidence needed before closure", () => {
+    render(
+      <ValidationWorkspace
+        tasks={[
+          task("VAL-GEMU-001", "GEMÜ", "交付能力", {
+            verifiedEvidenceCount: 1,
+            minimumVerifiedRecords: 3
+          })
+        ]}
+        evidence={[]}
+        readOnly
+      />
+    );
+
+    expect(screen.getByText("关闭条件")).toBeTruthy();
+    expect(screen.getByText("需要 3 条 VERIFIED 内部证据，目前 1/3。")).toBeTruthy();
+    expect(screen.getByText("还缺 2 条 VERIFIED 内部证据。")).toBeTruthy();
+  });
+
+  it("marks tasks as ready to close when verified evidence meets the threshold", () => {
+    render(
+      <ValidationWorkspace
+        tasks={[
+          task("VAL-GEMU-001", "GEMÜ", "交付能力", {
+            verifiedEvidenceCount: 2,
+            minimumVerifiedRecords: 2
+          })
+        ]}
+        evidence={[]}
+        readOnly
+      />
+    );
+
+    expect(screen.getByText("已满足证据数量，可更新为 VERIFIED。")).toBeTruthy();
   });
 });
