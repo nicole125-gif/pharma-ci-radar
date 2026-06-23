@@ -140,6 +140,7 @@ describe("training workspace", () => {
     expect(screen.getByText("3 个闭环任务")).toBeTruthy();
     expect(screen.getByText("25 条必须引用证据")).toBeTruthy();
     expect(screen.getByText("4 个待验证问题")).toBeTruthy();
+    expect(screen.getByText("0 / 4 已验证")).toBeTruthy();
     expect(screen.getByText("DAY 6 · Fujikin骨架")).toBeTruthy();
     expect(screen.getByText("DAY 7 · ESG骨架")).toBeTruthy();
     expect(screen.getByText("DAY 8 · Bürkert-GEMÜ卫生阀自动化深挖")).toBeTruthy();
@@ -147,6 +148,7 @@ describe("training workspace", () => {
     expect(screen.getByText("VAL-FUJIKIN-001")).toBeTruthy();
     expect(screen.getByText("VAL-ESG-001")).toBeTruthy();
     expect(screen.getByText("VAL-GEMU-001")).toBeTruthy();
+    expect(screen.getAllByText("0/1 已验证").length).toBeGreaterThan(0);
     expect(
       screen
         .getByRole("link", { name: /VAL-FUJIKIN-001/ })

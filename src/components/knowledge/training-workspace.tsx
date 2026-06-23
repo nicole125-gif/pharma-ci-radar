@@ -88,16 +88,23 @@ function TrainingClosureOverview({
   const validationTasksById = new Map(
     validationTasks.map((task) => [task.definition.validationId, task])
   );
-  const openValidationIds = [
-    ...new Set(
-      summaries.flatMap(({ closure }) =>
-        (closure.validationTaskIds ?? []).filter((validationId) => {
-          const task = validationTasksById.get(validationId);
-          return task ? task.state.status !== "VERIFIED" : false;
-        })
-      )
-    )
+  const linkedValidationTasks = [
+    ...new Map(
+      summaries
+        .flatMap(({ closure }) => closure.validationTaskIds ?? [])
+        .map((validationId) => validationTasksById.get(validationId))
+        .filter((task): task is TrainingValidationTask => Boolean(task))
+        .map((task) => [task.definition.validationId, task])
+    ).values()
   ];
+  const openValidationIds = linkedValidationTasks
+    .filter((task) => task.state.status !== "VERIFIED")
+    .map((task) => task.definition.validationId);
+  const verifiedValidationCount = linkedValidationTasks.filter(
+    (task) =>
+      task.state.status === "VERIFIED" ||
+      task.verifiedEvidenceCount >= task.definition.minimumVerifiedRecords
+  ).length;
 
   return (
     <section className="panel p-4">
@@ -118,6 +125,11 @@ function TrainingClosureOverview({
           <span className="rounded border border-[var(--line)] px-3 py-1 text-[var(--accent-2)]">
             {completedCount} / {summaries.length} 已完成
           </span>
+          {linkedValidationTasks.length > 0 && (
+            <span className="rounded border border-[var(--line)] px-3 py-1 text-[var(--accent-2)]">
+              {verifiedValidationCount} / {linkedValidationTasks.length} 已验证
+            </span>
+          )}
           {openValidationIds.length > 0 && (
             <span className="rounded border border-[var(--line)] px-3 py-1 text-[var(--accent-2)]">
               {openValidationIds.length} 个待验证问题
@@ -163,7 +175,7 @@ function TrainingClosureOverview({
                       <Link
                         key={task.definition.validationId}
                         href={validationHref(task.definition.validationId)}
-                        className="grid grid-cols-[130px_1fr_auto] gap-2 text-xs leading-5 hover:text-[var(--accent-2)] max-[760px]:grid-cols-1"
+                        className="grid grid-cols-[130px_1fr_auto_auto] gap-2 text-xs leading-5 hover:text-[var(--accent-2)] max-[760px]:grid-cols-1"
                       >
                         <span className="text-[var(--accent-2)]">
                           {task.definition.validationId}
@@ -172,6 +184,9 @@ function TrainingClosureOverview({
                           {task.definition.topic}
                         </span>
                         <span>{task.state.status}</span>
+                        <span className="text-[var(--muted)]">
+                          {task.verifiedEvidenceCount}/{task.definition.minimumVerifiedRecords} 已验证
+                        </span>
                       </Link>
                     ))}
                   </div>
