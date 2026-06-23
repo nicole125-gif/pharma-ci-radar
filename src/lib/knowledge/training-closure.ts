@@ -11,6 +11,7 @@ export interface TrainingClosureDefinition {
   }>;
   reworkTriggers: string[];
   reflectionPrompts: string[];
+  validationTaskIds?: string[];
 }
 
 const closures: TrainingClosureDefinition[] = [
@@ -73,6 +74,13 @@ const closures: TrainingClosureDefinition[] = [
       "哪条 Fujikin 能力线最容易被客户或销售误读成制药主工艺优势？",
       "本次结论里哪三项必须让销售、应用工程或供应链内部验证？",
       "下次客户提到 Fujikin 高纯经验时，你会先追问哪三项工况或证据？"
+    ],
+    validationTaskIds: [
+      "VAL-FUJIKIN-001",
+      "VAL-FUJIKIN-002",
+      "VAL-FUJIKIN-003",
+      "VAL-CROSS-001",
+      "VAL-CROSS-002"
     ]
   },
   {
@@ -136,6 +144,15 @@ const closures: TrainingClosureDefinition[] = [
       "ESG 最可能在哪类客户任务里给 Bürkert 造成商业压力？",
       "哪些 ESG 声明只能作为 CLAIM，必须由质量或应用工程复核？",
       "下次销售说 ESG 更便宜或更快时，你会要求补哪三类证据？"
+    ],
+    validationTaskIds: [
+      "VAL-ESG-001",
+      "VAL-ESG-002",
+      "VAL-ESG-003",
+      "VAL-ESG-004",
+      "VAL-ESG-005",
+      "VAL-CROSS-001",
+      "VAL-CROSS-002"
     ]
   },
   {
@@ -196,6 +213,14 @@ const closures: TrainingClosureDefinition[] = [
       "这次对标里哪一个判断最容易被客户追问证据？",
       "如果客户只给了品牌和系列，没有给 P&ID，你会先拒绝比较哪几项？",
       "下一次客户会议前，你需要销售、应用工程或产品团队补哪两类内部信息？"
+    ],
+    validationTaskIds: [
+      "VAL-GEMU-001",
+      "VAL-GEMU-002",
+      "VAL-BURKERT-001",
+      "VAL-BURKERT-002",
+      "VAL-CROSS-001",
+      "VAL-CROSS-002"
     ]
   }
 ];

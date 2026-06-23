@@ -1,8 +1,16 @@
 import React from "react";
 import Link from "next/link";
-import type { CurriculumDay, TrainingLearner, TrainingProgress, TrainingScore } from "@/lib/knowledge/types";
+import type { CurriculumDay, TrainingLearner, TrainingProgress, TrainingScore, ValidationTaskDefinition, ValidationTaskState } from "@/lib/knowledge/types";
+import { validationHref } from "@/lib/knowledge/validation-linking";
 import { getTrainingClosure, getTrainingClosures } from "@/lib/knowledge/training-closure";
 import { CreateLearnerForm, TrainingProgressForm, TrainingScoreForm } from "./knowledge-forms";
+
+type TrainingValidationTask = {
+  definition: ValidationTaskDefinition;
+  state: ValidationTaskState;
+  verifiedEvidenceCount: number;
+  totalEvidenceCount: number;
+};
 
 export function TrainingWorkspace({
   curriculum,
@@ -10,6 +18,7 @@ export function TrainingWorkspace({
   selectedLearner,
   progress,
   scores,
+  validationTasks = [],
   readOnly
 }: {
   curriculum: CurriculumDay[];
@@ -17,6 +26,7 @@ export function TrainingWorkspace({
   selectedLearner?: TrainingLearner;
   progress: TrainingProgress[];
   scores: TrainingScore[];
+  validationTasks?: TrainingValidationTask[];
   readOnly: boolean;
 }) {
   const weeks = [...new Set(curriculum.map((day) => day.week))];
@@ -35,7 +45,7 @@ export function TrainingWorkspace({
       </aside>
       <div className="grid gap-5">
         {!selectedLearner && <div className="panel p-4 text-sm text-[var(--muted)]">课程可直接浏览；选择或创建学习者后可记录进度和评分。</div>}
-        <TrainingClosureOverview summaries={closureSummaries} progress={progress} />
+        <TrainingClosureOverview summaries={closureSummaries} progress={progress} validationTasks={validationTasks} />
         {weeks.map((week) => (
           <section key={week} className="panel overflow-hidden">
             <div className="border-b border-[var(--line)] px-4 py-3 font-semibold">第 {week} 周</div>
@@ -55,13 +65,15 @@ function Text({ label, value }: { label: string; value: string }) { return <div>
 
 function TrainingClosureOverview({
   summaries,
-  progress
+  progress,
+  validationTasks
 }: {
   summaries: Array<{
     closure: NonNullable<ReturnType<typeof getTrainingClosure>>;
     day: CurriculumDay;
   }>;
   progress: TrainingProgress[];
+  validationTasks: TrainingValidationTask[];
 }) {
   if (summaries.length === 0) return null;
 
@@ -73,6 +85,19 @@ function TrainingClosureOverview({
     const dayProgress = progress.find((item) => item.day === day.day);
     return dayProgress?.completionStatus === "COMPLETE";
   }).length;
+  const validationTasksById = new Map(
+    validationTasks.map((task) => [task.definition.validationId, task])
+  );
+  const openValidationIds = [
+    ...new Set(
+      summaries.flatMap(({ closure }) =>
+        (closure.validationTaskIds ?? []).filter((validationId) => {
+          const task = validationTasksById.get(validationId);
+          return task ? task.state.status !== "VERIFIED" : false;
+        })
+      )
+    )
+  ];
 
   return (
     <section className="panel p-4">
@@ -93,6 +118,11 @@ function TrainingClosureOverview({
           <span className="rounded border border-[var(--line)] px-3 py-1 text-[var(--accent-2)]">
             {completedCount} / {summaries.length} 已完成
           </span>
+          {openValidationIds.length > 0 && (
+            <span className="rounded border border-[var(--line)] px-3 py-1 text-[var(--accent-2)]">
+              {openValidationIds.length} 个待验证问题
+            </span>
+          )}
         </div>
       </div>
       <div className="grid gap-3">
@@ -100,6 +130,10 @@ function TrainingClosureOverview({
           const status =
             progress.find((item) => item.day === day.day)?.completionStatus ??
             "NOT_STARTED";
+          const linkedValidationTasks = (closure.validationTaskIds ?? [])
+            .map((validationId) => validationTasksById.get(validationId))
+            .filter((task): task is TrainingValidationTask => Boolean(task))
+            .filter((task) => task.state.status !== "VERIFIED");
           return (
             <div key={closure.day} className="rounded border border-[var(--line)] p-3">
               <div className="mb-1 flex flex-wrap items-center justify-between gap-2 text-xs font-semibold text-[var(--accent-2)]">
@@ -119,6 +153,30 @@ function TrainingClosureOverview({
                   {closure.reworkTriggers[0]}
                 </div>
               </div>
+              {linkedValidationTasks.length > 0 && (
+                <div className="mt-3 border-t border-[var(--line)] pt-3">
+                  <div className="mb-2 text-xs font-semibold text-[var(--accent-2)]">
+                    待验证
+                  </div>
+                  <div className="grid gap-2">
+                    {linkedValidationTasks.slice(0, 2).map((task) => (
+                      <Link
+                        key={task.definition.validationId}
+                        href={validationHref(task.definition.validationId)}
+                        className="grid grid-cols-[130px_1fr_auto] gap-2 text-xs leading-5 hover:text-[var(--accent-2)] max-[760px]:grid-cols-1"
+                      >
+                        <span className="text-[var(--accent-2)]">
+                          {task.definition.validationId}
+                        </span>
+                        <span className="text-[var(--muted)]">
+                          {task.definition.topic}
+                        </span>
+                        <span>{task.state.status}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           );
         })}
