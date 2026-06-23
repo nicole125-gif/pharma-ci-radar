@@ -20,7 +20,7 @@ function normalizeView(value?: string): View {
 export default async function KnowledgePage({
   searchParams
 }: {
-  searchParams: Promise<{ view?: string; q?: string; company?: string; category?: string; relevance?: string; type?: string; learner?: string; priority?: string; grade?: string; status?: string; risk?: string }>;
+  searchParams: Promise<{ view?: string; q?: string; company?: string; category?: string; relevance?: string; type?: string; learner?: string; priority?: string; grade?: string; status?: string; risk?: string; queue?: string }>;
 }) {
   const params = await searchParams;
   const view = normalizeView(params.view);
@@ -45,7 +45,7 @@ export default async function KnowledgePage({
       {view === "workbench" && <KnowledgeWorkbench summary={workspace.summary} evidenceHealth={workspace.evidenceHealth} database={workspace.database} validationTasks={workspace.validation.tasks} learners={workspace.training.learners} />}
       {view === "products" && <ProductSearch filters={filters} results={results} categories={categories} />}
       {view === "training" && <TrainingWorkspace curriculum={workspace.catalog.curriculum} learners={workspace.training.learners} selectedLearner={workspace.training.selectedLearner} progress={workspace.training.progress} scores={workspace.training.scores} validationTasks={workspace.validation.tasks} readOnly={!workspace.database.available} />}
-      {view === "validation" && <ValidationWorkspace tasks={workspace.validation.tasks} evidence={workspace.validation.evidence} publicEvidenceByTask={validationEvidenceMap} readOnly={!workspace.database.available} priority={params.priority} company={params.company} query={params.q} />}
+      {view === "validation" && <ValidationWorkspace tasks={workspace.validation.tasks} evidence={workspace.validation.evidence} publicEvidenceByTask={validationEvidenceMap} readOnly={!workspace.database.available} priority={params.priority} company={params.company} query={params.q} queue={params.queue} />}
       {view === "evidence" && <EvidenceQa evidence={workspace.catalog.evidenceRecords} traceMap={evidenceTraceMap} validationMap={evidenceValidationMap} filters={{ query: params.q, company: params.company, grade: (params.grade || "ALL") as EvidenceGrade | "ALL", status: (params.status || "ALL") as FactStatus | "ALL", risk: (params.risk || "ALL") as "ALL" | "NEEDS_VALIDATION" | "UNLINKED" }} />}
     </AppShell>
   );

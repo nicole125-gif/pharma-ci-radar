@@ -8,17 +8,23 @@ function task(
   validationId: string,
   company: string,
   topic: string,
-  counts?: { verifiedEvidenceCount?: number; minimumVerifiedRecords?: number }
+  counts?: {
+    verifiedEvidenceCount?: number;
+    minimumVerifiedRecords?: number;
+    totalEvidenceCount?: number;
+    priority?: "P0" | "P1" | "P2";
+    status?: "OPEN" | "IN_PROGRESS" | "VERIFIED";
+  }
 ): {
   definition: ValidationTaskDefinition;
-  state: { validationId: string; status: "OPEN" };
+  state: { validationId: string; status: "OPEN" | "IN_PROGRESS" | "VERIFIED" };
   verifiedEvidenceCount: number;
   totalEvidenceCount: number;
 } {
   return {
     definition: {
       validationId,
-      priority: "P0",
+      priority: counts?.priority ?? "P0",
       company,
       topic,
       question: `${topic} question`,
@@ -38,9 +44,9 @@ function task(
       reviewCadence: "Weekly",
       targetWindow: "2026-Q3"
     },
-    state: { validationId, status: "OPEN" },
+    state: { validationId, status: counts?.status ?? "OPEN" },
     verifiedEvidenceCount: counts?.verifiedEvidenceCount ?? 0,
-    totalEvidenceCount: 0
+    totalEvidenceCount: counts?.totalEvidenceCount ?? 0
   };
 }
 
@@ -114,5 +120,61 @@ describe("validation workspace", () => {
     );
 
     expect(screen.getByText("已满足证据数量，可更新为 VERIFIED。")).toBeTruthy();
+  });
+
+  it("summarizes and sorts the priority queue by closure urgency", () => {
+    render(
+      <ValidationWorkspace
+        tasks={[
+          task("VAL-P1-READY", "GEMÜ", "P1 ready", {
+            priority: "P1",
+            verifiedEvidenceCount: 2,
+            minimumVerifiedRecords: 2,
+            totalEvidenceCount: 2
+          }),
+          task("VAL-P0-EMPTY", "Fujikin", "P0 empty", {
+            priority: "P0",
+            verifiedEvidenceCount: 0,
+            minimumVerifiedRecords: 2,
+            totalEvidenceCount: 0
+          }),
+          task("VAL-P0-NEAR", "ESG 精锐", "P0 near", {
+            priority: "P0",
+            verifiedEvidenceCount: 1,
+            minimumVerifiedRecords: 2,
+            totalEvidenceCount: 1
+          }),
+          task("VAL-CLOSED", "Bürkert", "Closed", {
+            priority: "P0",
+            verifiedEvidenceCount: 2,
+            minimumVerifiedRecords: 2,
+            totalEvidenceCount: 2,
+            status: "VERIFIED"
+          })
+        ]}
+        evidence={[]}
+        readOnly
+      />
+    );
+
+    expect(screen.getByText("待验证优先队列")).toBeTruthy();
+    expect(screen.getByText("P0 未关闭")).toBeTruthy();
+    expect(screen.getAllByText("2").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("可关闭").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("1").length).toBeGreaterThan(0);
+    expect(screen.getByText("证据不足")).toBeTruthy();
+    expect(screen.getAllByText("缺 1 条证据").length).toBeGreaterThan(0);
+    expect(screen.getByText("无内部证据")).toBeTruthy();
+    expect(screen.getByText("已关闭")).toBeTruthy();
+
+    const ids = screen
+      .getAllByText(/^VAL-/)
+      .map((item) => item.textContent);
+    expect(ids.slice(0, 4)).toEqual([
+      "VAL-P0-NEAR",
+      "VAL-P0-EMPTY",
+      "VAL-P1-READY",
+      "VAL-CLOSED"
+    ]);
   });
 });
