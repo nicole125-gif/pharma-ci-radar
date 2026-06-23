@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { CurriculumDay, TrainingLearner, TrainingProgress, TrainingScore } from "@/lib/knowledge/types";
-import { getTrainingClosure } from "@/lib/knowledge/training-closure";
+import { getTrainingClosure, getTrainingClosures } from "@/lib/knowledge/training-closure";
 import { CreateLearnerForm, TrainingProgressForm, TrainingScoreForm } from "./knowledge-forms";
 
 export function TrainingWorkspace({
@@ -20,6 +20,12 @@ export function TrainingWorkspace({
   readOnly: boolean;
 }) {
   const weeks = [...new Set(curriculum.map((day) => day.week))];
+  const closureSummaries = getTrainingClosures()
+    .map((closure) => ({
+      closure,
+      day: curriculum.find((item) => item.day === closure.day)
+    }))
+    .filter((item): item is { closure: NonNullable<ReturnType<typeof getTrainingClosure>>; day: CurriculumDay } => Boolean(item.day));
   return (
     <div className="grid grid-cols-[260px_1fr] gap-5 max-[900px]:grid-cols-1">
       <aside className="grid content-start gap-4">
@@ -29,6 +35,7 @@ export function TrainingWorkspace({
       </aside>
       <div className="grid gap-5">
         {!selectedLearner && <div className="panel p-4 text-sm text-[var(--muted)]">课程可直接浏览；选择或创建学习者后可记录进度和评分。</div>}
+        <TrainingClosureOverview summaries={closureSummaries} />
         {weeks.map((week) => (
           <section key={week} className="panel overflow-hidden">
             <div className="border-b border-[var(--line)] px-4 py-3 font-semibold">第 {week} 周</div>
@@ -45,6 +52,65 @@ export function TrainingWorkspace({
   );
 }
 function Text({ label, value }: { label: string; value: string }) { return <div><div className="font-semibold text-[var(--accent-2)]">{label}</div><p className="mt-1 text-[var(--muted)]">{value}</p></div>; }
+
+function TrainingClosureOverview({
+  summaries
+}: {
+  summaries: Array<{
+    closure: NonNullable<ReturnType<typeof getTrainingClosure>>;
+    day: CurriculumDay;
+  }>;
+}) {
+  if (summaries.length === 0) return null;
+
+  const evidenceCount = summaries.reduce(
+    (total, item) => total + item.closure.requiredEvidenceIds.length,
+    0
+  );
+
+  return (
+    <section className="panel p-4">
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <div className="text-sm font-semibold text-[var(--accent)]">训练闭环总览</div>
+          <p className="mt-1 text-xs leading-5 text-[var(--muted)]">
+            聚合当前课程里的闭环任务、必须证据和返工红线。
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2 text-xs">
+          <span className="rounded border border-[var(--line)] px-3 py-1 text-[var(--accent-2)]">
+            {summaries.length} 个闭环任务
+          </span>
+          <span className="rounded border border-[var(--line)] px-3 py-1 text-[var(--accent-2)]">
+            {evidenceCount} 条必须引用证据
+          </span>
+        </div>
+      </div>
+      <div className="grid gap-3">
+        {summaries.map(({ closure, day }) => (
+          <div key={closure.day} className="rounded border border-[var(--line)] p-3">
+            <div className="mb-1 text-xs font-semibold text-[var(--accent-2)]">
+              DAY {day.day} · {day.module}
+            </div>
+            <div className="text-sm font-semibold">{closure.title}</div>
+            <p className="mt-2 text-xs leading-5 text-[var(--muted)]">{closure.deliverable}</p>
+            <div className="mt-3 grid grid-cols-[1fr_1fr] gap-3 max-[700px]:grid-cols-1">
+              <div className="text-xs leading-5 text-[var(--muted)]">
+                <span className="font-semibold text-[var(--accent-2)]">证据：</span>
+                {closure.requiredEvidenceIds.slice(0, 3).join(" / ")}
+                {closure.requiredEvidenceIds.length > 3 ? " ..." : ""}
+              </div>
+              <div className="text-xs leading-5 text-[var(--muted)]">
+                <span className="font-semibold text-[var(--accent-2)]">红线：</span>
+                {closure.reworkTriggers[0]}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
 
 function TrainingClosure({ closure }: { closure: NonNullable<ReturnType<typeof getTrainingClosure>> }) {
   return (

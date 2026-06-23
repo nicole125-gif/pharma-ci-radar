@@ -205,3 +205,7 @@ export function getTrainingClosure(
 ): TrainingClosureDefinition | undefined {
   return closures.find((closure) => closure.day === day);
 }
+
+export function getTrainingClosures(): TrainingClosureDefinition[] {
+  return [...closures];
+}
