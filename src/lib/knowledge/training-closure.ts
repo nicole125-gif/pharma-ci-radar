@@ -15,6 +15,67 @@ export interface TrainingClosureDefinition {
 
 const closures: TrainingClosureDefinition[] = [
   {
+    day: 6,
+    title: "Fujikin 制药适配边界学习闭环",
+    deliverable:
+      "提交三能力线分类表，覆盖 BNW/BSW/LPS、FCS Thermal、MINUCON、FINE PURE 与 IGS，并标出制药适配结论、证据编号和内部验证问题。",
+    requiredEvidenceIds: [
+      "FUJIKIN-COMPANY-001",
+      "FUJIKIN-PHARMA-001",
+      "FUJIKIN-CHINA-001",
+      "FUJIKIN-CHINA-002",
+      "FUJIKIN-BNW-001",
+      "FUJIKIN-FCS-001",
+      "FUJIKIN-MINUCON-001",
+      "FUJIKIN-PRICE-001"
+    ],
+    submissionChecklist: [
+      "至少覆盖 5 个方向：BNW/BSW/LPS 卫生阀、FCS Thermal MFC、MINUCON 微小流量控制、FINE PURE/FCS Pressure 高纯系统和 IGS 高纯气体系统。",
+      "把每个方向标成 direct、adjacent 或 not enough evidence，并写出对应客户任务。",
+      "对每一类写明不能外推到制药主工艺的边界，尤其是半导体高纯、通用精密流控和生命科学卫生产品的区别。",
+      "引用至少 6 个证据编号，且至少包含 BNW、FCS Thermal、MINUCON 和中国业务证据。",
+      "列出至少 3 个内部验证问题：制药装机、常熟工厂实际生产系列、卫生认证或材料文件、价格交期和项目证据。"
+    ],
+    scoringRubric: [
+      {
+        dimension: "产品骨架",
+        points: 20,
+        passSignal:
+          "能正确区分生命科学卫生阀、精密流量控制和半导体/高纯系统能力线。"
+      },
+      {
+        dimension: "参数证据",
+        points: 20,
+        passSignal:
+          "系列和型号证据可追溯，没有把集团能力、官网可见性或跨行业描述外推成制药项目事实。"
+      },
+      {
+        dimension: "应用判断",
+        points: 30,
+        passSignal:
+          "能把 BNW、FCS Thermal 和 MINUCON 映射到客户任务，并为 FINE PURE/IGS 写出排除条件。"
+      },
+      {
+        dimension: "竞争策略",
+        points: 30,
+        passSignal:
+          "能说明 Bürkert 面对 Fujikin 卫生阀、MFC 和微流控时的回应动作，以及哪些结论必须内部验证。"
+      }
+    ],
+    reworkTriggers: [
+      "把半导体高纯或 IGS 能力直接等同于制药主工艺能力。",
+      "把常熟制造或中国法人存在写成具体制药系列的本地生产、库存、价格或交期。",
+      "没有具体型号、口径、介质或工况就做参数优劣比较。",
+      "把 FCS Pressure、FINE PURE、IGS 与 FCS Thermal/MFC 当成等价产品。",
+      "直接沿用低价、关系型竞争或交付优势结论，但没有公开证据或内部验证问题。"
+    ],
+    reflectionPrompts: [
+      "哪条 Fujikin 能力线最容易被客户或销售误读成制药主工艺优势？",
+      "本次结论里哪三项必须让销售、应用工程或供应链内部验证？",
+      "下次客户提到 Fujikin 高纯经验时，你会先追问哪三项工况或证据？"
+    ]
+  },
+  {
     day: 8,
     title: "Bürkert-GEMÜ 卫生阀自动化学习闭环",
     deliverable:

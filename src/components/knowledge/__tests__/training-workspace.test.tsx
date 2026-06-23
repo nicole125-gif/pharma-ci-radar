@@ -4,6 +4,38 @@ import { describe, expect, it } from "vitest";
 import { TrainingWorkspace } from "../training-workspace";
 
 describe("training workspace", () => {
+  it("renders the learning loop for the day 6 Fujikin boundary exercise", () => {
+    render(
+      <TrainingWorkspace
+        curriculum={[
+          {
+            day: 6,
+            week: 1,
+            module: "Fujikin骨架",
+            learningObjective:
+              "区分生命科学卫生跨行业精密流控与半导体高纯",
+            primaryMaterial: "fujikin-product-series-handbook.md",
+            exercise:
+              "将BNW、FCS Thermal、MINUCON、FINE PURE、IGS分类",
+            requiredOutput: "三能力线分类表",
+            coachReview: "产品经理检查是否泛化高纯能力",
+            passCriteria: "全部分类正确且制药适用结论均有限定条件"
+          }
+        ]}
+        learners={[]}
+        progress={[]}
+        scores={[]}
+        readOnly
+      />
+    );
+
+    expect(screen.getByText("Fujikin 制药适配边界学习闭环")).toBeTruthy();
+    expect(screen.getByText("返工红线")).toBeTruthy();
+    expect(screen.getByText(/FUJIKIN-BNW-001/)).toBeTruthy();
+    expect(screen.getByText(/FUJIKIN-FCS-001/)).toBeTruthy();
+    expect(screen.getAllByText(/半导体高纯/).length).toBeGreaterThan(0);
+  });
+
   it("renders the learning loop for the day 8 pharma valve deep dive", () => {
     render(
       <TrainingWorkspace
