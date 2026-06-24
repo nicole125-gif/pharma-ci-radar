@@ -1,6 +1,6 @@
 # GEMÜ 制药高相关产品深度学习卡
 
-- 生成日期：2026-06-14
+- 生成日期：2026-06-24
 - 覆盖记录：50
 - 范围：仅包含产品主数据中 `pharma_relevance=HIGH` 的当前记录。
 - 使用边界：用于产品学习、客户访谈准备和竞品定位，不替代当前数据表、证书、验证文件或应用工程批准。
@@ -1171,9 +1171,9 @@
 
 **相邻产品：** 同类高相关记录未找到；需扩展到相邻产品族判断
 
-**竞品重叠：** 未形成明确系列级竞品映射；需按客户任务和具体配置另行检索。
+**竞品重叠：** DIRECT_FOR_GEMU_ADJACENT_FOR_OTHERS / 罐体、公用工程、过滤、制药用水和设备状态监控 / 8110|8111|8112|8188|8314|8316|8325 / 公开主产品更偏阀件、高纯系统和压力式流控；未形成制药过程压力/温度/液位传感器系列级直接映射 / 未发现自有过程压力、温度或液位传感器产品族；700/701为压力控制阀而非测量传感器
 
-**比较维度：** 产品功能；工况；接液材料；连接；自动化；文件与服务
+**比较维度：** 测量原理；范围；精度；接液材质；过程连接；卫生设计；输出；认证
 
 **事实边界：** 本卡仅汇总公开目录、官方产品页和规格主表，不等同于应用工程批准或验证文件。；HIGH表示制药相关性高，不表示全部配置均适用于无菌主工艺。；源记录边界：Official page description: The GEMÜ C30 pressure measurement device is equipped with a PFA pressure transmitter and an analogue pressure gauge. The device body is made of PFA/PTFE and can be integrated directly into the piping system using flare unions. The pressure transmission is carried out with a monitoring liquid (standard IPA (isopropyl alcohol)/DI water, others available on request).
 

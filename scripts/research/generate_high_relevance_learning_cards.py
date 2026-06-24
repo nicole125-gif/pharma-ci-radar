@@ -15,7 +15,7 @@ from typing import Iterable
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_RESEARCH_DIRECTORY = ROOT / "docs" / "research"
 OUTPUT_FILENAME = "2026-06-high-relevance-product-learning-cards.csv"
-GENERATED_DATE = date(2026, 6, 14).isoformat()
+GENERATED_DATE = date(2026, 6, 24).isoformat()
 MISSING = "未公开，需查当前数据表或项目文件"
 EXPECTED_COUNTS = Counter({"Bürkert": 73, "GEMÜ": 50, "Fujikin": 9, "ESG 精锐": 4})
 

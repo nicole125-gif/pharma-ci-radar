@@ -1,6 +1,6 @@
 # Bürkert 制药高相关产品深度学习卡
 
-- 生成日期：2026-06-14
+- 生成日期：2026-06-24
 - 覆盖记录：73
 - 范围：仅包含产品主数据中 `pharma_relevance=HIGH` 的当前记录。
 - 使用边界：用于产品学习、客户访谈准备和竞品定位，不替代当前数据表、证书、验证文件或应用工程批准。
@@ -1386,7 +1386,7 @@
 
 **相邻产品：** 8112
 
-**竞品重叠：** ADJACENT / 罐体、公用工程、过滤、制药用水和设备状态监控 / GEMÜ pressure/temperature/level measurement portfolio / 公开主产品更偏阀件和高纯系统；具体系列待映射 / 未发现自有过程传感器产品族
+**竞品重叠：** DIRECT_FOR_GEMU_ADJACENT_FOR_OTHERS / 罐体、公用工程、过滤、制药用水和设备状态监控 / GEMÜ C30/C33 pressure measurement devices; temperature/level series not yet separated in current map / 公开主产品更偏阀件、高纯系统和压力式流控；未形成制药过程压力/温度/液位传感器系列级直接映射 / 未发现自有过程压力、温度或液位传感器产品族；700/701为压力控制阀而非测量传感器
 
 **比较维度：** 测量原理；范围；精度；接液材质；过程连接；卫生设计；输出；认证
 
@@ -1418,7 +1418,7 @@
 
 **相邻产品：** 8111
 
-**竞品重叠：** ADJACENT / 罐体、公用工程、过滤、制药用水和设备状态监控 / GEMÜ pressure/temperature/level measurement portfolio / 公开主产品更偏阀件和高纯系统；具体系列待映射 / 未发现自有过程传感器产品族
+**竞品重叠：** DIRECT_FOR_GEMU_ADJACENT_FOR_OTHERS / 罐体、公用工程、过滤、制药用水和设备状态监控 / GEMÜ C30/C33 pressure measurement devices; temperature/level series not yet separated in current map / 公开主产品更偏阀件、高纯系统和压力式流控；未形成制药过程压力/温度/液位传感器系列级直接映射 / 未发现自有过程压力、温度或液位传感器产品族；700/701为压力控制阀而非测量传感器
 
 **比较维度：** 测量原理；范围；精度；接液材质；过程连接；卫生设计；输出；认证
 
@@ -1642,7 +1642,7 @@
 
 **相邻产品：** 8691|8697|KK01
 
-**竞品重叠：** DIRECT / 卫生阀反馈、调节、分散式自动化 / GEMÜ 1232/1234/1236/1240/1241/1242 feedback and 1434/1435/1436/1441 controllers / Valve actuation and control accessories; public series mapping incomplete / 0P1 split intelligent positioner；DIRECT_OR_ADJACENT / 卫生阀开关反馈、分散自动化和远程状态 / 1232|1234|1236|1240|1241|1242
+**竞品重叠：** DIRECT / 卫生阀反馈、调节、分散式自动化 / GEMÜ 1232/1234/1236/1240/1241/1242 feedback and 1434/1435/1436/1441 controllers / PRETRONIC AR2000/SR100 electric valve families; actuator-integrated automatic valve control evidence, not standalone hygienic control-head portfolio / 0P1 split intelligent positioner；DIRECT_OR_ADJACENT / 卫生阀开关反馈、分散自动化和远程状态 / 1232|1234|1236|1240|1241|1242
 
 **比较维度：** 执行器兼容；开关/调节；反馈；信号；协议；诊断；防护；防爆；反馈点；先导阀；协议；IP；防爆；安装；手动操作；诊断
 
@@ -1674,7 +1674,7 @@
 
 **相邻产品：** 2035|8686|8806
 
-**竞品重叠：** DIRECT / 卫生阀反馈、调节、分散式自动化 / GEMÜ 1232/1234/1236/1240/1241/1242 feedback and 1434/1435/1436/1441 controllers / Valve actuation and control accessories; public series mapping incomplete / 0P1 split intelligent positioner
+**竞品重叠：** DIRECT / 卫生阀反馈、调节、分散式自动化 / GEMÜ 1232/1234/1236/1240/1241/1242 feedback and 1434/1435/1436/1441 controllers / PRETRONIC AR2000/SR100 electric valve families; actuator-integrated automatic valve control evidence, not standalone hygienic control-head portfolio / 0P1 split intelligent positioner
 
 **比较维度：** 执行器兼容；开关/调节；反馈；信号；协议；诊断；防护；防爆
 
@@ -1738,7 +1738,7 @@
 
 **相邻产品：** 2064|2934|3324|3364
 
-**竞品重叠：** DIRECT / 卫生阀反馈、调节、分散式自动化 / GEMÜ 1232/1234/1236/1240/1241/1242 feedback and 1434/1435/1436/1441 controllers / Valve actuation and control accessories; public series mapping incomplete / 0P1 split intelligent positioner
+**竞品重叠：** DIRECT / 卫生阀反馈、调节、分散式自动化 / GEMÜ 1232/1234/1236/1240/1241/1242 feedback and 1434/1435/1436/1441 controllers / PRETRONIC AR2000/SR100 electric valve families; actuator-integrated automatic valve control evidence, not standalone hygienic control-head portfolio / 0P1 split intelligent positioner
 
 **比较维度：** 执行器兼容；开关/调节；反馈；信号；协议；诊断；防护；防爆
 
@@ -1770,7 +1770,7 @@
 
 **相邻产品：** 8681|8697|KK01
 
-**竞品重叠：** DIRECT / 卫生阀反馈、调节、分散式自动化 / GEMÜ 1232/1234/1236/1240/1241/1242 feedback and 1434/1435/1436/1441 controllers / Valve actuation and control accessories; public series mapping incomplete / 0P1 split intelligent positioner；DIRECT_OR_ADJACENT / 卫生阀开关反馈、分散自动化和远程状态 / 1232|1234|1236|1240|1241|1242
+**竞品重叠：** DIRECT / 卫生阀反馈、调节、分散式自动化 / GEMÜ 1232/1234/1236/1240/1241/1242 feedback and 1434/1435/1436/1441 controllers / PRETRONIC AR2000/SR100 electric valve families; actuator-integrated automatic valve control evidence, not standalone hygienic control-head portfolio / 0P1 split intelligent positioner；DIRECT_OR_ADJACENT / 卫生阀开关反馈、分散自动化和远程状态 / 1232|1234|1236|1240|1241|1242
 
 **比较维度：** 执行器兼容；开关/调节；反馈；信号；协议；诊断；防护；防爆；反馈点；先导阀；协议；IP；防爆；安装；手动操作；诊断
 
@@ -1802,7 +1802,7 @@
 
 **相邻产品：** 同类高相关记录未找到；需扩展到相邻产品族判断
 
-**竞品重叠：** DIRECT / 卫生阀反馈、调节、分散式自动化 / GEMÜ 1232/1234/1236/1240/1241/1242 feedback and 1434/1435/1436/1441 controllers / Valve actuation and control accessories; public series mapping incomplete / 0P1 split intelligent positioner；DIRECT / 卫生阀调节、设备控制和阀门诊断 / 1434|1435|1436|1441；DIRECT_OR_ADJACENT / 蒸汽、温度、压力和设备流量调节 / 104/105/106 + 0P1
+**竞品重叠：** DIRECT / 卫生阀反馈、调节、分散式自动化 / GEMÜ 1232/1234/1236/1240/1241/1242 feedback and 1434/1435/1436/1441 controllers / PRETRONIC AR2000/SR100 electric valve families; actuator-integrated automatic valve control evidence, not standalone hygienic control-head portfolio / 0P1 split intelligent positioner；DIRECT / 卫生阀调节、设备控制和阀门诊断 / 1434|1435|1436|1441；DIRECT_OR_ADJACENT / 蒸汽、温度、压力和设备流量调节 / 104/105/106 + 0P1
 
 **比较维度：** 执行器兼容；开关/调节；反馈；信号；协议；诊断；防护；防爆；安装；行程；气耗；流量；输入输出；协议；显示；防护；防爆；Cv/Kv；特性；可调比；迟滞；响应；I/O；协议；IP；防爆
 
@@ -1834,7 +1834,7 @@
 
 **相邻产品：** 同类高相关记录未找到；需扩展到相邻产品族判断
 
-**竞品重叠：** DIRECT / 卫生阀反馈、调节、分散式自动化 / GEMÜ 1232/1234/1236/1240/1241/1242 feedback and 1434/1435/1436/1441 controllers / Valve actuation and control accessories; public series mapping incomplete / 0P1 split intelligent positioner；DIRECT / 卫生阀调节、设备控制和阀门诊断 / 1434|1435|1436|1441；DIRECT_OR_ADJACENT / 蒸汽、温度、压力和设备流量调节 / 104/105/106 + 0P1
+**竞品重叠：** DIRECT / 卫生阀反馈、调节、分散式自动化 / GEMÜ 1232/1234/1236/1240/1241/1242 feedback and 1434/1435/1436/1441 controllers / PRETRONIC AR2000/SR100 electric valve families; actuator-integrated automatic valve control evidence, not standalone hygienic control-head portfolio / 0P1 split intelligent positioner；DIRECT / 卫生阀调节、设备控制和阀门诊断 / 1434|1435|1436|1441；DIRECT_OR_ADJACENT / 蒸汽、温度、压力和设备流量调节 / 104/105/106 + 0P1
 
 **比较维度：** 执行器兼容；开关/调节；反馈；信号；协议；诊断；防护；防爆；安装；行程；气耗；流量；输入输出；协议；显示；防护；防爆；Cv/Kv；特性；可调比；迟滞；响应；I/O；协议；IP；防爆
 
@@ -1866,7 +1866,7 @@
 
 **相邻产品：** 同类高相关记录未找到；需扩展到相邻产品族判断
 
-**竞品重叠：** DIRECT / 卫生阀反馈、调节、分散式自动化 / GEMÜ 1232/1234/1236/1240/1241/1242 feedback and 1434/1435/1436/1441 controllers / Valve actuation and control accessories; public series mapping incomplete / 0P1 split intelligent positioner；DIRECT_OR_ADJACENT / 卫生阀开关反馈、分散自动化和远程状态 / 1232|1234|1236|1240|1241|1242
+**竞品重叠：** DIRECT / 卫生阀反馈、调节、分散式自动化 / GEMÜ 1232/1234/1236/1240/1241/1242 feedback and 1434/1435/1436/1441 controllers / PRETRONIC AR2000/SR100 electric valve families; actuator-integrated automatic valve control evidence, not standalone hygienic control-head portfolio / 0P1 split intelligent positioner；DIRECT_OR_ADJACENT / 卫生阀开关反馈、分散自动化和远程状态 / 1232|1234|1236|1240|1241|1242
 
 **比较维度：** 执行器兼容；开关/调节；反馈；信号；协议；诊断；防护；防爆；反馈点；先导阀；协议；IP；防爆；安装；手动操作；诊断
 
