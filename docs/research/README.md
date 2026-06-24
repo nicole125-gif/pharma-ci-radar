@@ -111,6 +111,22 @@
 | 深入学习某个高相关产品 | 知识中心“深度学习卡”或对应公司的高相关产品手册 |
 | 核查一句竞争结论 | 证据表中的 `evidence_id` 和来源链接 |
 
+## 网页演示路径
+
+本地开发服务启动后，入口为 `http://127.0.0.1:3000/knowledge`。如果浏览器显示 localhost 拒绝连接，先确认 `npm run dev -- --hostname 127.0.0.1 --port 3000` 正在运行。
+
+| 演示目标 | 页面路径 | 讲解重点 |
+|---|---|---|
+| 说明系统总览 | `/knowledge` | 展示511个 Bürkert Type、307条竞品系列记录、343条可引用证据、P0验证队列和只读/写入状态 |
+| 从产品进入学习 | `/knowledge?view=products&q=8111` | 展示 Type 8111、C30/C33竞品映射、证据追溯和 `2026-06-24` 深度学习卡 |
+| 验证 Fujikin 更新 | `/knowledge?view=products&q=PRETRONIC` | 说明 Fujikin PRETRONIC 只证明电动阀/执行器集成控制证据，不等同于独立卫生控制头组合 |
+| 核查证据边界 | `/knowledge?view=evidence&risk=NEEDS_VALIDATION` | 区分 FACT、CLAIM、GAP 和 INTERNAL_VALIDATION，说明哪些结论不能直接升级 |
+| 推进内部验证 | `/knowledge?view=validation` | 展示16项验证任务、P0队列、最小样本要求和价格/交期/证书/装机缺口 |
+| 说明训练闭环 | `/knowledge?view=training` | 展示30天课程、阶段检查点、训练产出和待验证问题如何连接 |
+| 输出管理层材料 | `/briefing` 和 `/briefing/markdown` | 展示管理层摘要、Top验证任务、行动分工和可导出的 Markdown 简报 |
+
+演示时坚持三个边界：公开资料证明“产品存在和公开能力”，不证明中国现货、实际净价或真实交期；企业宣传保留 CLAIM 标记；威胁等级与证据可信度分开说明。
+
 ## 当前成熟度
 
 **已经建立**
