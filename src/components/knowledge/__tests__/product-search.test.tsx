@@ -78,6 +78,7 @@ describe("product search", () => {
     );
 
     expect(screen.getByText("深度学习卡")).toBeTruthy();
+    expect(screen.getByText("2026-06-14 · 规则复核")).toBeTruthy();
     expect(screen.getByText("选型必问")).toBeTruthy();
     expect(screen.getByText("事实边界")).toBeTruthy();
     expect(screen.getByText("何时应排除 2103？")).toBeTruthy();

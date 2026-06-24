@@ -91,7 +91,7 @@ function LearningCard({ card }: { card: ProductLearningCard }) {
       <summary className="flex cursor-pointer list-none items-center gap-2 text-sm font-semibold text-[var(--accent-2)]">
         <BookOpenCheck size={16} />
         深度学习卡
-        <span className="ml-auto text-xs font-normal text-[var(--muted)]">{card.sourceAccessedDate} · 规则复核</span>
+        <span className="ml-auto text-xs font-normal text-[var(--muted)]">{card.generatedDate} · 规则复核</span>
       </summary>
       <div className="mt-4 grid grid-cols-2 gap-x-6 gap-y-4 text-sm max-[760px]:grid-cols-1">
         <CardField label="客户任务" value={card.customerJobs} />
