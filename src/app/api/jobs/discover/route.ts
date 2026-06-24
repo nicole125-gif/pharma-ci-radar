@@ -2,5 +2,6 @@ import { NextResponse } from "next/server";
 import { getRepository } from "@/lib/repository";
 
 export async function POST() {
-  return NextResponse.json(getRepository().runDiscoveryJob());
+  const repo = await getRepository();
+  return NextResponse.json(repo.runDiscoveryJob());
 }

@@ -6,7 +6,7 @@ day,week,module,learning_objective,primary_material,exercise,required_output,coa
 5,1,GEMÜ骨架,掌握卫生隔膜阀多通阀块一次性与自动化重点,gemu-pharma-series-handbook.md,比较650、649、P600、SUMONDO、1441的角色,五系列竞争地图,应用工程复核单阀阀块一次性边界,五系列定位正确且至少列出三个直接重叠点
 6,1,Fujikin骨架,区分生命科学卫生跨行业精密流控与半导体高纯,fujikin-product-series-handbook.md,将BNW、FCS Thermal、MINUCON、FINE PURE、IGS分类,三能力线分类表,产品经理检查是否泛化高纯能力,全部分类正确且制药适用结论均有限定条件
 7,1,ESG骨架,掌握可核验系列与低成熟证据边界,esg-jingrui-product-handbook.md,制作A00、100、800/801、0P1证据卡,四张证据卡含FACT CLAIM GAP,质量或产品经理复核证据等级,每项声明正确标记且未预设价格交期优势
-8,2,卫生阀参数,掌握卫生隔膜阀可比字段与排除逻辑,2026-06-four-company-product-matrix.csv,对四家公司卫生阀建立同字段比较空表,卫生阀归一化比较表,应用工程检查阀体Ra膜片连接工况文件字段,关键字段完整率不低于90%
+8,2,Bürkert-GEMÜ卫生阀自动化深挖,掌握Bürkert与GEMÜ在卫生隔膜阀多通阀块控制头定位器和阀岛上的直接对标与排除逻辑,2026-06-burkert-gemu-pharma-valve-automation-deep-dive.md,围绕2103/2034/8652与650/649/P600/1441完成客户任务到候选产品的对标演练,一页对标表含候选Type系列必问工况不可比较边界证据编号和内部验证问题,应用工程检查阀体Ra膜片连接排空死区自动化架构和证据等级,能解释直接对标邻近对标和不可替代边界且关键字段完整率不低于90%
 9,2,证书与文件,区分材料声明设计认证体系认证与批次文件,2026-06-internal-validation-fieldbook.md,审查一份模拟FDA或USP宣传并列出所需原件信息,证书审查清单,质量人员复核主体日期型号材料范围,不得把网页图标作为通过依据
 10,2,第一阶段检查,验证产品骨架和参数证据能力,2026-06-product-knowledge-assessment.md,抽答产品骨架与参数证据模块并演示一次目录检索,DAY-10成绩和补强清单,产品经理按100分框架记录四模块成绩,总分不低于60且无致命错误否则安排补课
 11,2,WFI与PW,把卫生隔离测量反馈和诊断组成回路,2026-06-pharma-application-selection-matrix.csv,完成APP-001需求到候选Type路径,WFI选型工作纸,应用工程复核介质排空测量与控制边界,候选有依据且至少三个缺失工况和一个排除项

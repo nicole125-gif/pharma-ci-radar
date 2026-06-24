@@ -150,6 +150,16 @@ export interface Alert {
   readAt?: string;
 }
 
+export interface MonitorRun {
+  id: string;
+  startedAt: string;
+  completedAt: string;
+  scannedSources: number;
+  createdEvents: number;
+  approvedSources: number;
+  status: "COMPLETED";
+}
+
 export interface WeeklyBrief {
   id: string;
   weekStart: string;

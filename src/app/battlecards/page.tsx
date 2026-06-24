@@ -24,7 +24,8 @@ export default async function BattlecardsPage({
   }>;
 }) {
   const resolvedSearchParams = await searchParams;
-  const cards = getRepository().getBattlecards();
+  const repo = await getRepository();
+  const cards = repo.getBattlecards();
   const selectedThreat = resolvedSearchParams?.threat ?? "ALL";
   const selectedOwner = resolvedSearchParams?.owner ?? "ALL";
   const rawQuery = resolvedSearchParams?.q?.trim() ?? "";

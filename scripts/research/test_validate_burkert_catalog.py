@@ -4,7 +4,11 @@ import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from validate_burkert_catalog import cache_identifies_type, read_evidence_ids
+from validate_burkert_catalog import (
+    cache_identifies_type,
+    extract_evidence_references,
+    read_evidence_ids,
+)
 
 
 class CacheIdentifiesTypeTest(unittest.TestCase):
@@ -42,6 +46,22 @@ class CacheIdentifiesTypeTest(unittest.TestCase):
                     "FUJIKIN-SERIES-FCST1000-FCST2000-ABC12345",
                 },
             )
+
+    def test_extracts_known_evidence_namespaces_without_material_false_positives(self) -> None:
+        known = {
+            "BURKERT-CATALOG-001",
+            "GEMU-SERIES-650",
+            "ESG-SELECTION-001",
+        }
+        text = (
+            "Use ESG-SELECTION-001 and GEMU-SERIES-999 for review, "
+            "but do not treat EN-GJS-400-18-LT or ISO-5752-20 as evidence IDs."
+        )
+
+        self.assertEqual(
+            extract_evidence_references(text, known),
+            {"ESG-SELECTION-001", "GEMU-SERIES-999"},
+        )
 
 
 if __name__ == "__main__":

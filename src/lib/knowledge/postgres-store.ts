@@ -1,0 +1,749 @@
+import { randomUUID } from "node:crypto";
+import {
+  createClient,
+  createPool,
+  type QueryResultRow
+} from "@vercel/postgres";
+import type {
+  InternalEvidenceInput,
+  InternalEvidenceRecord,
+  TrainingLearner,
+  TrainingProgress,
+  TrainingProgressInput,
+  TrainingScore,
+  TrainingScoreInput,
+  ValidationTaskState,
+  ValidationTaskStateInput
+} from "./types";
+import type { KnowledgeExecutionStore, KnowledgeStore } from "./store";
+
+type Primitive = string | number | boolean | undefined | null;
+type Sql = <Row extends QueryResultRow = QueryResultRow>(
+  strings: TemplateStringsArray,
+  ...values: Primitive[]
+) => Promise<{ rows: Row[] }>;
+type PoolFactory = (config: {
+  connectionString: string;
+}) => {
+  sql: Sql;
+  end?: () => Promise<void>;
+};
+type ClientFactory = (config: {
+  connectionString: string;
+}) => {
+  connect: () => Promise<void>;
+  end: () => Promise<void>;
+  sql: Sql;
+};
+interface KnowledgeDatabaseEnv {
+  POSTGRES_URL?: string;
+  DATABASE_URL?: string;
+}
+type DateValue = string | Date;
+
+interface LearnerRow extends QueryResultRow {
+  id: string;
+  name: string;
+  cohort: string;
+  active: boolean;
+  created_at: DateValue;
+}
+
+interface ProgressRow extends QueryResultRow {
+  learner_id: string;
+  day: number;
+  scheduled_date: DateValue | null;
+  completion_status: TrainingProgress["completionStatus"];
+  output_location: string | null;
+  self_reflection: string | null;
+  coach: string | null;
+  coach_result: TrainingProgress["coachResult"];
+  coach_feedback: string | null;
+  completed_date: DateValue | null;
+  updated_at: DateValue;
+}
+
+interface ScoreRow extends QueryResultRow {
+  id: string;
+  learner_id: string;
+  checkpoint: TrainingScore["checkpoint"];
+  record_date: DateValue;
+  product_skeleton: number;
+  parameter_evidence: number;
+  application_judgment: number;
+  competitive_strategy: number;
+  total_score: number;
+  fatal_error: boolean;
+  result: TrainingScore["result"];
+  assessor: string;
+  evidence_location: string;
+  remediation_due: DateValue | null;
+  notes: string | null;
+  created_at: DateValue;
+}
+
+interface ValidationStateRow extends QueryResultRow {
+  validation_id: string;
+  owner: string | null;
+  status: ValidationTaskState["status"];
+  target_date: DateValue | null;
+  conclusion: string | null;
+  updated_by: string;
+  updated_at: DateValue;
+}
+
+interface EvidenceRow extends QueryResultRow {
+  id: string;
+  validation_id: string;
+  received_date: DateValue;
+  collector: string;
+  company: string;
+  evidence_type: string;
+  subject_product: string | null;
+  model_or_configuration: string | null;
+  market_scope: string | null;
+  source_owner: string | null;
+  source_date: DateValue;
+  file_location: string;
+  confidentiality: InternalEvidenceRecord["confidentiality"];
+  fact_summary: string;
+  supports_or_contradicts: InternalEvidenceRecord["supportsOrContradicts"];
+  verification_status: InternalEvidenceRecord["verificationStatus"];
+  verifier: string | null;
+  verified_date: DateValue | null;
+  rejection_reason: string | null;
+  notes: string | null;
+  created_at: DateValue;
+  updated_at: DateValue;
+}
+
+function toTimestamp(value: DateValue) {
+  return value instanceof Date ? value.toISOString() : value;
+}
+
+function toDate(value: DateValue) {
+  if (!(value instanceof Date)) return value;
+
+  const year = value.getFullYear();
+  const month = String(value.getMonth() + 1).padStart(2, "0");
+  const day = String(value.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function optional<T>(key: string, value: T | null) {
+  return value === null ? {} : { [key]: value };
+}
+
+export function mapLearnerRow(row: LearnerRow): TrainingLearner {
+  return {
+    id: row.id,
+    name: row.name,
+    cohort: row.cohort,
+    active: row.active,
+    createdAt: toTimestamp(row.created_at)
+  };
+}
+
+export function mapProgressRow(row: ProgressRow): TrainingProgress {
+  return {
+    learnerId: row.learner_id,
+    day: row.day,
+    ...optional(
+      "scheduledDate",
+      row.scheduled_date === null ? null : toDate(row.scheduled_date)
+    ),
+    completionStatus: row.completion_status,
+    ...optional("outputLocation", row.output_location),
+    ...optional("selfReflection", row.self_reflection),
+    ...optional("coach", row.coach),
+    coachResult: row.coach_result,
+    ...optional("coachFeedback", row.coach_feedback),
+    ...optional(
+      "completedDate",
+      row.completed_date === null ? null : toDate(row.completed_date)
+    ),
+    updatedAt: toTimestamp(row.updated_at)
+  };
+}
+
+export function mapScoreRow(row: ScoreRow): TrainingScore {
+  return {
+    id: row.id,
+    learnerId: row.learner_id,
+    checkpoint: row.checkpoint,
+    recordDate: toDate(row.record_date),
+    productSkeleton: row.product_skeleton,
+    parameterEvidence: row.parameter_evidence,
+    applicationJudgment: row.application_judgment,
+    competitiveStrategy: row.competitive_strategy,
+    totalScore: row.total_score,
+    fatalError: row.fatal_error,
+    result: row.result,
+    assessor: row.assessor,
+    evidenceLocation: row.evidence_location,
+    ...optional(
+      "remediationDue",
+      row.remediation_due === null ? null : toDate(row.remediation_due)
+    ),
+    ...optional("notes", row.notes),
+    createdAt: toTimestamp(row.created_at)
+  };
+}
+
+export function mapValidationStateRow(
+  row: ValidationStateRow
+): ValidationTaskState {
+  return {
+    validationId: row.validation_id,
+    ...optional("owner", row.owner),
+    status: row.status,
+    ...optional(
+      "targetDate",
+      row.target_date === null ? null : toDate(row.target_date)
+    ),
+    ...optional("conclusion", row.conclusion),
+    updatedBy: row.updated_by,
+    updatedAt: toTimestamp(row.updated_at)
+  };
+}
+
+export function mapEvidenceRow(row: EvidenceRow): InternalEvidenceRecord {
+  return {
+    id: row.id,
+    validationId: row.validation_id,
+    receivedDate: toDate(row.received_date),
+    collector: row.collector,
+    company: row.company,
+    evidenceType: row.evidence_type,
+    ...optional("subjectProduct", row.subject_product),
+    ...optional("modelOrConfiguration", row.model_or_configuration),
+    ...optional("marketScope", row.market_scope),
+    ...optional("sourceOwner", row.source_owner),
+    sourceDate: toDate(row.source_date),
+    fileLocation: row.file_location,
+    confidentiality: row.confidentiality,
+    factSummary: row.fact_summary,
+    supportsOrContradicts: row.supports_or_contradicts,
+    verificationStatus: row.verification_status,
+    ...optional("verifier", row.verifier),
+    ...optional(
+      "verifiedDate",
+      row.verified_date === null ? null : toDate(row.verified_date)
+    ),
+    ...optional("rejectionReason", row.rejection_reason),
+    ...optional("notes", row.notes),
+    createdAt: toTimestamp(row.created_at),
+    updatedAt: toTimestamp(row.updated_at)
+  };
+}
+
+export function createPostgresKnowledgeStore(
+  sql: Sql
+): KnowledgeExecutionStore {
+  let schemaReady: Promise<void> | undefined;
+
+  function ensureSchema() {
+    schemaReady ??= (async () => {
+      await sql`
+        create table if not exists training_learners (
+          id text primary key,
+          name text not null,
+          cohort text not null,
+          active boolean not null default true,
+          created_at timestamptz not null default now()
+        )
+      `;
+      await sql`
+        create table if not exists training_progress (
+          learner_id text references training_learners(id) on delete cascade,
+          day integer not null check (day between 1 and 30),
+          scheduled_date date,
+          completion_status text not null check (completion_status in ('NOT_STARTED', 'IN_PROGRESS', 'SUBMITTED', 'COMPLETE')),
+          output_location text,
+          self_reflection text,
+          coach text,
+          coach_result text not null check (coach_result in ('NOT_REVIEWED', 'PASS', 'REWORK')),
+          coach_feedback text,
+          completed_date date,
+          updated_at timestamptz not null default now(),
+          primary key (learner_id, day)
+        )
+      `;
+      await sql`
+        create table if not exists training_scores (
+          id text primary key,
+          learner_id text references training_learners(id) on delete cascade,
+          checkpoint text not null check (checkpoint in ('BASELINE', 'DAY-10', 'DAY-20', 'DAY-30', 'RETEST')),
+          record_date date not null,
+          product_skeleton integer not null check (product_skeleton between 0 and 20),
+          parameter_evidence integer not null check (parameter_evidence between 0 and 20),
+          application_judgment integer not null check (application_judgment between 0 and 30),
+          competitive_strategy integer not null check (competitive_strategy between 0 and 30),
+          total_score integer not null check (total_score between 0 and 100),
+          fatal_error boolean not null,
+          result text not null check (result in ('PASS', 'REMEDIATE', 'NOT_ASSESSED')),
+          assessor text not null,
+          evidence_location text not null,
+          remediation_due date,
+          notes text,
+          created_at timestamptz not null default now()
+        )
+      `;
+      await sql`
+        create unique index if not exists training_scores_checkpoint_record_idx
+          on training_scores (learner_id, checkpoint, record_date)
+      `;
+      await sql`
+        create table if not exists validation_task_states (
+          validation_id text primary key,
+          owner text,
+          status text not null check (status in ('OPEN', 'IN_PROGRESS', 'VERIFIED', 'REJECTED', 'INSUFFICIENT')),
+          target_date date,
+          conclusion text,
+          updated_by text not null,
+          updated_at timestamptz not null default now()
+        )
+      `;
+      await sql`
+        create table if not exists internal_evidence_records (
+          id text primary key,
+          validation_id text not null,
+          received_date date not null,
+          collector text not null,
+          company text not null,
+          evidence_type text not null,
+          subject_product text,
+          model_or_configuration text,
+          market_scope text,
+          source_owner text,
+          source_date date not null,
+          file_location text not null,
+          confidentiality text not null check (confidentiality in ('INTERNAL', 'RESTRICTED', 'PUBLIC')),
+          fact_summary text not null,
+          supports_or_contradicts text not null check (supports_or_contradicts in ('SUPPORTS', 'CONTRADICTS', 'CONTEXT_ONLY')),
+          verification_status text not null check (verification_status in ('PENDING', 'VERIFIED', 'REJECTED', 'INSUFFICIENT')),
+          verifier text,
+          verified_date date,
+          rejection_reason text,
+          notes text,
+          created_at timestamptz not null default now(),
+          updated_at timestamptz not null default now()
+        )
+      `;
+      await sql`
+        create index if not exists internal_evidence_validation_idx
+          on internal_evidence_records (validation_id, verification_status)
+      `;
+    })();
+
+    return schemaReady;
+  }
+
+  return {
+    available: true,
+
+    async listLearners() {
+      await ensureSchema();
+      const result = await sql<LearnerRow>`
+        select * from training_learners
+        order by cohort, name, id
+      `;
+      return result.rows.map(mapLearnerRow);
+    },
+
+    async createLearner(input) {
+      await ensureSchema();
+      const id = randomUUID();
+      const result = await sql<LearnerRow>`
+        insert into training_learners (id, name, cohort)
+        values (${id}, ${input.name}, ${input.cohort})
+        returning *
+      `;
+      return mapLearnerRow(result.rows[0]);
+    },
+
+    async listProgress(learnerId) {
+      await ensureSchema();
+      const result = await sql<ProgressRow>`
+        select
+          learner_id,
+          day,
+          scheduled_date::text as scheduled_date,
+          completion_status,
+          output_location,
+          self_reflection,
+          coach,
+          coach_result,
+          coach_feedback,
+          completed_date::text as completed_date,
+          updated_at
+        from training_progress
+        where learner_id = ${learnerId}
+        order by day
+      `;
+      return result.rows.map(mapProgressRow);
+    },
+
+    async upsertProgress(input: TrainingProgressInput) {
+      await ensureSchema();
+      const result = await sql<ProgressRow>`
+        insert into training_progress (
+          learner_id, day, scheduled_date, completion_status, output_location,
+          self_reflection, coach, coach_result, coach_feedback, completed_date
+        )
+        values (
+          ${input.learnerId}, ${input.day}, ${input.scheduledDate ?? null},
+          ${input.completionStatus}, ${input.outputLocation ?? null},
+          ${input.selfReflection ?? null}, ${input.coach ?? null},
+          ${input.coachResult}, ${input.coachFeedback ?? null},
+          ${input.completedDate ?? null}
+        )
+        on conflict (learner_id, day) do update set
+          scheduled_date = excluded.scheduled_date,
+          completion_status = excluded.completion_status,
+          output_location = excluded.output_location,
+          self_reflection = excluded.self_reflection,
+          coach = excluded.coach,
+          coach_result = excluded.coach_result,
+          coach_feedback = excluded.coach_feedback,
+          completed_date = excluded.completed_date,
+          updated_at = now()
+        returning
+          learner_id,
+          day,
+          scheduled_date::text as scheduled_date,
+          completion_status,
+          output_location,
+          self_reflection,
+          coach,
+          coach_result,
+          coach_feedback,
+          completed_date::text as completed_date,
+          updated_at
+      `;
+      return mapProgressRow(result.rows[0]);
+    },
+
+    async listScores(learnerId) {
+      await ensureSchema();
+      const result = await sql<ScoreRow>`
+        select
+          id,
+          learner_id,
+          checkpoint,
+          record_date::text as record_date,
+          product_skeleton,
+          parameter_evidence,
+          application_judgment,
+          competitive_strategy,
+          total_score,
+          fatal_error,
+          result,
+          assessor,
+          evidence_location,
+          remediation_due::text as remediation_due,
+          notes,
+          created_at
+        from training_scores
+        where learner_id = ${learnerId}
+        order by record_date, created_at
+      `;
+      return result.rows.map(mapScoreRow);
+    },
+
+    async createScore(input: TrainingScoreInput) {
+      await ensureSchema();
+      const id = randomUUID();
+      const result = await sql<ScoreRow>`
+        insert into training_scores (
+          id, learner_id, checkpoint, record_date, product_skeleton,
+          parameter_evidence, application_judgment, competitive_strategy,
+          total_score, fatal_error, result, assessor, evidence_location,
+          remediation_due, notes
+        )
+        values (
+          ${id}, ${input.learnerId}, ${input.checkpoint}, ${input.recordDate},
+          ${input.productSkeleton}, ${input.parameterEvidence},
+          ${input.applicationJudgment}, ${input.competitiveStrategy},
+          ${input.totalScore}, ${input.fatalError}, ${input.result},
+          ${input.assessor}, ${input.evidenceLocation},
+          ${input.remediationDue ?? null}, ${input.notes ?? null}
+        )
+        returning
+          id,
+          learner_id,
+          checkpoint,
+          record_date::text as record_date,
+          product_skeleton,
+          parameter_evidence,
+          application_judgment,
+          competitive_strategy,
+          total_score,
+          fatal_error,
+          result,
+          assessor,
+          evidence_location,
+          remediation_due::text as remediation_due,
+          notes,
+          created_at
+      `;
+      return mapScoreRow(result.rows[0]);
+    },
+
+    async listValidationStates() {
+      await ensureSchema();
+      const result = await sql<ValidationStateRow>`
+        select
+          validation_id,
+          owner,
+          status,
+          target_date::text as target_date,
+          conclusion,
+          updated_by,
+          updated_at
+        from validation_task_states
+        order by validation_id
+      `;
+      return result.rows.map(mapValidationStateRow);
+    },
+
+    async upsertValidationState(input: ValidationTaskStateInput) {
+      await ensureSchema();
+      const result = await sql<ValidationStateRow>`
+        insert into validation_task_states (
+          validation_id, owner, status, target_date, conclusion, updated_by
+        )
+        values (
+          ${input.validationId}, ${input.owner ?? null}, ${input.status},
+          ${input.targetDate ?? null}, ${input.conclusion ?? null},
+          ${input.updatedBy}
+        )
+        on conflict (validation_id) do update set
+          owner = excluded.owner,
+          status = excluded.status,
+          target_date = excluded.target_date,
+          conclusion = excluded.conclusion,
+          updated_by = excluded.updated_by,
+          updated_at = now()
+        returning
+          validation_id,
+          owner,
+          status,
+          target_date::text as target_date,
+          conclusion,
+          updated_by,
+          updated_at
+      `;
+      return mapValidationStateRow(result.rows[0]);
+    },
+
+    async listEvidence(validationId) {
+      await ensureSchema();
+      if (validationId) {
+        const result = await sql<EvidenceRow>`
+          select
+            id,
+            validation_id,
+            received_date::text as received_date,
+            collector,
+            company,
+            evidence_type,
+            subject_product,
+            model_or_configuration,
+            market_scope,
+            source_owner,
+            source_date::text as source_date,
+            file_location,
+            confidentiality,
+            fact_summary,
+            supports_or_contradicts,
+            verification_status,
+            verifier,
+            verified_date::text as verified_date,
+            rejection_reason,
+            notes,
+            created_at,
+            updated_at
+          from internal_evidence_records
+          where validation_id = ${validationId}
+          order by received_date desc, created_at desc
+        `;
+        return result.rows.map(mapEvidenceRow);
+      }
+
+      const result = await sql<EvidenceRow>`
+        select
+          id,
+          validation_id,
+          received_date::text as received_date,
+          collector,
+          company,
+          evidence_type,
+          subject_product,
+          model_or_configuration,
+          market_scope,
+          source_owner,
+          source_date::text as source_date,
+          file_location,
+          confidentiality,
+          fact_summary,
+          supports_or_contradicts,
+          verification_status,
+          verifier,
+          verified_date::text as verified_date,
+          rejection_reason,
+          notes,
+          created_at,
+          updated_at
+        from internal_evidence_records
+        order by received_date desc, created_at desc
+      `;
+      return result.rows.map(mapEvidenceRow);
+    },
+
+    async createEvidence(input: InternalEvidenceInput) {
+      await ensureSchema();
+      const id = randomUUID();
+      const result = await sql<EvidenceRow>`
+        insert into internal_evidence_records (
+          id, validation_id, received_date, collector, company, evidence_type,
+          subject_product, model_or_configuration, market_scope, source_owner,
+          source_date, file_location, confidentiality, fact_summary,
+          supports_or_contradicts, verification_status, verifier, verified_date,
+          rejection_reason, notes
+        )
+        values (
+          ${id}, ${input.validationId}, ${input.receivedDate},
+          ${input.collector}, ${input.company}, ${input.evidenceType},
+          ${input.subjectProduct ?? null}, ${input.modelOrConfiguration ?? null},
+          ${input.marketScope ?? null}, ${input.sourceOwner ?? null},
+          ${input.sourceDate}, ${input.fileLocation}, ${input.confidentiality},
+          ${input.factSummary}, ${input.supportsOrContradicts},
+          ${input.verificationStatus}, ${input.verifier ?? null},
+          ${input.verifiedDate ?? null}, ${input.rejectionReason ?? null},
+          ${input.notes ?? null}
+        )
+        returning
+          id,
+          validation_id,
+          received_date::text as received_date,
+          collector,
+          company,
+          evidence_type,
+          subject_product,
+          model_or_configuration,
+          market_scope,
+          source_owner,
+          source_date::text as source_date,
+          file_location,
+          confidentiality,
+          fact_summary,
+          supports_or_contradicts,
+          verification_status,
+          verifier,
+          verified_date::text as verified_date,
+          rejection_reason,
+          notes,
+          created_at,
+          updated_at
+      `;
+      return mapEvidenceRow(result.rows[0]);
+    }
+  };
+}
+
+export function selectKnowledgeDatabaseUrl(
+  env: KnowledgeDatabaseEnv
+): string | null {
+  return env.POSTGRES_URL || env.DATABASE_URL || null;
+}
+
+interface KnowledgeStoreDependencies {
+  env?: KnowledgeDatabaseEnv;
+  createPool?: PoolFactory;
+  createClient?: ClientFactory;
+}
+
+const storeCache = new Map<string, Promise<KnowledgeExecutionStore>>();
+
+export function classifyKnowledgeDatabaseConnection(
+  connectionString: string
+): "POOL" | "CLIENT" {
+  const hostname = new URL(connectionString).hostname;
+  return hostname !== "localhost" && hostname.includes("-pooler.")
+    ? "POOL"
+    : "CLIENT";
+}
+
+async function initializeKnowledgeStore(
+  connectionString: string,
+  dependencies: KnowledgeStoreDependencies
+): Promise<KnowledgeExecutionStore> {
+  let close: (() => Promise<void>) | undefined;
+
+  try {
+    let sql: Sql;
+    if (classifyKnowledgeDatabaseConnection(connectionString) === "POOL") {
+      const poolFactory: PoolFactory =
+        dependencies.createPool ?? ((config) => createPool(config));
+      const pool = poolFactory({ connectionString });
+      sql = pool.sql.bind(pool) as Sql;
+      close = pool.end?.bind(pool);
+    } else {
+      const clientFactory: ClientFactory =
+        dependencies.createClient ?? ((config) => createClient(config));
+      const client = clientFactory({ connectionString });
+      close = client.end.bind(client);
+      await client.connect();
+      sql = client.sql.bind(client) as Sql;
+    }
+
+    await sql`select 1`;
+    return createPostgresKnowledgeStore(sql);
+  } catch (error) {
+    if (close) {
+      try {
+        await close();
+      } catch {
+        // Preserve the original connection or probe error.
+      }
+    }
+    throw error;
+  }
+}
+
+export async function getKnowledgeStore(
+  dependencies: KnowledgeStoreDependencies = {}
+): Promise<KnowledgeStore> {
+  const processDatabaseEnv: KnowledgeDatabaseEnv = {
+    POSTGRES_URL: process.env.POSTGRES_URL,
+    DATABASE_URL: process.env.DATABASE_URL
+  };
+  const connectionString = selectKnowledgeDatabaseUrl(
+    dependencies.env ?? processDatabaseEnv
+  );
+  if (!connectionString) {
+    return { available: false, reason: "DATABASE_NOT_CONFIGURED" };
+  }
+
+  const cached = storeCache.get(connectionString);
+  if (cached) {
+    try {
+      return await cached;
+    } catch {
+      return { available: false, reason: "DATABASE_ERROR" };
+    }
+  }
+
+  const pending = initializeKnowledgeStore(connectionString, dependencies);
+  storeCache.set(connectionString, pending);
+
+  try {
+    return await pending;
+  } catch {
+    if (storeCache.get(connectionString) === pending) {
+      storeCache.delete(connectionString);
+    }
+    return { available: false, reason: "DATABASE_ERROR" };
+  }
+}

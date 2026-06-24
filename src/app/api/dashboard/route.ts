@@ -2,5 +2,6 @@ import { NextResponse } from "next/server";
 import { getRepository } from "@/lib/repository";
 
 export async function GET() {
-  return NextResponse.json(getRepository().getDashboard());
+  const repo = await getRepository();
+  return NextResponse.json(repo.getDashboard());
 }

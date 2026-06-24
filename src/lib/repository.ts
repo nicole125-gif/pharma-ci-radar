@@ -16,6 +16,7 @@ import type {
   Dimension,
   IntelEvent,
   ImpactLevel,
+  MonitorRun,
   ReviewStatus,
   SalesIntel,
   SalesIntelBoard,
@@ -33,8 +34,9 @@ import {
   createSnapshotIfChanged,
   createWeeklyBrief
 } from "./workflow";
+import { getAppStateStore } from "./app-state-store";
 
-interface AppState {
+export interface AppState {
   competitors: Competitor[];
   dimensions: Dimension[];
   scores: CompetitorScore[];
@@ -46,6 +48,7 @@ interface AppState {
   alerts: Alert[];
   weeklyBriefs: WeeklyBrief[];
   salesIntel: SalesIntel[];
+  monitorRuns: MonitorRun[];
 }
 
 export interface DashboardData {
@@ -59,13 +62,14 @@ export interface DashboardData {
   topAnalyses: CompetitorAnalysis[];
   referenceScoreNotice: string;
   actionQueue: ActionQueueItem[];
+  lastMonitorRun?: MonitorRun;
 }
 
 function clone<T>(value: T): T {
   return structuredClone(value);
 }
 
-function createInitialState(): AppState {
+export function createInitialState(): AppState {
   const seedEvent: IntelEvent = {
     id: "event-seed-gemu",
     competitorId: "gemu",
@@ -102,6 +106,7 @@ function createInitialState(): AppState {
     scoreSuggestions: [seedSuggestion],
     alerts: alert ? [alert] : [],
     weeklyBriefs: [],
+    monitorRuns: [],
     salesIntel: [
       {
         id: "sales-intel-gemu-delivery-seed",
@@ -118,6 +123,19 @@ function createInitialState(): AppState {
         submittedAt: "2026-05-18T00:00:00.000Z"
       }
     ]
+  };
+}
+
+function normalizeState(state: AppState): AppState {
+  return {
+    ...state,
+    snapshots: state.snapshots ?? [],
+    events: state.events ?? [],
+    scoreSuggestions: state.scoreSuggestions ?? [],
+    alerts: state.alerts ?? [],
+    weeklyBriefs: state.weeklyBriefs ?? [],
+    salesIntel: state.salesIntel ?? [],
+    monitorRuns: state.monitorRuns ?? []
   };
 }
 
@@ -236,7 +254,7 @@ function salesSignalDimension(signalType: SalesIntel["signalType"]) {
 }
 
 export function createAppRepository(initialState = createInitialState()) {
-  const state = initialState;
+  const state = normalizeState(initialState);
 
   function getWeeklyBrief() {
     if (!state.weeklyBriefs.length) {
@@ -450,6 +468,10 @@ export function createAppRepository(initialState = createInitialState()) {
   }
 
   return {
+    getState() {
+      return clone(state);
+    },
+
     getStrategicBrief,
     getBattlecards,
 
@@ -520,7 +542,8 @@ export function createAppRepository(initialState = createInitialState()) {
           .slice(0, 5),
         referenceScoreNotice:
           "Excel scores are historical expert reference only; management decisions should be based on interpretation, evidence quality, and recommended actions.",
-        actionQueue: clone(getActionQueue())
+        actionQueue: clone(getActionQueue()),
+        lastMonitorRun: clone(state.monitorRuns[0])
       };
     },
 
@@ -640,6 +663,10 @@ export function createAppRepository(initialState = createInitialState()) {
       return clone(state.alerts).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
     },
 
+    getMonitorRuns() {
+      return clone(state.monitorRuns).sort((a, b) => b.completedAt.localeCompare(a.completedAt));
+    },
+
     getScoreSuggestions(filter?: { status?: ScoreSuggestion["status"] }) {
       const suggestions = filter?.status
         ? state.scoreSuggestions.filter((suggestion) => suggestion.status === filter.status)
@@ -666,6 +693,7 @@ export function createAppRepository(initialState = createInitialState()) {
     },
 
     async runMonitorJob(sampleContent = "New pharma valve platform with faster quotation and delivery program") {
+      const startedAt = new Date().toISOString();
       const approvedSources = state.sources.filter((source) => source.reviewStatus === "APPROVED");
       let createdEvents = 0;
 
@@ -709,7 +737,19 @@ export function createAppRepository(initialState = createInitialState()) {
       }
 
       state.weeklyBriefs = [];
-      return { scannedSources: approvedSources.length, createdEvents };
+      const completedAt = new Date().toISOString();
+      const run: MonitorRun = {
+        id: `monitor-${completedAt}`,
+        startedAt,
+        completedAt,
+        scannedSources: approvedSources.length,
+        createdEvents,
+        approvedSources: approvedSources.length,
+        status: "COMPLETED"
+      };
+      state.monitorRuns.unshift(run);
+      state.monitorRuns = state.monitorRuns.slice(0, 20);
+      return clone(run);
     },
 
     runDiscoveryJob() {
@@ -734,13 +774,30 @@ function threatRank(level: CompetitorAnalysis["threatLevel"]) {
 type AppRepository = ReturnType<typeof createAppRepository>;
 
 const globalForRepo = globalThis as typeof globalThis & {
-  __pharmaCiRepo?: AppRepository;
+  __pharmaCiRepo?: Promise<AppRepository>;
 };
 
-export function getRepository() {
+export async function getRepository() {
+  const store = await getAppStateStore();
+  if (store.available) {
+    const persistedState = await store.loadState();
+    const repo = createAppRepository(persistedState ?? createInitialState());
+    if (!persistedState) {
+      await store.saveState(repo.getState());
+    }
+    return repo;
+  }
+
   if (!globalForRepo.__pharmaCiRepo) {
-    globalForRepo.__pharmaCiRepo = createAppRepository();
+    globalForRepo.__pharmaCiRepo = Promise.resolve(createAppRepository());
   }
 
   return globalForRepo.__pharmaCiRepo;
+}
+
+export async function persistRepositoryState(repository: AppRepository) {
+  const store = await getAppStateStore();
+  if (store.available) {
+    await store.saveState(repository.getState());
+  }
 }

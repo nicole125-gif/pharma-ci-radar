@@ -2,8 +2,9 @@ import { AppShell } from "@/components/app-shell";
 import { PageHeader } from "@/components/page-header";
 import { getRepository } from "@/lib/repository";
 
-export default function MatrixPage() {
-  const { competitors, dimensions, scores } = getRepository().getMatrix();
+export default async function MatrixPage() {
+  const repo = await getRepository();
+  const { competitors, dimensions, scores } = repo.getMatrix();
   const scoreMap = new Map(scores.map((score) => [`${score.competitorId}:${score.dimensionId}`, score.value]));
 
   return (

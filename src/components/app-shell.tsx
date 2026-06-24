@@ -2,6 +2,7 @@ import Link from "next/link";
 import {
   Activity,
   Bell,
+  BookOpenCheck,
   BrainCircuit,
   ClipboardList,
   Database,
@@ -18,6 +19,7 @@ const navItems = [
   { href: "/", label: "总览", icon: LayoutDashboard },
   { href: "/briefing", label: "战略简报", icon: ClipboardList },
   { href: "/analysis", label: "分析中心", icon: BrainCircuit },
+  { href: "/knowledge", label: "知识中心", icon: BookOpenCheck },
   { href: "/battlecards", label: "战术卡", icon: Swords },
   { href: "/sales-intel", label: "一线情报", icon: UsersRound },
   { href: "/competitors", label: "竞品", icon: Radar },

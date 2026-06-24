@@ -4,8 +4,9 @@ import { AppShell } from "@/components/app-shell";
 import { PageHeader } from "@/components/page-header";
 import { getRepository } from "@/lib/repository";
 
-export default function CompetitorsPage() {
-  const competitors = getRepository().getCompetitors();
+export default async function CompetitorsPage() {
+  const repo = await getRepository();
+  const competitors = repo.getCompetitors();
 
   return (
     <AppShell>

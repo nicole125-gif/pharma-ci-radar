@@ -4,8 +4,8 @@ import { PageHeader } from "@/components/page-header";
 import { StatusBadge } from "@/components/status-badge";
 import { getRepository } from "@/lib/repository";
 
-export default function ScoreSuggestionsPage() {
-  const repo = getRepository();
+export default async function ScoreSuggestionsPage() {
+  const repo = await getRepository();
   const suggestions = repo.getScoreSuggestions();
   const competitors = repo.getCompetitors();
   const dimensions = repo.getMatrix().dimensions;

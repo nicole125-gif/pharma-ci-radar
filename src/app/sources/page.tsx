@@ -4,8 +4,8 @@ import { PageHeader } from "@/components/page-header";
 import { StatusBadge } from "@/components/status-badge";
 import { getRepository } from "@/lib/repository";
 
-export default function SourcesPage() {
-  const repo = getRepository();
+export default async function SourcesPage() {
+  const repo = await getRepository();
   const sources = repo.getSources();
   const competitors = repo.getCompetitors();
 
